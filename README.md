@@ -8,13 +8,13 @@
 
 ## Tries:
 
-1. Guess hf
+1. Guess
 2. Outline
-3. Pokrajina ??
-4. Neighbouring pokrajina
+3. Region
+4. Neighbouring regions
 5. Map with highlighted obcina
 
-![alt text](image-3.png)
+![Example](res/image.png)
 
 
 ## Ideas:
