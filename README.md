@@ -35,6 +35,7 @@
 - duolingo like streak???? win streak
 - popup keyboard
 - localization
+- bonous rounds like worldle ?
 
 
 
