@@ -36,6 +36,9 @@
 - popup keyboard
 - localization
 - bonous rounds like worldle ?
+- statistics
+- game modes (only x region?)
+- SEO !!! EZ PIKE 
 
 
 
