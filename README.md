@@ -11,7 +11,7 @@
 1. Guess
 2. Outline
 3. Region
-4. Neighbouring regions
+4. Neighbouring municipalities
 5. Map with highlighted obcina
 
 ![Example](res/image.png)

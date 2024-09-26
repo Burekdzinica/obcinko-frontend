@@ -11,8 +11,8 @@ export default function UI() {
             <div className="navbar justify-content-center">
                 <h1 className="text-center"> Obcinko </h1>
             </div>
+
             <div className="row mt-4">
-                <Map />
                 <Game />
                 <Footer />
             </div>

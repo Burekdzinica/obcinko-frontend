@@ -1,6 +1,6 @@
 import './input.css';
 
-export default function Input({ inputValue, setInputValue, handleGuess }) {    
+export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses }) {    
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     }
@@ -19,7 +19,7 @@ export default function Input({ inputValue, setInputValue, handleGuess }) {
                 <input className="form-control" placeholder="Vpiši občino" type="text" value={inputValue} onChange={handleInputChange} required />
 
                 { /* Submit button */ }
-                <button type="submit" className="btn btn-secondary col-lg-12"> Submit </button>
+                <button type="submit" className="btn btn-secondary col-lg-12"> {numberOfGuesses} / 5 </button>
             </form>
         </div>
     )
