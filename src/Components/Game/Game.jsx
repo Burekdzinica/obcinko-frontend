@@ -14,6 +14,22 @@ function generateRandomWord() {
     return randomWord;
 }
 
+// https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
+function generateRandomObcina() {
+    fetch("C:/Users/msrsa/Documents/programming/js/obcinko/src/obcine.json")
+        .then(response => response.json())
+        .then(data => {
+            let features = data.features;
+            let randomIndex = Math.floor(Math.random() * features.length);
+            let randomFeature = features[randomIndex];
+
+            console.log(randomFeature);
+
+            return randomFeature;
+        })
+        .catch(error => console.error("Error loading json: ", error));
+}
+
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
     const [correctWord, setCorrectWord] = useState('');
@@ -25,6 +41,10 @@ export default function Game() {
     const [showMap, setShowMap] = useState(false);
     const [showObcina, setShowObcina] = useState(false);
 
+    let obcina = generateRandomObcina();
+    console.log(obcina);
+
+    // Generate random word on start
     useEffect (() => {
         setCorrectWord(generateRandomWord());
     }, [])
@@ -40,7 +60,7 @@ export default function Game() {
             case 1:
                 setShowOutline(true);
                 break;
-                
+
             case 2:
                 setShowRegion(true);
                 break;
@@ -66,6 +86,12 @@ export default function Game() {
         } 
         else if (lose) {
             alert('You lose');
+
+            // TODO remove this because this will be daily
+            setShowOutline(false);
+            setShowRegion(false);
+            setShowMap(false);
+            setShowObcina(false);
 
             setNumberOfGuesses(1);
             setCorrectWord(generateRandomWord()); 
