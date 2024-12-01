@@ -1,11 +1,9 @@
 import Input from "../Input/Input";
 import Map from "../Map/Map";
-import Outline from "../Outline/Outline";
 
 import './game.css'
 
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function generateRandomWord() {
     let randomWords  = ['boris', 'krompir', 'lulek'];
@@ -15,19 +13,21 @@ function generateRandomWord() {
 }
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
-function generateRandomObcina() {
-    fetch("C:/Users/msrsa/Documents/programming/js/obcinko/src/obcine.json")
+function getRandomObcina() {
+    // Select random feature from json
+    return fetch('../../obcine.json')
         .then(response => response.json())
         .then(data => {
             let features = data.features;
             let randomIndex = Math.floor(Math.random() * features.length);
             let randomFeature = features[randomIndex];
 
-            console.log(randomFeature);
-
             return randomFeature;
         })
-        .catch(error => console.error("Error loading json: ", error));
+        .catch(error => {
+            console.error("Error loading json: ", error)
+            return null;
+        });
 }
 
 export default function Game() {
@@ -41,12 +41,23 @@ export default function Game() {
     const [showMap, setShowMap] = useState(false);
     const [showObcina, setShowObcina] = useState(false);
 
-    let obcina = generateRandomObcina();
-    console.log(obcina);
+    const [obcinaFeature, setObcinaFeature] = useState(null);
+
+    const fetchObcina = async () => {
+        let feature = await getRandomObcina();
+     
+        if (feature) {
+            setObcinaFeature(feature);
+            setCorrectWord(feature.properties.NAZIV);
+        }
+        else {
+            console.log("Feature is empty(Game.jsx)");
+        }         
+    }
 
     // Generate random word on start
     useEffect (() => {
-        setCorrectWord(generateRandomWord());
+        fetchObcina();
     }, [])
 
     const handleGuess = (guess) => {
@@ -60,7 +71,7 @@ export default function Game() {
             case 1:
                 setShowOutline(true);
                 break;
-
+                
             case 2:
                 setShowRegion(true);
                 break;
@@ -82,10 +93,10 @@ export default function Game() {
             alert('You win!!!');
 
             setNumberOfGuesses(1);
-            setCorrectWord(generateRandomWord()); 
+            fetchObcina(); 
         } 
         else if (lose) {
-            alert('You lose');
+            alert(correctWord);
 
             // TODO remove this because this will be daily
             setShowOutline(false);
@@ -94,7 +105,7 @@ export default function Game() {
             setShowObcina(false);
 
             setNumberOfGuesses(1);
-            setCorrectWord(generateRandomWord()); 
+            fetchObcina(); 
         }
         // Wrong guess
         else {
@@ -104,7 +115,6 @@ export default function Game() {
 
         setInputValue('');
     };
-
     return (
         <>
             {/* Wrong guess message */}
@@ -117,7 +127,10 @@ export default function Game() {
             {/* Map */}
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex"> 
                 {/* Show Map or show Outline */}
-                {showMap ? <Map /> : showOutline ? <Outline /> : null}
+                {/* {showMap ? <Map feature={obcinaFeature} showOutline={showOutline} showMap={showMap}  /> : showOutline ? <Outline feature={obcinaFeature} /> : null} */}
+                {(showMap || showOutline) ? (
+                    <Map feature={obcinaFeature} showOutline={showOutline} showMap={showMap} />
+                ) : null}
             </div>
 
             {/* Input */}
@@ -132,3 +145,4 @@ export default function Game() {
         </>
     );
 }
+
