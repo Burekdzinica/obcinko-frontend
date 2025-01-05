@@ -43,6 +43,7 @@ export default function Map({ feature, showOutline, showMap }) {
                 attributionControl={false}
                 zoomControl={false}
                 dragging={false}
+                doubleClickZoom={false}
             >
 
                 {/* TODO: Remove names */}
@@ -66,6 +67,7 @@ export default function Map({ feature, showOutline, showMap }) {
                 attributionControl={false}
                 zoomControl={false}
                 dragging={false}
+                doubleClickZoom={false}
             >
 
                 <GeoJSON data={feature} />
@@ -74,3 +76,5 @@ export default function Map({ feature, showOutline, showMap }) {
         )
     }
 }
+
+// https://stackoverflow.com/questions/59413255/how-to-find-adjacent-polygons-in-leaflet

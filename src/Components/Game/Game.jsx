@@ -5,13 +5,6 @@ import './game.css'
 
 import { useState, useEffect } from "react";
 
-function generateRandomWord() {
-    let randomWords  = ['boris', 'krompir', 'lulek'];
-    let randomWord = randomWords[Math.floor(Math.random() * randomWords.length)];
-
-    return randomWord;
-}
-
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 function getRandomObcina() {
     // Select random feature from json
