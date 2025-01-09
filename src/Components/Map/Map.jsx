@@ -28,7 +28,13 @@ function FitToBounds({ feature }) {
 // Zoom out to whole Slovenia
 function ZoomOut() {
     const map = useMap();
-    useEffect(() => { map.flyTo(position, zoomSize); }, []);
+    useEffect(() => { 
+        if (map)
+            map.flyTo(position, zoomSize, { duration: 1.5 }); 
+
+        else 
+            console.log("Map is empty");
+    }, []);
 
     return null;
 }

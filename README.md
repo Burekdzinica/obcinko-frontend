@@ -17,6 +17,13 @@
 ![Example](res/image.png)
 
 
+## Regije
+
+![Regije](res/obcine.png)
+- https://www.stat.si/obcine/sl
+- Obcino poiscem v datoteki in berem regijo
+
+
 ## Ideas:
 
 - Satelite? 
@@ -39,3 +46,10 @@
 - statistics
 - game modes (only x region?)
 - SEO !!! EZ PIKE 
+
+
+## Dodaj do 2. konzultacije
+
+- vse namige
+- reward za completion odvisn od namigov
+- satelit
