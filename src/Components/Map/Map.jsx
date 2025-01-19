@@ -4,71 +4,73 @@ import React, { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, GeoJSON, useMap, TileLayer } from 'react-leaflet';
-import { polygon, intersect, featureCollection, difference, booleanIntersects } from "@turf/turf"; 
+import { polygon, centroid, featureCollection, feature } from "@turf/turf"; 
 
-const position = [46.007, 14.856]; // Middle of Slovenia
+const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
 const zoomSize = 8;
 
-function findAdjacentFeatures(targetFeature, allFeatures) {
-    let adjacentFeatures = [];
-    
-    const targetCoordinates = targetFeature.geometry.coordinates[0];
-    let targetPolygon = polygon([targetCoordinates]);
+function findAdjacentObcine(targetFeature) {
+    return fetch('../../sosednjeObcine.json')
+        .then(response => response.json())
+        .then(data => {
+            const targetObcina = targetFeature.properties.NAZIV;
 
-    // Push adjacent polygons to list
-    allFeatures.forEach(feature => {
-        // skip targetFeature
-        if (feature == targetFeature)
-            return;
+            const adjacentObcine = data[targetObcina];
 
-        
-        let featureCoordinates = feature.geometry.coordinates[0];
-        let currentPolygon = polygon([featureCoordinates]);
-
-
-        // console.log("diff " + difference(featureCollection([targetPolygon, currentPolygon])));
-        // console.log("inter " + intersect(featureCollection([targetPolygon, currentPolygon])));
-
-        // if (intersect(featureCollection([targetPolygon, currentPolygon])))
-        //     adjacentFeatures.push(feature);
-
-        // const diff = difference(featureCollection([targetPolygon, currentPolygon]));
-        // console.log(diff);
-
-        // if (diff == 0) {
-        //     adjacentFeatures.push(feature);
-        // }
-
-        if (booleanIntersects(targetPolygon, currentPolygon))
-            adjacentFeatures.push(feature);
-
-    })
-
-    console.log(adjacentFeatures);
-
-    return adjacentFeatures;
+            return adjacentObcine;
+        })
+        .catch(error => {
+            console.error("Error loading sosednjeObcine.json: ", error)
+            return null;
+        });
 }
 
-function ShowNearbyObcine({ feature, allFeatures }) {
+function findAdjacentFeatures(allFeatures, targetFeature) {
+    return findAdjacentObcine(targetFeature)
+        .then(data => {
+            let adjacentFeatures = [];
+
+            const adjacentObcine = data;
+        
+            allFeatures.forEach(feature => {
+                const obcina = feature.properties.NAZIV;
+        
+                if (adjacentObcine.includes(obcina))
+                    adjacentFeatures.push(feature);
+            })
+
+            return adjacentFeatures;
+        })
+        .catch(error => {
+            console.error("Error in findAdjacentFeatures: ", error);
+            return null;
+        });
+}
+
+function ShowNearbyObcine({ allFeatures, targetFeature }) {
     const map = useMap();
 
     useEffect(() => {
-        if (!feature) {
+        if (!targetFeature) {
             console.error("Feature is empty: showNearbyObcine");
             return;
         }
 
-        const adjacentFeatures = findAdjacentFeatures(feature, allFeatures);
+        findAdjacentFeatures(allFeatures, targetFeature)
+            .then(adjacentFeatures => {
 
-        // add to layer adjacent features
-        adjacentFeatures.forEach(currentFeature => {
-            const adjacentLayer = L.geoJSON(currentFeature, { style: { color: 'red'}, weight: 0.5 });
+                // Add adjacent features to the map
+                adjacentFeatures.forEach(feature => {
+                    const adjacentLayer = L.geoJSON(feature, { style: { color: 'red', weight: 0.5 } });
 
-            map.addLayer(adjacentLayer);
-            map.fitBounds(adjacentLayer.getBounds());
-        })
+                    map.addLayer(adjacentLayer);
+                    map.fitBounds(adjacentLayer.getBounds());
+                });
+            })
+            .catch(error => {
+                console.error("Error displaying adjacent features:", error);
+            });
     }, [])
-
 }
 
 // TODO: this useles just make .fitBounds
@@ -88,8 +90,48 @@ function FitToBounds({ feature }) {
     return null;
 }
 
+function getCenterOfObcin(allFeatures, targetFeature) {
+    return findAdjacentFeatures(allFeatures, targetFeature)
+        .then(adjacentFeatures => {
+            const features = [targetFeature, ...adjacentFeatures];
+
+            const featCollection = featureCollection(features);
+            
+            const center = centroid(featCollection).geometry.coordinates;
+
+
+            // Swap coordinate places because its reversed, why idk
+            [center[0], center[1]] = [center[1], center[0]];
+
+            return center;
+        })  
+        .catch(error => {
+            console.error("Error getting center of obcin", error);
+            return null;
+        })
+}
+
+function ZoomOutSosednje({ allFeatures, feature }) {
+    const map = useMap();
+
+    useEffect(() => { 
+        if (map) {
+            getCenterOfObcin(allFeatures, feature) 
+                .then(position => {
+                    console.log(position) ;
+                    map.flyTo(position, 10.3, { duration: 1.5 }); 
+                })
+        }
+
+        else 
+            console.log("Map is empty");
+    }, []);
+
+    return null;
+}
+
 // Zoom out to whole Slovenia
-function ZoomOut() {
+function ZoomOut({ position }) {
     const map = useMap();
 
     useEffect(() => { 
@@ -103,10 +145,12 @@ function ZoomOut() {
     return null;
 }
 
-
-
 // Maybe change how to return because its really reduntant
 export default function Map({ allFeatures, feature, showOutline, showMap, showNearbyObcine }) { 
+    useEffect(() => {
+        getCenterOfObcin(allFeatures, feature);
+    }, []);
+
     if (showMap) {
         return (
             <MapContainer 
@@ -126,7 +170,7 @@ export default function Map({ allFeatures, feature, showOutline, showMap, showNe
                 />
                 <GeoJSON data={feature} style={{weight: 0.5}} />
                 <FitToBounds feature={feature} />
-                <ZoomOut />
+                <ZoomOut position={centerSlovenia} />
             </MapContainer>
         )  
     }
@@ -144,14 +188,15 @@ export default function Map({ allFeatures, feature, showOutline, showMap, showNe
             >
 
                 <GeoJSON data={feature} />
-                <ShowNearbyObcine feature={feature} allFeatures={allFeatures} />
+                <ShowNearbyObcine allFeatures={allFeatures} targetFeature={feature} />
+                <ZoomOutSosednje allFeatures={allFeatures} feature={feature} />
             </MapContainer>
         )
     }
     else if (showOutline) {
         return (
             <MapContainer 
-                center={position} 
+                center={centerSlovenia} 
                 zoom={zoomSize} 
                 scrollWheelZoom={true} 
                 style={{backgroundColor: "#090909"}}
@@ -167,5 +212,3 @@ export default function Map({ allFeatures, feature, showOutline, showMap, showNe
         )
     }
 }
-
-// https://stackoverflow.com/questions/59413255/how-to-find-adjacent-polygons-in-leaflet

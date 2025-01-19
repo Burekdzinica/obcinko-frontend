@@ -1,0 +1,1534 @@
+{
+  "Ajdovščina": [
+    "Idrija",
+    "Logatec",
+    "Nova Gorica",
+    "Postojna",
+    "Vipava",
+    "Komen"
+  ],
+  "Beltinci": [
+    "Črenšovci",
+    "Moravske Toplice",
+    "Murska Sobota",
+    "Odranci",
+    "Turnišče",
+    "Ljutomer",
+    "Veržej"
+  ],
+  "Bled": [
+    "Bohinj",
+    "Radovljica",
+    "Jesenice",
+    "Žirovnica",
+    "Gorje"
+  ],
+  "Bohinj": [
+    "Bled",
+    "Bovec",
+    "Kobarid",
+    "Radovljica",
+    "Tolmin",
+    "Kranj",
+    "Kranjska Gora",
+    "Železniki",
+    "Gorje"
+  ],
+  "Borovnica": [
+    "Brezovica",
+    "Cerknica",
+    "Vrhnika"
+  ],
+  "Bovec": [
+    "Bohinj",
+    "Kobarid",
+    "Kranjska Gora"
+  ],
+  "Brda": [
+    "Kanal",
+    "Nova Gorica"
+  ],
+  "Brezovica": [
+    "Borovnica",
+    "Cerknica",
+    "Dobrova-Polhov Gradec",
+    "Ig",
+    "Velike Lašče",
+    "Vrhnika",
+    "Ljubljana",
+    "Log-Dragomer"
+  ],
+  "Brežice": [
+    "Kozje",
+    "Krško",
+    "Bistrica ob Sotli"
+  ],
+  "Tišina": [
+    "Murska Sobota",
+    "Radenci",
+    "Puconci",
+    "Cankova"
+  ],
+  "Celje": [
+    "Šentjur",
+    "Štore",
+    "Laško",
+    "Vojnik",
+    "Dobrna",
+    "Žalec"
+  ],
+  "Cerklje na Gorenjskem": [
+    "Preddvor",
+    "Šenčur",
+    "Vodice",
+    "Kamnik",
+    "Komenda"
+  ],
+  "Cerknica": [
+    "Borovnica",
+    "Brezovica",
+    "Ig",
+    "Logatec",
+    "Postojna",
+    "Velike Lašče",
+    "Vrhnika",
+    "Loška dolina",
+    "Pivka",
+    "Bloke"
+  ],
+  "Cerkno": [
+    "Gorenja vas-Poljane",
+    "Idrija",
+    "Tolmin",
+    "Žiri",
+    "Železniki"
+  ],
+  "Črenšovci": [
+    "Beltinci",
+    "Odranci",
+    "Turnišče",
+    "Lendava",
+    "Ljutomer",
+    "Razkrižje",
+    "Velika Polana"
+  ],
+  "Črna na Koroškem": [
+    "Ljubno",
+    "Luče",
+    "Mežica",
+    "Ravne na Koroškem",
+    "Slovenj Gradec",
+    "Šoštanj",
+    "Solčava",
+    "Prevalje"
+  ],
+  "Črnomelj": [
+    "Kočevje",
+    "Semič",
+    "Metlika"
+  ],
+  "Destrnik": [
+    "Juršinci",
+    "Lenart",
+    "Ptuj",
+    "Trnovska vas",
+    "Sveti Andraž v Slov. goricah"
+  ],
+  "Divača": [
+    "Postojna",
+    "Sežana",
+    "Vipava",
+    "Hrpelje-Kozina",
+    "Ilirska Bistrica",
+    "Pivka"
+  ],
+  "Dobrepolje": [
+    "Grosuplje",
+    "Ivančna Gorica",
+    "Kočevje",
+    "Ribnica",
+    "Velike Lašče",
+    "Žužemberk"
+  ],
+  "Dobrova-Polhov Gradec": [
+    "Brezovica",
+    "Gorenja vas-Poljane",
+    "Logatec",
+    "Škofja Loka",
+    "Vrhnika",
+    "Ljubljana",
+    "Medvode",
+    "Horjul",
+    "Log-Dragomer"
+  ],
+  "Dol pri Ljubljani": [
+    "Domžale",
+    "Litija",
+    "Moravče",
+    "Ljubljana"
+  ],
+  "Domžale": [
+    "Dol pri Ljubljani",
+    "Mengeš",
+    "Moravče",
+    "Kamnik",
+    "Ljubljana",
+    "Lukovica",
+    "Trzin"
+  ],
+  "Dornava": [
+    "Gorišnica",
+    "Juršinci",
+    "Ormož",
+    "Ptuj",
+    "Markovci",
+    "Sveti Tomaž"
+  ],
+  "Dravograd": [
+    "Ravne na Koroškem",
+    "Slovenj Gradec",
+    "Muta",
+    "Vuzenica"
+  ],
+  "Duplek": [
+    "Lenart",
+    "Starše",
+    "Maribor",
+    "Ptuj"
+  ],
+  "Gorenja vas-Poljane": [
+    "Cerkno",
+    "Dobrova-Polhov Gradec",
+    "Idrija",
+    "Logatec",
+    "Škofja Loka",
+    "Žiri",
+    "Železniki"
+  ],
+  "Gorišnica": [
+    "Dornava",
+    "Ormož",
+    "Zavrč",
+    "Markovci",
+    "Cirkulane"
+  ],
+  "Gornja Radgona": [
+    "Radenci",
+    "Sveti Jurij ob Ščavnici",
+    "Benedikt",
+    "Cerkvenjak",
+    "Sveta Ana",
+    "Sveta Trojica v Slovenskih goricah",
+    "Apače"
+  ],
+  "Gornji Grad": [
+    "Ljubno",
+    "Luče",
+    "Kamnik",
+    "Nazarje",
+    "Rečica ob Savinji"
+  ],
+  "Gornji Petrovci": [
+    "Šalovci",
+    "Moravske Toplice",
+    "Kuzma",
+    "Puconci",
+    "Grad"
+  ],
+  "Grosuplje": [
+    "Dobrepolje",
+    "Ivančna Gorica",
+    "Škofljica",
+    "Velike Lašče",
+    "Ljubljana"
+  ],
+  "Šalovci": [
+    "Gornji Petrovci",
+    "Moravske Toplice",
+    "Hodoš"
+  ],
+  "Hrastnik": [
+    "Trbovlje",
+    "Laško",
+    "Radeče",
+    "Žalec"
+  ],
+  "Idrija": [
+    "Ajdovščina",
+    "Cerkno",
+    "Gorenja vas-Poljane",
+    "Logatec",
+    "Nova Gorica",
+    "Tolmin",
+    "Žiri"
+  ],
+  "Ig": [
+    "Brezovica",
+    "Cerknica",
+    "Škofljica",
+    "Velike Lašče",
+    "Ljubljana"
+  ],
+  "Ivančna Gorica": [
+    "Dobrepolje",
+    "Grosuplje",
+    "Trebnje",
+    "Ljubljana",
+    "Žužemberk",
+    "Šmartno pri Litiji"
+  ],
+  "Izola": [
+    "Koper",
+    "Piran"
+  ],
+  "Juršinci": [
+    "Destrnik",
+    "Dornava",
+    "Sveti Jurij ob Ščavnici",
+    "Ljutomer",
+    "Ptuj",
+    "Sveti Andraž v Slov. goricah",
+    "Sveti Tomaž"
+  ],
+  "Kanal": [
+    "Brda",
+    "Nova Gorica",
+    "Tolmin"
+  ],
+  "Kobarid": [
+    "Bohinj",
+    "Bovec",
+    "Tolmin"
+  ],
+  "Kočevje": [
+    "Črnomelj",
+    "Dobrepolje",
+    "Loški Potok",
+    "Ribnica",
+    "Semič",
+    "Osilnica",
+    "Dolenjske Toplice",
+    "Kostel",
+    "Žužemberk"
+  ],
+  "Kozje": [
+    "Brežice",
+    "Krško",
+    "Podčetrtek",
+    "Šentjur",
+    "Bistrica ob Sotli"
+  ],
+  "Krško": [
+    "Brežice",
+    "Kozje",
+    "Sevnica",
+    "Šentjernej",
+    "Šentjur",
+    "Škocjan",
+    "Kostanjevica na Krki"
+  ],
+  "Kungota": [
+    "Pesnica",
+    "Šentilj",
+    "Maribor"
+  ],
+  "Lenart": [
+    "Destrnik",
+    "Duplek",
+    "Pesnica",
+    "Maribor",
+    "Ptuj",
+    "Benedikt",
+    "Trnovska vas",
+    "Sveta Ana",
+    "Sveta Trojica v Slovenskih goricah",
+    "Sveti Jurij v Slovenskih goricah"
+  ],
+  "Litija": [
+    "Dol pri Ljubljani",
+    "Moravče",
+    "Sevnica",
+    "Trebnje",
+    "Zagorje ob Savi",
+    "Ljubljana",
+    "Radeče",
+    "Šmartno pri Litiji",
+    "Šentrupert",
+    "Mirna"
+  ],
+  "Ljubno": [
+    "Črna na Koroškem",
+    "Gornji Grad",
+    "Luče",
+    "Šoštanj",
+    "Mozirje",
+    "Rečica ob Savinji"
+  ],
+  "Logatec": [
+    "Ajdovščina",
+    "Cerknica",
+    "Dobrova-Polhov Gradec",
+    "Gorenja vas-Poljane",
+    "Idrija",
+    "Postojna",
+    "Vrhnika",
+    "Žiri"
+  ],
+  "Loški Potok": [
+    "Kočevje",
+    "Ribnica",
+    "Loška dolina",
+    "Osilnica",
+    "Bloke",
+    "Sodražica"
+  ],
+  "Luče": [
+    "Črna na Koroškem",
+    "Gornji Grad",
+    "Ljubno",
+    "Kamnik",
+    "Solčava"
+  ],
+  "Majšperk": [
+    "Rogatec",
+    "Rogaška Slatina",
+    "Slovenska Bistrica",
+    "Kidričevo",
+    "Videm",
+    "Žetale",
+    "Makole"
+  ],
+  "Mengeš": [
+    "Domžale",
+    "Vodice",
+    "Kamnik",
+    "Ljubljana",
+    "Komenda",
+    "Trzin"
+  ],
+  "Mežica": [
+    "Črna na Koroškem",
+    "Prevalje"
+  ],
+  "Mislinja": [
+    "Slovenj Gradec",
+    "Velenje",
+    "Zreče",
+    "Vitanje",
+    "Dobrna",
+    "Lovrenc na Pohorju",
+    "Ribnica na Pohorju"
+  ],
+  "Moravče": [
+    "Dol pri Ljubljani",
+    "Domžale",
+    "Litija",
+    "Zagorje ob Savi",
+    "Lukovica"
+  ],
+  "Moravske Toplice": [
+    "Beltinci",
+    "Gornji Petrovci",
+    "Šalovci",
+    "Murska Sobota",
+    "Turnišče",
+    "Kobilje",
+    "Puconci",
+    "Dobrovnik"
+  ],
+  "Murska Sobota": [
+    "Beltinci",
+    "Tišina",
+    "Moravske Toplice",
+    "Radenci",
+    "Puconci",
+    "Križevci",
+    "Veržej"
+  ],
+  "Nova Gorica": [
+    "Ajdovščina",
+    "Brda",
+    "Idrija",
+    "Kanal",
+    "Tolmin",
+    "Komen",
+    "Miren-Kostanjevica",
+    "Šempeter-Vrtojba",
+    "Renče-Vogrsko"
+  ],
+  "Odranci": [
+    "Beltinci",
+    "Črenšovci"
+  ],
+  "Ormož": [
+    "Dornava",
+    "Gorišnica",
+    "Ljutomer",
+    "Središče ob Dravi",
+    "Sveti Tomaž"
+  ],
+  "Pesnica": [
+    "Kungota",
+    "Lenart",
+    "Šentilj",
+    "Maribor",
+    "Sveti Jurij v Slovenskih goricah"
+  ],
+  "Podčetrtek": [
+    "Kozje",
+    "Rogaška Slatina",
+    "Šentjur",
+    "Šmarje pri Jelšah",
+    "Bistrica ob Sotli"
+  ],
+  "Postojna": [
+    "Ajdovščina",
+    "Cerknica",
+    "Divača",
+    "Logatec",
+    "Vipava",
+    "Pivka"
+  ],
+  "Preddvor": [
+    "Cerklje na Gorenjskem",
+    "Šenčur",
+    "Tržič",
+    "Kamnik",
+    "Kranj",
+    "Jezersko"
+  ],
+  "Rače-Fram": [
+    "Slovenska Bistrica",
+    "Starše",
+    "Kidričevo",
+    "Hoče-Slivnica"
+  ],
+  "Radenci": [
+    "Tišina",
+    "Gornja Radgona",
+    "Murska Sobota",
+    "Sveti Jurij ob Ščavnici",
+    "Križevci"
+  ],
+  "Radlje ob Dravi": [
+    "Muta",
+    "Podvelka",
+    "Vuzenica",
+    "Ribnica na Pohorju"
+  ],
+  "Radovljica": [
+    "Bled",
+    "Bohinj",
+    "Tržič",
+    "Kranj",
+    "Naklo",
+    "Žirovnica"
+  ],
+  "Ravne na Koroškem": [
+    "Črna na Koroškem",
+    "Dravograd",
+    "Slovenj Gradec",
+    "Prevalje"
+  ],
+  "Ribnica": [
+    "Dobrepolje",
+    "Kočevje",
+    "Loški Potok",
+    "Velike Lašče",
+    "Sodražica"
+  ],
+  "Rogatec": [
+    "Majšperk",
+    "Rogaška Slatina",
+    "Žetale"
+  ],
+  "Rogašovci": [
+    "Kuzma",
+    "Puconci",
+    "Cankova",
+    "Grad"
+  ],
+  "Rogaška Slatina": [
+    "Majšperk",
+    "Podčetrtek",
+    "Rogatec",
+    "Šmarje pri Jelšah",
+    "Makole",
+    "Poljčane"
+  ],
+  "Ruše": [
+    "Slovenska Bistrica",
+    "Maribor",
+    "Hoče-Slivnica",
+    "Lovrenc na Pohorju",
+    "Selnica ob Dravi"
+  ],
+  "Semič": [
+    "Črnomelj",
+    "Kočevje",
+    "Metlika",
+    "Novo mesto",
+    "Dolenjske Toplice"
+  ],
+  "Sevnica": [
+    "Krško",
+    "Litija",
+    "Šentjur",
+    "Škocjan",
+    "Laško",
+    "Radeče",
+    "Mokronog-Trebelno",
+    "Šentrupert"
+  ],
+  "Sežana": [
+    "Divača",
+    "Vipava",
+    "Hrpelje-Kozina",
+    "Komen"
+  ],
+  "Slovenj Gradec": [
+    "Črna na Koroškem",
+    "Dravograd",
+    "Mislinja",
+    "Ravne na Koroškem",
+    "Šoštanj",
+    "Velenje",
+    "Vuzenica",
+    "Ribnica na Pohorju"
+  ],
+  "Slovenska Bistrica": [
+    "Majšperk",
+    "Rače-Fram",
+    "Ruše",
+    "Slovenske Konjice",
+    "Zreče",
+    "Kidričevo",
+    "Hoče-Slivnica",
+    "Lovrenc na Pohorju",
+    "Oplotnica",
+    "Makole",
+    "Poljčane"
+  ],
+  "Slovenske Konjice": [
+    "Slovenska Bistrica",
+    "Šentjur",
+    "Šmarje pri Jelšah",
+    "Zreče",
+    "Vojnik",
+    "Oplotnica",
+    "Poljčane"
+  ],
+  "Starše": [
+    "Duplek",
+    "Rače-Fram",
+    "Kidričevo",
+    "Maribor",
+    "Ptuj",
+    "Hajdina",
+    "Hoče-Slivnica",
+    "Miklavž na Dravskem polju"
+  ],
+  "Sveti Jurij ob Ščavnici": [
+    "Gornja Radgona",
+    "Juršinci",
+    "Radenci",
+    "Ljutomer",
+    "Cerkvenjak",
+    "Križevci",
+    "Sveti Andraž v Slov. goricah"
+  ],
+  "Šenčur": [
+    "Cerklje na Gorenjskem",
+    "Preddvor",
+    "Vodice",
+    "Kranj",
+    "Medvode"
+  ],
+  "Šentilj": [
+    "Kungota",
+    "Pesnica",
+    "Sveta Ana",
+    "Apače",
+    "Sveti Jurij v Slovenskih goricah"
+  ],
+  "Šentjernej": [
+    "Krško",
+    "Škocjan",
+    "Novo mesto",
+    "Šmarješke Toplice",
+    "Kostanjevica na Krki"
+  ],
+  "Šentjur": [
+    "Celje",
+    "Kozje",
+    "Krško",
+    "Podčetrtek",
+    "Sevnica",
+    "Slovenske Konjice",
+    "Šmarje pri Jelšah",
+    "Štore",
+    "Laško",
+    "Vojnik",
+    "Dobje"
+  ],
+  "Škocjan": [
+    "Krško",
+    "Sevnica",
+    "Šentjernej",
+    "Šmarješke Toplice",
+    "Mokronog-Trebelno"
+  ],
+  "Škofja Loka": [
+    "Dobrova-Polhov Gradec",
+    "Gorenja vas-Poljane",
+    "Kranj",
+    "Medvode",
+    "Železniki"
+  ],
+  "Škofljica": [
+    "Grosuplje",
+    "Ig",
+    "Velike Lašče",
+    "Ljubljana"
+  ],
+  "Šmarje pri Jelšah": [
+    "Podčetrtek",
+    "Rogaška Slatina",
+    "Slovenske Konjice",
+    "Šentjur",
+    "Poljčane"
+  ],
+  "Šmartno ob Paki": [
+    "Šoštanj",
+    "Mozirje",
+    "Braslovče",
+    "Polzela"
+  ],
+  "Šoštanj": [
+    "Črna na Koroškem",
+    "Ljubno",
+    "Slovenj Gradec",
+    "Šmartno ob Paki",
+    "Velenje",
+    "Mozirje",
+    "Polzela"
+  ],
+  "Štore": [
+    "Celje",
+    "Šentjur",
+    "Laško"
+  ],
+  "Tolmin": [
+    "Bohinj",
+    "Cerkno",
+    "Idrija",
+    "Kanal",
+    "Kobarid",
+    "Nova Gorica",
+    "Železniki"
+  ],
+  "Trbovlje": [
+    "Hrastnik",
+    "Zagorje ob Savi",
+    "Radeče",
+    "Prebold",
+    "Tabor",
+    "Žalec"
+  ],
+  "Trebnje": [
+    "Ivančna Gorica",
+    "Litija",
+    "Mirna Peč",
+    "Žužemberk",
+    "Šmartno pri Litiji",
+    "Mokronog-Trebelno",
+    "Mirna"
+  ],
+  "Tržič": [
+    "Preddvor",
+    "Radovljica",
+    "Kranj",
+    "Naklo",
+    "Jezersko",
+    "Žirovnica"
+  ],
+  "Turnišče": [
+    "Beltinci",
+    "Črenšovci",
+    "Moravske Toplice",
+    "Lendava",
+    "Dobrovnik",
+    "Velika Polana"
+  ],
+  "Velenje": [
+    "Mislinja",
+    "Slovenj Gradec",
+    "Šoštanj",
+    "Dobrna",
+    "Polzela",
+    "Žalec"
+  ],
+  "Velike Lašče": [
+    "Brezovica",
+    "Cerknica",
+    "Dobrepolje",
+    "Grosuplje",
+    "Ig",
+    "Ribnica",
+    "Škofljica",
+    "Bloke",
+    "Sodražica"
+  ],
+  "Vipava": [
+    "Ajdovščina",
+    "Divača",
+    "Postojna",
+    "Sežana",
+    "Komen"
+  ],
+  "Vodice": [
+    "Cerklje na Gorenjskem",
+    "Mengeš",
+    "Šenčur",
+    "Ljubljana",
+    "Medvode",
+    "Komenda"
+  ],
+  "Vrhnika": [
+    "Borovnica",
+    "Brezovica",
+    "Cerknica",
+    "Dobrova-Polhov Gradec",
+    "Logatec",
+    "Horjul",
+    "Log-Dragomer"
+  ],
+  "Zagorje ob Savi": [
+    "Litija",
+    "Moravče",
+    "Trbovlje",
+    "Kamnik",
+    "Lukovica",
+    "Radeče",
+    "Tabor",
+    "Vransko"
+  ],
+  "Zreče": [
+    "Mislinja",
+    "Slovenska Bistrica",
+    "Slovenske Konjice",
+    "Vitanje",
+    "Vojnik",
+    "Lovrenc na Pohorju",
+    "Oplotnica"
+  ],
+  "Žiri": [
+    "Cerkno",
+    "Gorenja vas-Poljane",
+    "Idrija",
+    "Logatec"
+  ],
+  "Hrpelje-Kozina": [
+    "Divača",
+    "Sežana",
+    "Ilirska Bistrica",
+    "Koper"
+  ],
+  "Ilirska Bistrica": [
+    "Divača",
+    "Hrpelje-Kozina",
+    "Loška dolina",
+    "Pivka"
+  ],
+  "Jesenice": [
+    "Bled",
+    "Kranjska Gora",
+    "Žirovnica",
+    "Gorje"
+  ],
+  "Kamnik": [
+    "Cerklje na Gorenjskem",
+    "Domžale",
+    "Gornji Grad",
+    "Luče",
+    "Mengeš",
+    "Preddvor",
+    "Zagorje ob Savi",
+    "Lukovica",
+    "Nazarje",
+    "Jezersko",
+    "Komenda",
+    "Solčava",
+    "Vransko"
+  ],
+  "Kidričevo": [
+    "Majšperk",
+    "Rače-Fram",
+    "Slovenska Bistrica",
+    "Starše",
+    "Videm",
+    "Hajdina"
+  ],
+  "Kobilje": [
+    "Moravske Toplice",
+    "Dobrovnik"
+  ],
+  "Komen": [
+    "Ajdovščina",
+    "Nova Gorica",
+    "Sežana",
+    "Vipava",
+    "Miren-Kostanjevica"
+  ],
+  "Koper": [
+    "Izola",
+    "Hrpelje-Kozina",
+    "Piran",
+    "Ankaran"
+  ],
+  "Kranj": [
+    "Bohinj",
+    "Preddvor",
+    "Radovljica",
+    "Šenčur",
+    "Škofja Loka",
+    "Tržič",
+    "Medvode",
+    "Naklo",
+    "Železniki",
+    "Jezersko"
+  ],
+  "Kranjska Gora": [
+    "Bohinj",
+    "Bovec",
+    "Jesenice",
+    "Gorje"
+  ],
+  "Kuzma": [
+    "Gornji Petrovci",
+    "Rogašovci",
+    "Grad"
+  ],
+  "Laško": [
+    "Celje",
+    "Hrastnik",
+    "Sevnica",
+    "Šentjur",
+    "Štore",
+    "Radeče",
+    "Dobje",
+    "Žalec"
+  ],
+  "Lendava": [
+    "Črenšovci",
+    "Turnišče",
+    "Dobrovnik",
+    "Velika Polana"
+  ],
+  "Ljubljana": [
+    "Brezovica",
+    "Dobrova-Polhov Gradec",
+    "Dol pri Ljubljani",
+    "Domžale",
+    "Grosuplje",
+    "Ig",
+    "Ivančna Gorica",
+    "Litija",
+    "Mengeš",
+    "Škofljica",
+    "Vodice",
+    "Medvode",
+    "Trzin",
+    "Šmartno pri Litiji"
+  ],
+  "Ljutomer": [
+    "Beltinci",
+    "Črenšovci",
+    "Juršinci",
+    "Ormož",
+    "Sveti Jurij ob Ščavnici",
+    "Križevci",
+    "Razkrižje",
+    "Veržej",
+    "Sveti Tomaž"
+  ],
+  "Loška dolina": [
+    "Cerknica",
+    "Loški Potok",
+    "Ilirska Bistrica",
+    "Pivka",
+    "Bloke"
+  ],
+  "Lukovica": [
+    "Domžale",
+    "Moravče",
+    "Zagorje ob Savi",
+    "Kamnik"
+  ],
+  "Maribor": [
+    "Duplek",
+    "Kungota",
+    "Lenart",
+    "Pesnica",
+    "Ruše",
+    "Starše",
+    "Hoče-Slivnica",
+    "Selnica ob Dravi",
+    "Miklavž na Dravskem polju"
+  ],
+  "Medvode": [
+    "Dobrova-Polhov Gradec",
+    "Šenčur",
+    "Škofja Loka",
+    "Vodice",
+    "Kranj",
+    "Ljubljana"
+  ],
+  "Metlika": [
+    "Črnomelj",
+    "Semič",
+    "Novo mesto"
+  ],
+  "Miren-Kostanjevica": [
+    "Nova Gorica",
+    "Komen",
+    "Šempeter-Vrtojba",
+    "Renče-Vogrsko"
+  ],
+  "Mozirje": [
+    "Ljubno",
+    "Šmartno ob Paki",
+    "Šoštanj",
+    "Nazarje",
+    "Braslovče",
+    "Rečica ob Savinji"
+  ],
+  "Muta": [
+    "Dravograd",
+    "Radlje ob Dravi",
+    "Vuzenica"
+  ],
+  "Naklo": [
+    "Radovljica",
+    "Tržič",
+    "Kranj"
+  ],
+  "Nazarje": [
+    "Gornji Grad",
+    "Kamnik",
+    "Mozirje",
+    "Braslovče",
+    "Vransko",
+    "Rečica ob Savinji"
+  ],
+  "Novo mesto": [
+    "Semič",
+    "Šentjernej",
+    "Metlika",
+    "Dolenjske Toplice",
+    "Mirna Peč",
+    "Straža",
+    "Šmarješke Toplice",
+    "Mokronog-Trebelno"
+  ],
+  "Osilnica": [
+    "Kočevje",
+    "Loški Potok",
+    "Kostel"
+  ],
+  "Piran": [
+    "Izola",
+    "Koper"
+  ],
+  "Pivka": [
+    "Cerknica",
+    "Divača",
+    "Postojna",
+    "Ilirska Bistrica",
+    "Loška dolina"
+  ],
+  "Podvelka": [
+    "Radlje ob Dravi",
+    "Lovrenc na Pohorju",
+    "Selnica ob Dravi",
+    "Ribnica na Pohorju"
+  ],
+  "Ptuj": [
+    "Destrnik",
+    "Dornava",
+    "Duplek",
+    "Juršinci",
+    "Lenart",
+    "Starše",
+    "Videm",
+    "Hajdina",
+    "Markovci"
+  ],
+  "Puconci": [
+    "Tišina",
+    "Gornji Petrovci",
+    "Moravske Toplice",
+    "Murska Sobota",
+    "Rogašovci",
+    "Cankova",
+    "Grad"
+  ],
+  "Radeče": [
+    "Hrastnik",
+    "Litija",
+    "Sevnica",
+    "Trbovlje",
+    "Zagorje ob Savi",
+    "Laško"
+  ],
+  "Videm": [
+    "Majšperk",
+    "Kidričevo",
+    "Ptuj",
+    "Hajdina",
+    "Podlehnik",
+    "Žetale",
+    "Markovci",
+    "Cirkulane"
+  ],
+  "Vitanje": [
+    "Mislinja",
+    "Zreče",
+    "Vojnik",
+    "Dobrna"
+  ],
+  "Vojnik": [
+    "Celje",
+    "Slovenske Konjice",
+    "Šentjur",
+    "Zreče",
+    "Vitanje",
+    "Dobrna"
+  ],
+  "Vuzenica": [
+    "Dravograd",
+    "Radlje ob Dravi",
+    "Slovenj Gradec",
+    "Muta",
+    "Ribnica na Pohorju"
+  ],
+  "Zavrč": [
+    "Gorišnica",
+    "Cirkulane"
+  ],
+  "Železniki": [
+    "Bohinj",
+    "Cerkno",
+    "Gorenja vas-Poljane",
+    "Škofja Loka",
+    "Tolmin",
+    "Kranj"
+  ],
+  "Benedikt": [
+    "Gornja Radgona",
+    "Lenart",
+    "Sveta Ana",
+    "Sveta Trojica v Slovenskih goricah"
+  ],
+  "Bistrica ob Sotli": [
+    "Brežice",
+    "Kozje",
+    "Podčetrtek"
+  ],
+  "Bloke": [
+    "Cerknica",
+    "Loški Potok",
+    "Velike Lašče",
+    "Loška dolina",
+    "Sodražica"
+  ],
+  "Braslovče": [
+    "Šmartno ob Paki",
+    "Mozirje",
+    "Nazarje",
+    "Prebold",
+    "Tabor",
+    "Polzela",
+    "Vransko"
+  ],
+  "Cankova": [
+    "Tišina",
+    "Rogašovci",
+    "Puconci"
+  ],
+  "Cerkvenjak": [
+    "Gornja Radgona",
+    "Sveti Jurij ob Ščavnici",
+    "Sveti Andraž v Slov. goricah",
+    "Sveta Trojica v Slovenskih goricah"
+  ],
+  "Dobje": [
+    "Šentjur",
+    "Laško"
+  ],
+  "Dobrna": [
+    "Celje",
+    "Mislinja",
+    "Velenje",
+    "Vitanje",
+    "Vojnik",
+    "Žalec"
+  ],
+  "Dobrovnik": [
+    "Moravske Toplice",
+    "Turnišče",
+    "Kobilje",
+    "Lendava"
+  ],
+  "Dolenjske Toplice": [
+    "Kočevje",
+    "Semič",
+    "Novo mesto",
+    "Žužemberk",
+    "Straža"
+  ],
+  "Grad": [
+    "Gornji Petrovci",
+    "Rogašovci",
+    "Kuzma",
+    "Puconci"
+  ],
+  "Hajdina": [
+    "Starše",
+    "Kidričevo",
+    "Ptuj",
+    "Videm"
+  ],
+  "Hoče-Slivnica": [
+    "Rače-Fram",
+    "Ruše",
+    "Slovenska Bistrica",
+    "Starše",
+    "Maribor",
+    "Miklavž na Dravskem polju"
+  ],
+  "Hodoš": [
+    "Šalovci"
+  ],
+  "Horjul": [
+    "Dobrova-Polhov Gradec",
+    "Vrhnika",
+    "Log-Dragomer"
+  ],
+  "Jezersko": [
+    "Preddvor",
+    "Tržič",
+    "Kamnik",
+    "Kranj",
+    "Solčava"
+  ],
+  "Komenda": [
+    "Cerklje na Gorenjskem",
+    "Mengeš",
+    "Vodice",
+    "Kamnik"
+  ],
+  "Kostel": [
+    "Kočevje",
+    "Osilnica"
+  ],
+  "Križevci": [
+    "Murska Sobota",
+    "Radenci",
+    "Sveti Jurij ob Ščavnici",
+    "Ljutomer",
+    "Veržej"
+  ],
+  "Lovrenc na Pohorju": [
+    "Mislinja",
+    "Ruše",
+    "Slovenska Bistrica",
+    "Zreče",
+    "Podvelka",
+    "Selnica ob Dravi",
+    "Ribnica na Pohorju"
+  ],
+  "Mirna Peč": [
+    "Trebnje",
+    "Novo mesto",
+    "Žužemberk",
+    "Straža",
+    "Mokronog-Trebelno"
+  ],
+  "Oplotnica": [
+    "Slovenska Bistrica",
+    "Slovenske Konjice",
+    "Zreče"
+  ],
+  "Podlehnik": [
+    "Videm",
+    "Žetale"
+  ],
+  "Prebold": [
+    "Trbovlje",
+    "Braslovče",
+    "Tabor",
+    "Polzela",
+    "Žalec"
+  ],
+  "Razkrižje": [
+    "Črenšovci",
+    "Ljutomer"
+  ],
+  "Selnica ob Dravi": [
+    "Ruše",
+    "Maribor",
+    "Podvelka",
+    "Lovrenc na Pohorju"
+  ],
+  "Solčava": [
+    "Črna na Koroškem",
+    "Luče",
+    "Kamnik",
+    "Jezersko"
+  ],
+  "Šempeter-Vrtojba": [
+    "Nova Gorica",
+    "Miren-Kostanjevica",
+    "Renče-Vogrsko"
+  ],
+  "Tabor": [
+    "Trbovlje",
+    "Zagorje ob Savi",
+    "Braslovče",
+    "Prebold",
+    "Vransko"
+  ],
+  "Trnovska vas": [
+    "Destrnik",
+    "Lenart",
+    "Sveti Andraž v Slov. goricah",
+    "Sveta Trojica v Slovenskih goricah"
+  ],
+  "Trzin": [
+    "Domžale",
+    "Mengeš",
+    "Ljubljana"
+  ],
+  "Veržej": [
+    "Beltinci",
+    "Murska Sobota",
+    "Ljutomer",
+    "Križevci"
+  ],
+  "Žetale": [
+    "Majšperk",
+    "Rogatec",
+    "Videm",
+    "Podlehnik"
+  ],
+  "Žužemberk": [
+    "Dobrepolje",
+    "Ivančna Gorica",
+    "Kočevje",
+    "Trebnje",
+    "Dolenjske Toplice",
+    "Mirna Peč",
+    "Straža"
+  ],
+  "Markovci": [
+    "Dornava",
+    "Gorišnica",
+    "Ptuj",
+    "Videm",
+    "Cirkulane"
+  ],
+  "Miklavž na Dravskem polju": [
+    "Starše",
+    "Maribor",
+    "Hoče-Slivnica"
+  ],
+  "Polzela": [
+    "Šmartno ob Paki",
+    "Šoštanj",
+    "Velenje",
+    "Braslovče",
+    "Prebold",
+    "Žalec"
+  ],
+  "Prevalje": [
+    "Črna na Koroškem",
+    "Mežica",
+    "Ravne na Koroškem"
+  ],
+  "Ribnica na Pohorju": [
+    "Mislinja",
+    "Radlje ob Dravi",
+    "Slovenj Gradec",
+    "Podvelka",
+    "Vuzenica",
+    "Lovrenc na Pohorju"
+  ],
+  "Sodražica": [
+    "Loški Potok",
+    "Ribnica",
+    "Velike Lašče",
+    "Bloke"
+  ],
+  "Sveta Ana": [
+    "Gornja Radgona",
+    "Lenart",
+    "Šentilj",
+    "Benedikt",
+    "Apače",
+    "Sveti Jurij v Slovenskih goricah"
+  ],
+  "Sveti Andraž v Slov. goricah": [
+    "Destrnik",
+    "Juršinci",
+    "Sveti Jurij ob Ščavnici",
+    "Cerkvenjak",
+    "Trnovska vas",
+    "Sveta Trojica v Slovenskih goricah"
+  ],
+  "Velika Polana": [
+    "Črenšovci",
+    "Turnišče",
+    "Lendava"
+  ],
+  "Vransko": [
+    "Zagorje ob Savi",
+    "Kamnik",
+    "Nazarje",
+    "Braslovče",
+    "Tabor"
+  ],
+  "Žirovnica": [
+    "Bled",
+    "Radovljica",
+    "Tržič",
+    "Jesenice"
+  ],
+  "Žalec": [
+    "Celje",
+    "Hrastnik",
+    "Trbovlje",
+    "Velenje",
+    "Laško",
+    "Dobrna",
+    "Prebold",
+    "Polzela"
+  ],
+  "Šmartno pri Litiji": [
+    "Ivančna Gorica",
+    "Litija",
+    "Trebnje",
+    "Ljubljana"
+  ],
+  "Središče ob Dravi": [
+    "Ormož"
+  ],
+  "Straža": [
+    "Novo mesto",
+    "Dolenjske Toplice",
+    "Mirna Peč",
+    "Žužemberk"
+  ],
+  "Sveta Trojica v Slovenskih goricah": [
+    "Gornja Radgona",
+    "Lenart",
+    "Benedikt",
+    "Cerkvenjak",
+    "Trnovska vas",
+    "Sveti Andraž v Slov. goricah"
+  ],
+  "Sveti Tomaž": [
+    "Dornava",
+    "Juršinci",
+    "Ormož",
+    "Ljutomer"
+  ],
+  "Šmarješke Toplice": [
+    "Šentjernej",
+    "Škocjan",
+    "Novo mesto",
+    "Mokronog-Trebelno"
+  ],
+  "Apače": [
+    "Gornja Radgona",
+    "Šentilj",
+    "Sveta Ana"
+  ],
+  "Cirkulane": [
+    "Gorišnica",
+    "Videm",
+    "Zavrč",
+    "Markovci"
+  ],
+  "Kostanjevica na Krki": [
+    "Krško",
+    "Šentjernej"
+  ],
+  "Makole": [
+    "Majšperk",
+    "Rogaška Slatina",
+    "Slovenska Bistrica",
+    "Poljčane"
+  ],
+  "Mokronog-Trebelno": [
+    "Sevnica",
+    "Škocjan",
+    "Trebnje",
+    "Novo mesto",
+    "Mirna Peč",
+    "Šmarješke Toplice",
+    "Šentrupert",
+    "Mirna"
+  ],
+  "Poljčane": [
+    "Rogaška Slatina",
+    "Slovenska Bistrica",
+    "Slovenske Konjice",
+    "Šmarje pri Jelšah",
+    "Makole"
+  ],
+  "Renče-Vogrsko": [
+    "Nova Gorica",
+    "Miren-Kostanjevica",
+    "Šempeter-Vrtojba"
+  ],
+  "Gorje": [
+    "Bled",
+    "Bohinj",
+    "Jesenice",
+    "Kranjska Gora"
+  ],
+  "Log-Dragomer": [
+    "Brezovica",
+    "Dobrova-Polhov Gradec",
+    "Vrhnika",
+    "Horjul"
+  ],
+  "Rečica ob Savinji": [
+    "Gornji Grad",
+    "Ljubno",
+    "Mozirje",
+    "Nazarje"
+  ],
+  "Sveti Jurij v Slovenskih goricah": [
+    "Lenart",
+    "Pesnica",
+    "Šentilj",
+    "Sveta Ana"
+  ],
+  "Šentrupert": [
+    "Litija",
+    "Sevnica",
+    "Mokronog-Trebelno",
+    "Mirna"
+  ],
+  "Mirna": [
+    "Litija",
+    "Trebnje",
+    "Mokronog-Trebelno",
+    "Šentrupert"
+  ],
+  "Ankaran": [
+    "Koper"
+  ]
+}
