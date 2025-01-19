@@ -16,7 +16,7 @@ function fetchObcina() {
             let randomIndex = Math.floor(Math.random() * features.length);
             let randomFeature = features[randomIndex];
 
-            return randomFeature;
+            return {"features": features, "randomFeature": randomFeature};
         })
         .catch(error => {
             console.error("Error loading obcine.json: ", error)
@@ -37,6 +37,7 @@ export default function Game() {
     const [showMap, setShowMap] = useState(false);                     // hint 4
 
     const [obcinaFeature, setObcinaFeature] = useState(null);
+    const [allFeatures, setAllFeatures] = useState(null);
 
     // TODO: put in useEffect instead of here
     // async function getRandomObcina() {
@@ -54,9 +55,12 @@ export default function Game() {
     // Generate random word on start
     useEffect (() => {
         fetchObcina()
-            .then(feature => {
+            .then(data => {
+                let feature = data.randomFeature;
+                let allFeatures = data.features;
                 if (feature) {
                     setObcinaFeature(feature);
+                    setAllFeatures(allFeatures);
                     setObcina(feature.properties.NAZIV);
                 }
                 else 
@@ -65,8 +69,6 @@ export default function Game() {
 
         // getRandomObcina();
     }, [])
-
-
     const handleGuess = (guess) => {
         setNumberOfGuesses(prevCount => prevCount + 1);
 
@@ -103,7 +105,18 @@ export default function Game() {
             alert('You win!!!');
 
             setNumberOfGuesses(1);
-            fetchObcina(); 
+
+            fetchObcina()
+                .then(data => {
+                    let feature = data.randomFeature;
+
+                    if (feature) {
+                        setObcinaFeature(feature);
+                        setObcina(feature.properties.NAZIV);
+                    }
+                    else 
+                        console.log("Feature is empty(Game.jsx)");       
+                }) 
         } 
         else if (lose) {
             alert(obcina);
@@ -118,14 +131,15 @@ export default function Game() {
             // getRandomObcina(); 
 
             fetchObcina()
-            .then(feature => {
-                if (feature) {
-                    setObcinaFeature(feature);
-                    setObcina(feature.properties.NAZIV);
-                }
-                else 
-                    console.log("Feature is empty(Game.jsx)");       
-            })
+                .then(data => {
+                    let feature = data.randomFeature;
+                    if (feature) {
+                        setObcinaFeature(feature);
+                        setObcina(feature.properties.NAZIV);
+                    }
+                    else 
+                        console.log("Feature is empty(Game.jsx)");       
+                })
         }
         // Wrong guess
         else {
@@ -135,6 +149,7 @@ export default function Game() {
 
         setInputValue('');
     };
+
     return (
         <>
             {/* Wrong guess message */}
@@ -147,9 +162,8 @@ export default function Game() {
             {/* Map */}
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex"> 
                 {/* Show map or outline */}
-                { (showMap || showOutline) ? <Map feature={obcinaFeature} showOutline={showOutline} showMap={showMap} /> : null }
+                { (showMap || showOutline || showNearbyObcine) ? <Map allFeatures={allFeatures} feature={obcinaFeature} showOutline={showOutline} showMap={showMap} showNearbyObcine={showNearbyObcine} /> : null }
             </div>
-
 
             {/* Input */}
             <div>

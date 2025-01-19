@@ -27,6 +27,7 @@
 ## Ideas:
 
 - Satelite? 
+- game mode click obcina
 
 
 ## Problems:
