@@ -10,3 +10,17 @@
     width: 100%;
 }
 
+.leaflet-tooltip {
+    background-color: transparent !important; 
+    color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove arrow/tail */
+.leaflet-tooltip-top:before, 
+.leaflet-tooltip-bottom:before, 
+.leaflet-tooltip-left:before, 
+.leaflet-tooltip-right:before {
+    border: none !important;
+}

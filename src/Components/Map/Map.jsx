@@ -4,15 +4,26 @@ import React, { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, GeoJSON, useMap, TileLayer } from 'react-leaflet';
-import { polygon, centroid, featureCollection, feature } from "@turf/turf"; 
+import { centroid, featureCollection } from "@turf/turf"; 
 
 const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
-const zoomSize = 8;
+const zoomSizeCenter = 8;
+const zoomSizeAdjacent = 10.3;
+
+const mapOptions = {
+    scrollWheelZoom: false,
+    attributionControl: false,
+    zoomControl: false,
+    dragging: false,
+    doubleClickZoom: false,
+    style: { backgroundColor: "#090909" },
+};
 
 function findAdjacentObcine(targetFeature) {
     return fetch('../../sosednjeObcine.json')
         .then(response => response.json())
         .then(data => {
+            // Return list of adjacent obcine naziv
             const targetObcina = targetFeature.properties.NAZIV;
 
             const adjacentObcine = data[targetObcina];
@@ -28,6 +39,7 @@ function findAdjacentObcine(targetFeature) {
 function findAdjacentFeatures(allFeatures, targetFeature) {
     return findAdjacentObcine(targetFeature)
         .then(data => {
+            // Return list of adjacent obcine features
             let adjacentFeatures = [];
 
             const adjacentObcine = data;
@@ -47,7 +59,7 @@ function findAdjacentFeatures(allFeatures, targetFeature) {
         });
 }
 
-function ShowNearbyObcine({ allFeatures, targetFeature }) {
+function ShowAdjacentObcine({ allFeatures, targetFeature }) {
     const map = useMap();
 
     useEffect(() => {
@@ -61,7 +73,16 @@ function ShowNearbyObcine({ allFeatures, targetFeature }) {
 
                 // Add adjacent features to the map
                 adjacentFeatures.forEach(feature => {
-                    const adjacentLayer = L.geoJSON(feature, { style: { color: 'red', weight: 0.5 } });
+                    const adjacentLayer = L.geoJSON(feature, 
+                        { style: { color: 'red', weight: 0.5 },
+                        // Add naziv to every adjacent obcina
+                        onEachFeature: (feature, layer) => {
+                            layer.bindTooltip(feature.properties.NAZIV, {
+                                permanent: true,
+                                direction: "center"                                
+                            });
+                        }, 
+                    });
 
                     map.addLayer(adjacentLayer);
                     map.fitBounds(adjacentLayer.getBounds());
@@ -93,14 +114,13 @@ function FitToBounds({ feature }) {
 function getCenterOfObcin(allFeatures, targetFeature) {
     return findAdjacentFeatures(allFeatures, targetFeature)
         .then(adjacentFeatures => {
-            const features = [targetFeature, ...adjacentFeatures];
+            const features = [targetFeature, ...adjacentFeatures]; // combine all features
 
             const featCollection = featureCollection(features);
             
             const center = centroid(featCollection).geometry.coordinates;
 
-
-            // Swap coordinate places because its reversed, why idk
+            // Swap coordinate places because its reversed, why, idk
             [center[0], center[1]] = [center[1], center[0]];
 
             return center;
@@ -111,16 +131,35 @@ function getCenterOfObcin(allFeatures, targetFeature) {
         })
 }
 
-function ZoomOutSosednje({ allFeatures, feature }) {
+const Options = {
+    ADJACENT: "ADJACENT",
+    CENTER: "CENTER"
+};
+
+// Zoom out map based on attempt
+function ZoomOut({ options, allFeatures = null, feature = null }) {
     const map = useMap();
 
     useEffect(() => { 
         if (map) {
-            getCenterOfObcin(allFeatures, feature) 
-                .then(position => {
-                    console.log(position) ;
-                    map.flyTo(position, 10.3, { duration: 1.5 }); 
-                })
+            // Zoom out to all adjacent obcine
+            if (options === Options.ADJACENT) {
+                getCenterOfObcin(allFeatures, feature) 
+                    .then(position => {
+                        map.flyTo(position, zoomSizeAdjacent, { duration: 0.25 }); 
+                    })
+            }
+
+            // Zoom out to whole map
+            else if (options === Options.CENTER) {
+                map.flyTo(centerSlovenia, zoomSizeCenter, { duration: 1.5 }); 
+
+                // Change naziv font size
+                const tooltips = document.querySelectorAll(".leaflet-tooltip");
+                tooltips.forEach(tooltip => {
+                    tooltip.style.fontSize = "7px";
+                });
+            }
         }
 
         else 
@@ -130,82 +169,34 @@ function ZoomOutSosednje({ allFeatures, feature }) {
     return null;
 }
 
-// Zoom out to whole Slovenia
-function ZoomOut({ position }) {
-    const map = useMap();
-
-    useEffect(() => { 
-        if (map)
-            map.flyTo(position, zoomSize, { duration: 1.5 }); 
-
-        else 
-            console.log("Map is empty");
-    }, []);
-
-    return null;
-}
-
 // Maybe change how to return because its really reduntant
-export default function Map({ allFeatures, feature, showOutline, showMap, showNearbyObcine }) { 
-    useEffect(() => {
-        getCenterOfObcin(allFeatures, feature);
-    }, []);
-
+export default function Map({ allFeatures, feature, showOutline, showMap, showAdjacentObcine }) { 
     if (showMap) {
         return (
-            <MapContainer 
-                // center={position}
-                // zoom={zoomSize} 
-                // scrollWheelZoom={true}
-                // attributionControl={false}
-                // zoomControl={false}
-                // dragging={false}
-                // doubleClickZoom={false}
-            >
-
-                {/* TODO: Remove names */}
+            <MapContainer {...mapOptions}>
+                {/* TODO: Remove names on map layer */}
                 <TileLayer
                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                     attribution='&copy; <a href="https://carto.com/">CARTO</a>'
                 />
                 <GeoJSON data={feature} style={{weight: 0.5}} />
                 <FitToBounds feature={feature} />
-                <ZoomOut position={centerSlovenia} />
+                <ZoomOut options={Options.CENTER} />
             </MapContainer>
         )  
     }
-    else if (showNearbyObcine) {
+    else if (showAdjacentObcine) {
         return (
-            <MapContainer 
-                // center={position} 
-                // zoom={zoomSize} 
-                // scrollWheelZoom={false} 
-                // style={{backgroundColor: "#090909"}}
-                // attributionControl={false}
-                // zoomControl={false}
-                // dragging={false}
-                // doubleClickZoom={false}
-            >
-
+            <MapContainer {...mapOptions}>
                 <GeoJSON data={feature} />
-                <ShowNearbyObcine allFeatures={allFeatures} targetFeature={feature} />
-                <ZoomOutSosednje allFeatures={allFeatures} feature={feature} />
+                <ShowAdjacentObcine allFeatures={allFeatures} targetFeature={feature} />
+                <ZoomOut options={Options.ADJACENT} allFeatures={allFeatures} feature={feature} />
             </MapContainer>
         )
     }
     else if (showOutline) {
         return (
-            <MapContainer 
-                center={centerSlovenia} 
-                zoom={zoomSize} 
-                scrollWheelZoom={true} 
-                style={{backgroundColor: "#090909"}}
-                attributionControl={false}
-                zoomControl={true}
-                dragging={true}
-                doubleClickZoom={false}
-            >
-
+            <MapContainer {...mapOptions}>
                 <GeoJSON data={feature} />
                 <FitToBounds feature={feature} />
             </MapContainer>

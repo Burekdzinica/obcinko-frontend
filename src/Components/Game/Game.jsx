@@ -33,7 +33,7 @@ export default function Game() {
     // Hints
     const [showOutline, setShowOutline] = useState(false);             // hint 1
     const [showRegion, setShowRegion] = useState(false);               // hint 2
-    const [showNearbyObcine, setShowNearbyObcine] = useState(false);   // hint 3
+    const [showAdjacentObcine, setShowAdjacentObcine] = useState(false);   // hint 3
     const [showMap, setShowMap] = useState(false);                     // hint 4
 
     const [obcinaFeature, setObcinaFeature] = useState(null);
@@ -89,7 +89,7 @@ export default function Game() {
                 break;
 
             case 3: 
-                setShowNearbyObcine(true);
+                setShowAdjacentObcine(true);
                 break;
                 
             case 4:
@@ -124,7 +124,7 @@ export default function Game() {
             // TODO remove this because this will be daily
             setShowOutline(false);
             setShowRegion(false);
-            setShowNearbyObcine(false);
+            setShowAdjacentObcine(false);
             setShowMap(false);
 
             setNumberOfGuesses(1);
@@ -161,8 +161,8 @@ export default function Game() {
 
             {/* Map */}
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex"> 
-                {/* Show map or outline */}
-                { (showMap || showOutline || showNearbyObcine) ? <Map allFeatures={allFeatures} feature={obcinaFeature} showOutline={showOutline} showMap={showMap} showNearbyObcine={showNearbyObcine} /> : null }
+                {/* Show map or outline or adjacent obcine */}
+                { (showMap || showOutline || showAdjacentObcine) ? <Map allFeatures={allFeatures} feature={obcinaFeature} showOutline={showOutline} showMap={showMap} showAdjacentObcine={showAdjacentObcine} /> : null }
             </div>
 
             {/* Input */}
