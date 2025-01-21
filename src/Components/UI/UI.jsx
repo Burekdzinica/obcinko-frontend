@@ -14,8 +14,9 @@ export default function UI() {
 
             <div className="row mt-4">
                 <Game />
-                <Footer />
             </div>
+
+            <Footer />
         </div>
     )
 }

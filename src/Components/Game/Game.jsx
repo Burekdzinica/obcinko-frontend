@@ -24,6 +24,21 @@ function fetchObcina() {
         });
 }
 
+function isWin(guess, obcina) {
+    // Remove whitespaces from both sides
+    let normalizedGuess = guess.trim();
+
+    // Remove whitespace between x - y
+    normalizedGuess = normalizedGuess.replace(/\s+-\s+/g, '-');
+    
+    // Case & šumnik insensitive
+    const normalizedObcina = obcina.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match]);
+    normalizedGuess = normalizedGuess.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match]);
+    
+    // Return if guess is correct
+    return normalizedGuess === normalizedObcina;
+}
+
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
     const [obcina, setObcina] = useState('');
@@ -31,49 +46,50 @@ export default function Game() {
     const [isWrongGuess, setIsWrongGuess] = useState(false);
 
     // Hints
-    const [showOutline, setShowOutline] = useState(false);             // hint 1
-    const [showRegion, setShowRegion] = useState(false);               // hint 2
+    const [showOutline, setShowOutline] = useState(false);                 // hint 1
+    const [showRegion, setShowRegion] = useState(false);                   // hint 2
     const [showAdjacentObcine, setShowAdjacentObcine] = useState(false);   // hint 3
-    const [showMap, setShowMap] = useState(false);                     // hint 4
+    const [showMap, setShowMap] = useState(false);                         // hint 4
 
     const [obcinaFeature, setObcinaFeature] = useState(null);
     const [allFeatures, setAllFeatures] = useState(null);
 
-    // TODO: put in useEffect instead of here
-    // async function getRandomObcina() {
-    //     let feature = await fetchObcina();
-     
-    //     if (feature) {
-    //         setObcinaFeature(feature);
-    //         setObcina(feature.properties.NAZIV);
-    //     }
-    //     else {
-    //         console.log("Feature is empty(Game.jsx)");
-    //     }         
-    // }
-    
+
+    // This is until i make it daily
+    function resetPlay() {
+        setShowOutline(false);
+        setShowRegion(false);
+        setShowAdjacentObcine(false);
+        setShowMap(false);
+        setNumberOfGuesses(1);
+
+        fetchObcina()
+            .then(data => {
+                let feature = data.randomFeature;
+
+                setObcinaFeature(feature);
+                setObcina(feature.properties.NAZIV);
+            })
+    }
+
     // Generate random word on start
     useEffect (() => {
         fetchObcina()
             .then(data => {
                 let feature = data.randomFeature;
                 let allFeatures = data.features;
-                if (feature) {
-                    setObcinaFeature(feature);
-                    setAllFeatures(allFeatures);
-                    setObcina(feature.properties.NAZIV);
-                }
-                else 
-                    console.log("Feature is empty(Game.jsx)");       
-            })
 
-        // getRandomObcina();
+                setObcinaFeature(feature);
+                setAllFeatures(allFeatures);
+                setObcina(feature.properties.NAZIV);
+            })
     }, [])
-    const handleGuess = (guess) => {
+    
+    function handleGuess(guess) {
         setNumberOfGuesses(prevCount => prevCount + 1);
 
         // If correct word set win to true
-        const win = guess.toLowerCase() === obcina.toLowerCase(); 
+        const win = isWin(guess, obcina);
         let lose = false;
 
         const hints = numberOfGuesses;
@@ -103,51 +119,17 @@ export default function Game() {
 
         if (win) {
             alert('You win!!!');
-
-            setNumberOfGuesses(1);
-
-            fetchObcina()
-                .then(data => {
-                    let feature = data.randomFeature;
-
-                    if (feature) {
-                        setObcinaFeature(feature);
-                        setObcina(feature.properties.NAZIV);
-                    }
-                    else 
-                        console.log("Feature is empty(Game.jsx)");       
-                }) 
+            resetPlay();
         } 
         else if (lose) {
             alert(obcina);
-
-            // TODO remove this because this will be daily
-            setShowOutline(false);
-            setShowRegion(false);
-            setShowAdjacentObcine(false);
-            setShowMap(false);
-
-            setNumberOfGuesses(1);
-            // getRandomObcina(); 
-
-            fetchObcina()
-                .then(data => {
-                    let feature = data.randomFeature;
-                    if (feature) {
-                        setObcinaFeature(feature);
-                        setObcina(feature.properties.NAZIV);
-                    }
-                    else 
-                        console.log("Feature is empty(Game.jsx)");       
-                })
+            resetPlay();
         }
         // Wrong guess
         else {
             setIsWrongGuess(true);
             setTimeout(() => setIsWrongGuess(false), 2000);
         }
-
-        setInputValue('');
     };
 
     return (
@@ -177,4 +159,3 @@ export default function Game() {
         </>
     );
 }
-

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import "./region.css"
 
+// Fetch region name
 function fetchRegion(obcina) {
     return fetch('../../regije.json')
         .then(response => response.json())
@@ -34,8 +35,6 @@ export default function Region({ obcina }) {
     }, []);
 
     return (
-        <>
-            <h2>Regija: { region }</h2>
-        </>
+        <h2>Regija: { region }</h2>
     );
 }
