@@ -1,16 +1,17 @@
 import './input.css';
 
 export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses }) {    
+    // Update value with new value
     function handleInputChange(event) {
         setInputValue(event.target.value);
     }
-     
+    
     function handleSubmit(event) {
         event.preventDefault();
 
         handleGuess(inputValue);
 
-        // Clear text from search bar
+        // Clear text from input bar
         setInputValue('');
     }
 

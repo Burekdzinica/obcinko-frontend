@@ -22,16 +22,23 @@ function fetchRegion(obcina) {
 export default function Region({ obcina }) {
     const [region, setRegion] = useState("");
 
-    useEffect(() => {
+    function updateRegion() {
         fetchRegion(obcina)
             .then(fetchedRegion => {
-                if (fetchedRegion)
-                    setRegion(fetchedRegion);
-
-                else 
+                if (!fetchedRegion) {
                     console.log("Region is empty(Region.jsx)");
-
+                    return;
+                }
+                setRegion(fetchedRegion);
             })
+            .catch(error => {
+                console.error("Error getting fetched region", error);
+                return null;
+            })
+    }
+
+    useEffect(() => {
+        updateRegion();
     }, []);
 
     return (

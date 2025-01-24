@@ -1,6 +1,5 @@
 import './UI.css'
 
-import Map from "../Map/Map"
 import Footer from '../Footer/Footer'
 import Game from '../Game/Game'
 

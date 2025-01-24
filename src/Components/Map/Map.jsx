@@ -10,6 +10,7 @@ const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
 const zoomSizeCenter = 8;
 const zoomSizeAdjacent = 10.3;
 
+// Map styles
 const mapOptions = {
     scrollWheelZoom: false,
     attributionControl: false,
@@ -19,13 +20,12 @@ const mapOptions = {
     style: { backgroundColor: "#090909" },
 };
 
+// Return list of adjacent obcine naziv
 function findAdjacentObcine(targetFeature) {
     return fetch('../../sosednjeObcine.json')
         .then(response => response.json())
         .then(data => {
-            // Return list of adjacent obcine naziv
             const targetObcina = targetFeature.properties.NAZIV;
-
             const adjacentObcine = data[targetObcina];
 
             return adjacentObcine;
@@ -36,12 +36,11 @@ function findAdjacentObcine(targetFeature) {
         });
 }
 
+// Return list of adjacent obcine features
 function findAdjacentFeatures(allFeatures, targetFeature) {
     return findAdjacentObcine(targetFeature)
         .then(data => {
-            // Return list of adjacent obcine features
             let adjacentFeatures = [];
-
             const adjacentObcine = data;
         
             allFeatures.forEach(feature => {
@@ -59,6 +58,7 @@ function findAdjacentFeatures(allFeatures, targetFeature) {
         });
 }
 
+// Show adjacent obcine on map
 function ShowAdjacentObcine({ allFeatures, targetFeature }) {
     const map = useMap();
 
@@ -115,7 +115,6 @@ function getCenterOfObcin(allFeatures, targetFeature) {
     return findAdjacentFeatures(allFeatures, targetFeature)
         .then(adjacentFeatures => {
             const features = [targetFeature, ...adjacentFeatures]; // combine all features
-
             const featCollection = featureCollection(features);
             
             const center = centroid(featCollection).geometry.coordinates;
@@ -170,8 +169,8 @@ function ZoomOut({ options, allFeatures = null, feature = null }) {
 }
 
 // Maybe change how to return because its really reduntant
-export default function Map({ allFeatures, feature, showOutline, showMap, showAdjacentObcine }) { 
-    if (showMap) {
+export default function Map({ allFeatures, feature, hints }) { 
+    if (hints.map) {
         return (
             <MapContainer {...mapOptions}>
                 {/* TODO: Remove names on map layer */}
@@ -185,7 +184,7 @@ export default function Map({ allFeatures, feature, showOutline, showMap, showAd
             </MapContainer>
         )  
     }
-    else if (showAdjacentObcine) {
+    else if (hints.adjacentObcine) {
         return (
             <MapContainer {...mapOptions}>
                 <GeoJSON data={feature} />
@@ -194,7 +193,7 @@ export default function Map({ allFeatures, feature, showOutline, showMap, showAd
             </MapContainer>
         )
     }
-    else if (showOutline) {
+    else if (hints.outline) {
         return (
             <MapContainer {...mapOptions}>
                 <GeoJSON data={feature} />
