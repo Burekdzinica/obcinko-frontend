@@ -25,11 +25,12 @@
 
 ## 2025-01-24
 
+### Added
+
+- Types
+
 ### Other
 
 - Improved hints system --> hints object, updateHints()
 - Converted handleGuess() to useCallback for optimization ?
-
-### TODO
-
-- typescript
+- **Converted to typescript**

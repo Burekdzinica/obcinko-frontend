@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
+import { RegionData } from "../../types/index";
+ 
 import "./region.css"
 
 // Fetch region name
-function fetchRegion(obcina) {
+function fetchRegion(obcina: string) {
     return fetch('../../regije.json')
         .then(response => response.json())
-        .then(data => {
+        .then((data: RegionData) => {
             for (let region in data) {
                 if (data[region].includes(obcina))
                     return region;
@@ -19,7 +21,7 @@ function fetchRegion(obcina) {
         });
 }
 
-export default function Region({ obcina }) {
+export default function Region({ obcina }: { obcina: string }) {
     const [region, setRegion] = useState("");
 
     function updateRegion() {

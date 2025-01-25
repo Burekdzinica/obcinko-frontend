@@ -1,12 +1,15 @@
+import { InputProps, InputEvent, FormEvent } from "../../types/index";
+
 import './input.css';
 
-export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses }) {    
+
+export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses }: InputProps) {    
     // Update value with new value
-    function handleInputChange(event) {
+    function handleInputChange(event: InputEvent) {
         setInputValue(event.target.value);
     }
     
-    function handleSubmit(event) {
+    function handleSubmit(event: FormEvent) {
         event.preventDefault();
 
         handleGuess(inputValue);

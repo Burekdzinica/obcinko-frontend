@@ -50,5 +50,8 @@
   "main": "index.js",
   "keywords": [],
   "author": "srsa",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/leaflet": "^1.9.16"
+  }
 }

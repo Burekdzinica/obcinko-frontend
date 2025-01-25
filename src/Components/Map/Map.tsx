@@ -1,10 +1,12 @@
-import './map.css'
-
-import React, { useEffect } from "react";
-import L from "leaflet";
+import { useEffect } from "react";
+import L, { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, GeoJSON, useMap, TileLayer } from 'react-leaflet';
 import { centroid, featureCollection } from "@turf/turf"; 
+import { Feature, Features ,RegionData, AdjacentObcineProps, FitToBoundsProps, MapProps, ZoomOutProps } from "../../types/index";
+
+import './map.css'
+
 
 const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
 const zoomSizeCenter = 8;
@@ -21,10 +23,15 @@ const mapOptions = {
 };
 
 // Return list of adjacent obcine naziv
-function findAdjacentObcine(targetFeature) {
+function findAdjacentObcine(targetFeature: Feature) {
     return fetch('../../sosednjeObcine.json')
         .then(response => response.json())
-        .then(data => {
+        .then((data: RegionData) => {
+            if (!targetFeature.properties) {
+                console.error("Random feature properties is empty");
+                return;
+            }
+
             const targetObcina = targetFeature.properties.NAZIV;
             const adjacentObcine = data[targetObcina];
 
@@ -32,34 +39,45 @@ function findAdjacentObcine(targetFeature) {
         })
         .catch(error => {
             console.error("Error loading sosednjeObcine.json: ", error)
-            return null;
+            return;
         });
 }
 
 // Return list of adjacent obcine features
-function findAdjacentFeatures(allFeatures, targetFeature) {
+function findAdjacentFeatures(allFeatures: Features, targetFeature: Feature) {
     return findAdjacentObcine(targetFeature)
         .then(data => {
-            let adjacentFeatures = [];
+            let adjacentFeatures: Features = [];
             const adjacentObcine = data;
+
+            if (!adjacentObcine) {
+                console.error("Adjacent obcine is empty");
+                return;
+            }
         
             allFeatures.forEach(feature => {
+                if (!feature.properties) {
+                    console.error("Random feature properties is empty");
+                    return;
+                }
+
                 const obcina = feature.properties.NAZIV;
         
-                if (adjacentObcine.includes(obcina))
+                if (adjacentObcine.includes(obcina)) {
                     adjacentFeatures.push(feature);
+                }
             })
 
             return adjacentFeatures;
         })
         .catch(error => {
             console.error("Error in findAdjacentFeatures: ", error);
-            return null;
+            return;
         });
 }
 
 // Show adjacent obcine on map
-function ShowAdjacentObcine({ allFeatures, targetFeature }) {
+function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps) {
     const map = useMap();
 
     useEffect(() => {
@@ -70,13 +88,22 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }) {
 
         findAdjacentFeatures(allFeatures, targetFeature)
             .then(adjacentFeatures => {
+                if (!adjacentFeatures) {
+                    console.error("Adjacent features is empty");
+                    return null;
+                }
 
                 // Add adjacent features to the map
                 adjacentFeatures.forEach(feature => {
                     const adjacentLayer = L.geoJSON(feature, 
                         { style: { color: 'red', weight: 0.5 },
                         // Add naziv to every adjacent obcina
-                        onEachFeature: (feature, layer) => {
+                        onEachFeature: (feature: Feature, layer: L.Layer) => {
+                            if (!feature.properties) {
+                                console.error("Feature properties is empty");
+                                return;
+                            }
+
                             layer.bindTooltip(feature.properties.NAZIV, {
                                 permanent: true,
                                 direction: "center"                                
@@ -90,17 +117,20 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }) {
             })
             .catch(error => {
                 console.error("Error displaying adjacent features:", error);
+                return;
             });
-    }, [])
+    }, []);
+    return null;
 }
+
 
 // TODO: this useles just make .fitBounds
 // Fit obcina to map center
-function FitToBounds({ feature }) {
+function FitToBounds({ feature }: FitToBoundsProps) {
     const map = useMap();
     useEffect(() => {
         if (feature) {
-            const geoJsonLayer = L.geoJSON(feature);
+            const geoJsonLayer: L.GeoJSON = L.geoJSON(feature);
             map.fitBounds(geoJsonLayer.getBounds());
         }
         else {
@@ -111,9 +141,14 @@ function FitToBounds({ feature }) {
     return null;
 }
 
-function getCenterOfObcin(allFeatures, targetFeature) {
+function getCenterOfObcin(allFeatures: Features, targetFeature: Feature) {
     return findAdjacentFeatures(allFeatures, targetFeature)
         .then(adjacentFeatures => {
+            if (!adjacentFeatures) {
+                console.error("Adjacent features are empty");
+                return;
+            }
+
             const features = [targetFeature, ...adjacentFeatures]; // combine all features
             const featCollection = featureCollection(features);
             
@@ -126,37 +161,58 @@ function getCenterOfObcin(allFeatures, targetFeature) {
         })  
         .catch(error => {
             console.error("Error getting center of obcin", error);
-            return null;
+            return;
         })
 }
 
 const Options = {
-    ADJACENT: "ADJACENT",
-    CENTER: "CENTER"
+    ADJACENT: "ADJACENT" as const,
+    CENTER: "CENTER" as const,
 };
 
 // Zoom out map based on attempt
-function ZoomOut({ options, allFeatures = null, feature = null }) {
+function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
     const map = useMap();
 
     useEffect(() => { 
         if (map) {
             // Zoom out to all adjacent obcine
             if (options === Options.ADJACENT) {
+                if (!allFeatures || !feature) {
+                    console.error("All features or feature is empty");
+                    return;
+                }
+                
                 getCenterOfObcin(allFeatures, feature) 
                     .then(position => {
-                        map.flyTo(position, zoomSizeAdjacent, { duration: 0.25 }); 
+                        if (!position) {
+                            console.error("Position is empty");
+                            return;
+                        }
+
+                        if (Array.isArray(position) && position.length === 2) {
+                            map.flyTo(position as LatLngTuple, zoomSizeAdjacent, { duration: 0.25 });
+                        } 
+                        else {
+                            console.error("Position is not a valid LatLngTuple");
+                        }
                     })
             }
 
             // Zoom out to whole map
             else if (options === Options.CENTER) {
-                map.flyTo(centerSlovenia, zoomSizeCenter, { duration: 1.5 }); 
+                if (Array.isArray(centerSlovenia) && centerSlovenia.length === 2) {
+                    map.flyTo(centerSlovenia as LatLngTuple, zoomSizeCenter, { duration: 0.25 });
+                } 
+                else {
+                    console.error("Position is not a valid LatLngTuple");
+                }
 
                 // Change naziv font size
                 const tooltips = document.querySelectorAll(".leaflet-tooltip");
                 tooltips.forEach(tooltip => {
-                    tooltip.style.fontSize = "7px";
+                    const element = tooltip as HTMLElement;
+                    element.style.fontSize = "7px";
                 });
             }
         }
@@ -169,7 +225,7 @@ function ZoomOut({ options, allFeatures = null, feature = null }) {
 }
 
 // Maybe change how to return because its really reduntant
-export default function Map({ allFeatures, feature, hints }) { 
+export default function Map({ allFeatures, feature, hints }: MapProps) { 
     if (hints.map) {
         return (
             <MapContainer {...mapOptions}>

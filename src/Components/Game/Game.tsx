@@ -2,6 +2,8 @@ import Input from "../Input/Input";
 import Map from "../Map/Map";
 import Region from "../Region/Region"
 
+import { GeoJsonProps, Features, Feature } from "../../types/index";
+
 import './game.css'
 
 import { useState, useEffect, useCallback } from "react";
@@ -11,23 +13,28 @@ import { useState, useEffect, useCallback } from "react";
 function fetchObcina() {
     return fetch('../../obcine.json')
         .then(response => response.json())
-        .then(data => {
-            let features = data.features;
+        .then((data: GeoJsonProps) => {
+            if (!data) {
+                console.error("No data received from obcine.json");
+                return;
+            }
+
+            let features: Features  = data.features;
             let randomIndex = Math.floor(Math.random() * features.length);
-            let randomFeature = features[randomIndex];
+            let randomFeature: Feature = features[randomIndex];
 
             return {"features": features, "randomFeature": randomFeature};
         })
         .catch(error => {
             console.error("Error loading obcine.json: ", error)
-            return null;
+            return;
         });
 }
 
  // https://www.youtube.com/watch?v=TNhaISOUy6Q 
  //https://miro.com/
  
-function isWin(guess, obcina) {
+function isWin(guess: string, obcina: string) {
     // Remove whitespaces from both sides
     let normalizedGuess = guess.trim();
 
@@ -35,8 +42,9 @@ function isWin(guess, obcina) {
     normalizedGuess = normalizedGuess.replace(/\s+-\s+/g, '-');
     
     // Case & šumnik insensitive
-    const normalizedObcina = obcina.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match]);
-    normalizedGuess = normalizedGuess.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match]);
+    const normalizedObcina = obcina.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match); // if no match then null
+    normalizedGuess = normalizedGuess.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
+
     
     // Return if guess is correct
     return normalizedGuess === normalizedObcina;
@@ -44,12 +52,12 @@ function isWin(guess, obcina) {
 
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
-    const [obcina, setObcina] = useState(''); // obcina naziv
+    const [obcina, setObcina] = useState(''); // naziv
     const [numberOfGuesses, setNumberOfGuesses] = useState(1);
     const [isWrongGuess, setIsWrongGuess] = useState(false);
 
-    const [obcinaFeature, setObcinaFeature] = useState(null);
-    const [allFeatures, setAllFeatures] = useState(null);
+    const [obcinaFeature, setObcinaFeature] = useState<Feature>();
+    const [allFeatures, setAllFeatures] = useState<Features>();
 
     // Hints
     const [hints, setHints] = useState({
@@ -60,7 +68,7 @@ export default function Game() {
     });
 
     // Update hints
-    function updateHints(level) {
+    function updateHints(level: number) {
         setHints(prev => ({
             ...prev, // copy previous object state
             outline: level >= 1,
@@ -73,13 +81,25 @@ export default function Game() {
     function initGame() {
         fetchObcina()
             .then(data => {
-                let feature = data.randomFeature;
-                let allFeatures = data.features;
-    
-                setObcinaFeature(feature);
-                setAllFeatures(allFeatures);
-                setObcina(feature.properties.NAZIV);
+                if (!data) {
+                    console.error("No data received from obcine.json");
+                    return;
+                }
+
+                const { features, randomFeature } = data;
+
+                if (!randomFeature.properties) {
+                    console.error("Random feature properties is empty");
+                    return null;
+                }
+
+                setObcinaFeature(randomFeature);
+                setAllFeatures(features);
+                setObcina(randomFeature.properties.NAZIV);
             })
+            .catch(error => {
+                console.error("Error fetching obcina data:", error);
+            });
     }
 
     // This is until i make it daily
@@ -95,10 +115,20 @@ export default function Game() {
 
         fetchObcina()
             .then(data => {
-                let feature = data.randomFeature;
+                if (!data) {
+                    console.error("No data received from obcine.json");
+                    return;
+                }
 
-                setObcinaFeature(feature);
-                setObcina(feature.properties.NAZIV);
+                const { randomFeature } = data;
+
+                if (!randomFeature.properties) {
+                    console.error("Random feature properties is empty");
+                    return null;
+                }
+
+                setObcinaFeature(randomFeature);
+                setObcina(randomFeature.properties.NAZIV);
             })
     }
 
@@ -107,7 +137,7 @@ export default function Game() {
         initGame();
     }, [])
 
-    const handleGuess = useCallback((guess) => {
+    const handleGuess = useCallback((guess: string) => {
         setNumberOfGuesses(prevCount => prevCount + 1);
 
         // If correct word set win to true
@@ -145,7 +175,7 @@ export default function Game() {
             {/* Map */}
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex"> 
                 {/* Show map or outline or adjacent obcine */}
-                { (hints.map || hints.outline || hints.adjacentObcine) ? <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} /> : null }
+                { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature ? <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} /> : null }
             </div>
 
             {/* Input */}
