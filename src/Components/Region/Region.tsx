@@ -10,9 +10,16 @@ function fetchRegion(obcina: string) {
     return fetch('../../regije.json')
         .then(response => response.json())
         .then((data: RegionData) => {
+            if (!data) {
+                console.error("Data is empty");
+                console.log(obcina);
+                return;
+            }
+
             for (let region in data) {
-                if (data[region].includes(obcina))
+                if (data[region].includes(obcina)) {
                     return region;
+                }
             }
         })
         .catch(error => {

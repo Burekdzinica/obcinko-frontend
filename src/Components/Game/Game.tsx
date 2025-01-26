@@ -90,7 +90,7 @@ export default function Game() {
 
                 if (!randomFeature.properties) {
                     console.error("Random feature properties is empty");
-                    return null;
+                    return;
                 }
 
                 setObcinaFeature(randomFeature);
@@ -180,7 +180,7 @@ export default function Game() {
 
             {/* Input */}
             <div>
-                <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} />
+                <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} allFeatures={allFeatures!} />
             </div>
 
             {/* Region */}

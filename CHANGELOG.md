@@ -34,3 +34,15 @@
 - Improved hints system --> hints object, updateHints()
 - Converted handleGuess() to useCallback for optimization ?
 - **Converted to typescript**
+
+
+## 2025-1-26
+
+### Added
+
+- react-bootstrap
+- **dropdown list**
+
+### Other
+
+- Changed button

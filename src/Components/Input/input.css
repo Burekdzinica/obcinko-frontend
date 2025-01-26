@@ -8,3 +8,45 @@
     border-color: black !important;
     background-color: dimgray !important;
 }
+
+#side-btn-container {
+    background-color: dimgray;
+    border: 1px solid black;
+    padding: 0;
+}
+
+#side-btn {
+    background-color: dimgray;
+    border: none;
+    color: black;
+    border-radius: 0 5px 5px 0 !important;
+}
+
+#side-btn:hover {
+    background-color: rgb(85, 84, 84);
+}
+
+.dropdown-list {
+    max-height: 238px; /* directly for 7 options */
+    overflow: auto;
+}
+
+/* .dropdown-list .dropdown-menu {
+    border-radius: 10px !important;
+} */
+
+.dropdown-option {
+    background-color: dimgray;
+    color: rgb(219, 217, 217);
+    padding: 5px;
+}
+
+.dropdown-option:hover {
+    background-color: rgb(85, 84, 84);
+    color: rgb(219, 217, 217);
+}
+
+.dropdown-option.highlighted {
+    background-color: rgb(85, 84, 84);
+    color: rgb(219, 217, 217);
+}

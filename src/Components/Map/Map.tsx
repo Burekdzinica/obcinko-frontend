@@ -28,7 +28,7 @@ function findAdjacentObcine(targetFeature: Feature) {
         .then(response => response.json())
         .then((data: RegionData) => {
             if (!targetFeature.properties) {
-                console.error("Random feature properties is empty");
+                console.error("Target feature properties is empty");
                 return;
             }
 
@@ -173,52 +173,52 @@ const Options = {
 // Zoom out map based on attempt
 function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
     const map = useMap();
-
+    
     useEffect(() => { 
-        if (map) {
-            // Zoom out to all adjacent obcine
-            if (options === Options.ADJACENT) {
-                if (!allFeatures || !feature) {
-                    console.error("All features or feature is empty");
-                    return;
-                }
-                
-                getCenterOfObcin(allFeatures, feature) 
-                    .then(position => {
-                        if (!position) {
-                            console.error("Position is empty");
-                            return;
-                        }
-
-                        if (Array.isArray(position) && position.length === 2) {
-                            map.flyTo(position as LatLngTuple, zoomSizeAdjacent, { duration: 0.25 });
-                        } 
-                        else {
-                            console.error("Position is not a valid LatLngTuple");
-                        }
-                    })
-            }
-
-            // Zoom out to whole map
-            else if (options === Options.CENTER) {
-                if (Array.isArray(centerSlovenia) && centerSlovenia.length === 2) {
-                    map.flyTo(centerSlovenia as LatLngTuple, zoomSizeCenter, { duration: 0.25 });
-                } 
-                else {
-                    console.error("Position is not a valid LatLngTuple");
-                }
-
-                // Change naziv font size
-                const tooltips = document.querySelectorAll(".leaflet-tooltip");
-                tooltips.forEach(tooltip => {
-                    const element = tooltip as HTMLElement;
-                    element.style.fontSize = "7px";
-                });
-            }
+        if (!map) {
+            console.log("Map is empty");
+            return;
         }
 
-        else 
-            console.log("Map is empty");
+        // Zoom out to all adjacent obcine
+        if (options === Options.ADJACENT) {
+            if (!allFeatures || !feature) {
+                console.error("All features or feature is empty");
+                return;
+            }
+            
+            getCenterOfObcin(allFeatures, feature) 
+                .then(position => {
+                    if (!position) {
+                        console.error("Position is empty");
+                        return;
+                    }
+
+                    if (Array.isArray(position) && position.length === 2) {
+                        map.flyTo(position as LatLngTuple, zoomSizeAdjacent, { duration: 0.25 });
+                    } 
+                    else {
+                        console.error("Position is not a valid LatLngTuple");
+                    }
+                })
+        }
+
+        // Zoom out to whole map
+        else if (options === Options.CENTER) {
+            if (Array.isArray(centerSlovenia) && centerSlovenia.length === 2) {
+                map.flyTo(centerSlovenia as LatLngTuple, zoomSizeCenter, { duration: 0.25 });
+            } 
+            else {
+                console.error("Position is not a valid LatLngTuple");
+            }
+
+            // Change naziv font size
+            const tooltips = document.querySelectorAll(".leaflet-tooltip");
+            tooltips.forEach(tooltip => {
+                const element = tooltip as HTMLElement;
+                element.style.fontSize = "7px";
+            });
+        }
     }, []);
 
     return null;
