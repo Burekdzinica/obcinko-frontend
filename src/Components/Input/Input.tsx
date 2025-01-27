@@ -3,7 +3,7 @@ import { InputProps, InputEvent, FormEvent, ClickEvent, Features, KeyEvent } fro
 import { Form, Dropdown, InputGroup, Button } from 'react-bootstrap';
 
 import './input.css';
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 
 // Return list of obcine
@@ -26,17 +26,32 @@ function getObcine(allFeatures: Features) {
 export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, allFeatures }: InputProps) {  
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [obcine, setObcine] = useState<string[]>([]);
     
-    const obcine = allFeatures ?  getObcine(allFeatures) : []; // Weird, allFeatures gets passed undifined and then gives runtime error(allFeatures is undifined)
     const dropdownRef = useRef<HTMLDivElement | null>(null); 
+
+    // Define obcine
+    useEffect(() => {
+        if (allFeatures) {
+            const newObcine = getObcine(allFeatures);
+            setObcine(newObcine);
+        }
+    }, [allFeatures]);
 
     // Update value with new value
     function handleInputChange(event: InputEvent) {
         const value = event.target.value;
+
         setInputValue(value);
 
-        // Enable dropdown after typing smth
-        setDropdownVisible(value.trim().length > 0);
+        const filteredObcine = obcine.filter((obcina) => // not using filterObcine() because it gets out of sync
+            obcina.toLowerCase().includes(value.toLocaleLowerCase().trim())
+        );      
+
+        // Enable dropdown after typing smth and false when no obcine found
+        setDropdownVisible(value.trim().length > 0 && filteredObcine.length > 0);
+
+        setSelectedIndex(0);
     }
     
     function handleSubmit(event: FormEvent) {
@@ -51,53 +66,18 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
 
     function handleKeyDown(event: KeyEvent) {
         const filteredObcine = filterObcine();
-
+  
         if (event.key === "ArrowDown") {
             setSelectedIndex(prevIndex => Math.min(prevIndex + 1, filteredObcine.length - 1)); // prevent going off dropdown list size 
         }
         else if (event.key === "ArrowUp") {
+            event.preventDefault(); // prevent the caret cursor from moving left
             setSelectedIndex(prevIndex => Math.max(prevIndex - 1, 0));
         }
-        else if (event.key === "Enter" && selectedIndex >= 1) {
+        else if (event.key === "Enter" && dropdownVisible) {
             event.preventDefault(); // prevent form submission
             handleSelect(filteredObcine[selectedIndex]);
-        }
-        scrollDropdown();
-    }
-
-    function scrollDropdown() {
-        const dropdownElement = dropdownRef.current;
-
-        if (!dropdownElement) {
-            console.error("Dropdown element is empty");
-            return;
-        }
-
-        const items = dropdownElement.querySelectorAll(".dropdown-option");
-        if (items.length === 0) {
-            console.error("Item length is 0");
-            return;
-        }
-
-        const itemHeight = items[0].clientHeight; // Get the height of the first item
-        const dropdownHeight = dropdownElement.clientHeight;
-        const offset = selectedIndex * itemHeight + itemHeight; // + itemHeight, when index === 0
-
-        console.log("Item height: ", itemHeight);
-        console.log("Dropdown height: ", dropdownHeight);
-        console.log("Offset: ", offset);
-        console.log("Dropdown element: ", dropdownElement.scrollTop);
-        console.log("--------");
-
-        // TODO: FIX THIS SHIT MOVING UP GAY
-
-        // Scroll logic
-        if (offset + itemHeight > dropdownElement.scrollTop + dropdownHeight) {
-            dropdownElement.scrollTop += itemHeight; // Scroll down
-        }
-        else if (offset - itemHeight < dropdownElement.scrollTop + itemHeight) {
-            dropdownElement.scrollTop -= itemHeight; // Scroll up
-        } 
+        }   
     }
 
     function handleSelect(selectedText: string) {
@@ -105,6 +85,30 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         setDropdownVisible(false);
         setSelectedIndex(0);
     }
+
+    // Scroll dropdown on selectedIndex change
+    useEffect(() => {
+        const dropdownElement = dropdownRef.current;
+        if (!dropdownElement) 
+            return;
+
+        const items = dropdownElement.querySelectorAll(".dropdown-option");
+        if (items.length === 0) 
+            return;
+
+        const itemHeight = items[0].clientHeight;
+        const dropdownHeight = dropdownElement.clientHeight;
+        const offset = selectedIndex * itemHeight;
+
+        // Scroll down
+        if (offset + itemHeight > dropdownElement.scrollTop + dropdownHeight) {
+            dropdownElement.scrollTop += itemHeight;
+        } 
+        // Scroll up
+        else if (offset < dropdownElement.scrollTop) {
+            dropdownElement.scrollTop -= itemHeight; 
+        }
+    }, [selectedIndex]);
 
     // Disable dropdown on unfocus
     function handleBlur() {
@@ -124,13 +128,17 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         event.preventDefault(); // stays focused on input
     }
 
+    // TODO: nared to bols
     // Filter obcine based on inputValue
     function filterObcine() {
-        const filteredObcine = obcine.filter((obcina) => 
-            obcina.toLowerCase().startsWith(inputValue.toLocaleLowerCase().trim())    // startsWith or include ????
+        const x = obcine.filter((obcina) => 
+            obcina.toLowerCase().includes(inputValue.toLowerCase().trim())    // startsWith or include ????
         );
 
-        return filteredObcine;
+        // Sort by "alphabet"
+        x.sort();
+
+        return x;
     }
 
     const filteredObcine = filterObcine();

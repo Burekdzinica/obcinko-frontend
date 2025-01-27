@@ -36,6 +36,7 @@ export default function Region({ obcina }: { obcina: string }) {
             .then(fetchedRegion => {
                 if (!fetchedRegion) {
                     console.log("Region is empty(Region.jsx)");
+                    console.log(obcina);
                     return;
                 }
                 setRegion(fetchedRegion);

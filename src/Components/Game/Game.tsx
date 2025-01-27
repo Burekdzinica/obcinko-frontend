@@ -31,6 +31,22 @@ function fetchObcina() {
         });
 }
 
+// Return list of obcine
+// function getObcine(allFeatures: Features) {
+//     const obcine: string[] = []; 
+
+//     allFeatures.forEach(feature => {
+//         if (!feature.properties) {
+//             console.error("Feature properties are empty");
+//             return;
+//         }
+//         const naziv = feature.properties.NAZIV;
+//         obcine.push(naziv);
+//     })
+    
+//     return obcine; 
+// }
+
  // https://www.youtube.com/watch?v=TNhaISOUy6Q 
  //https://miro.com/
  
@@ -45,7 +61,6 @@ function isWin(guess: string, obcina: string) {
     const normalizedObcina = obcina.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match); // if no match then null
     normalizedGuess = normalizedGuess.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
 
-    
     // Return if guess is correct
     return normalizedGuess === normalizedObcina;
 }
@@ -58,6 +73,8 @@ export default function Game() {
 
     const [obcinaFeature, setObcinaFeature] = useState<Feature>();
     const [allFeatures, setAllFeatures] = useState<Features>();
+
+
 
     // Hints
     const [hints, setHints] = useState({
@@ -139,6 +156,12 @@ export default function Game() {
 
     const handleGuess = useCallback((guess: string) => {
         setNumberOfGuesses(prevCount => prevCount + 1);
+
+        /* 
+            if (!obcine.includes(guess))
+                popup --> Ta obcina ne obstaja
+            return:
+        */
 
         // If correct word set win to true
         const win = isWin(guess, obcina);

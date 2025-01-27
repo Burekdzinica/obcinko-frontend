@@ -180,7 +180,7 @@ function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
             return;
         }
 
-        // Zoom out to all adjacent obcine
+        // Zoom out to center of all adjacent obcine
         if (options === Options.ADJACENT) {
             if (!allFeatures || !feature) {
                 console.error("All features or feature is empty");

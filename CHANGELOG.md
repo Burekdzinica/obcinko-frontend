@@ -46,3 +46,20 @@
 ### Other
 
 - Changed button
+
+
+## 2025-1-26
+
+### Other
+
+- Fixed dropdown
+
+## 2025-1-27
+
+### Added
+
+- Improved dropdown search (sort) .. kinda
+
+### Other
+
+- Made obcine rendered(input.tsx) once
