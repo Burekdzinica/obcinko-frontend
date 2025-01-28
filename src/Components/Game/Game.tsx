@@ -1,6 +1,7 @@
 import Input from "../Input/Input";
 import Map from "../Map/Map";
 import Region from "../Region/Region"
+import WrongGuessMsg from "../WrongGuessMsg/WrongGuessMsg";
 
 import { GeoJsonProps, Features, Feature } from "../../types/index";
 
@@ -149,19 +150,19 @@ export default function Game() {
             })
     }
 
-    // Generate random word on start
+    // Generate random guess on start
     useEffect (() => {
         initGame();
     }, [])
 
     const handleGuess = useCallback((guess: string) => {
-        setNumberOfGuesses(prevCount => prevCount + 1);
-
         /* 
             if (!obcine.includes(guess))
                 popup --> Ta obcina ne obstaja
             return:
         */
+        setNumberOfGuesses(prevCount => prevCount + 1);
+
 
         // If correct word set win to true
         const win = isWin(guess, obcina);
@@ -189,26 +190,22 @@ export default function Game() {
     return (
         <>
             {/* Wrong guess message */}
-            {isWrongGuess && (
-                <div className="wrong-guess-message">
-                    Wrong guess! Try again.
-                </div>
-            )}
+            { isWrongGuess && <WrongGuessMsg /> }
 
             {/* Map */}
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex"> 
                 {/* Show map or outline or adjacent obcine */}
-                { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature ? <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} /> : null }
+                { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature && <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} /> }
             </div>
 
             {/* Input */}
-            <div>
+            <div className="col-lg-6 offset-lg-3 mt-3">
                 <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} allFeatures={allFeatures!} />
             </div>
 
             {/* Region */}
             <div className="col-lg-6 offset-lg-5 mt-3">
-                { hints.region ? <Region obcina={obcina} /> : null}
+                { hints.region && <Region obcina={obcina} /> }
             </div>
         </>
     );

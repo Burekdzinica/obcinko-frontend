@@ -28,7 +28,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [obcine, setObcine] = useState<string[]>([]);
     
-    const dropdownRef = useRef<HTMLDivElement | null>(null); 
+    const dropdownRef = useRef<HTMLDivElement>(null); 
 
     // Define obcine
     useEffect(() => {
@@ -145,7 +145,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
     // const filteredObcine = useCallback(() => filterObcine(), [allFeatures]);
 
     return (
-        <div className="col-lg-6 offset-lg-3 mt-3">
+        <>
             <Form onSubmit={handleSubmit}>
                 <InputGroup>
                     <Form.Control placeholder="Vpiši občino" type="text" value={inputValue} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={handleKeyDown} required />
@@ -153,7 +153,6 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
                         <Button className="rounded-0" id="side-btn" type="submit">{numberOfGuesses} / 5</Button>
                     </InputGroup.Text>
                 </InputGroup>
-                {/* <Button type="submit" className="btn btn-secondary col-lg-12"> {numberOfGuesses} / 5 </Button> */}
             </Form>
             
             {/* Conditionally render the Dropdown */}
@@ -165,6 +164,6 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
                     ))}
                 </Dropdown>
             )}
-        </div>        
+        </>
     )
 }

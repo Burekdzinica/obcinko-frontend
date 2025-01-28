@@ -63,3 +63,10 @@
 ### Other
 
 - Made obcine rendered(input.tsx) once
+
+
+## 2025-1-28
+
+### Other
+
+- Improved component rendering (divs)
