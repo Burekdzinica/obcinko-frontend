@@ -2,6 +2,7 @@ import Input from "../Input/Input";
 import Map from "../Map/Map";
 import Region from "../Region/Region"
 import WrongGuessMsg from "../WrongGuessMsg/WrongGuessMsg";
+import UnknownGuessMsg from "../UnkownGuessMsg/UnknownGuessMsg";
 
 import { GeoJsonProps, Features, Feature } from "../../types/index";
 
@@ -33,36 +34,43 @@ function fetchObcina() {
 }
 
 // Return list of obcine
-// function getObcine(allFeatures: Features) {
-//     const obcine: string[] = []; 
+function getObcine(allFeatures: Features) {
+    const obcine: string[] = []; 
 
-//     allFeatures.forEach(feature => {
-//         if (!feature.properties) {
-//             console.error("Feature properties are empty");
-//             return;
-//         }
-//         const naziv = feature.properties.NAZIV;
-//         obcine.push(naziv);
-//     })
+    allFeatures.forEach(feature => {
+        if (!feature.properties) {
+            console.error("Feature properties are empty");
+            return;
+        }
+        const naziv = feature.properties.NAZIV;
+        obcine.push(naziv);
+    })
     
-//     return obcine; 
-// }
+    return obcine; 
+}
 
- // https://www.youtube.com/watch?v=TNhaISOUy6Q 
- //https://miro.com/
+// https://www.youtube.com/watch?v=TNhaISOUy6Q 
+//https://miro.com/
  
-function isWin(guess: string, obcina: string) {
-    // Remove whitespaces from both sides
-    let normalizedGuess = guess.trim();
+
+// Remove whitespaces, cases and šumniks
+function normalizeText(text: string) {
+    // Remove whitespaces
+    text = text.trim();
 
     // Remove whitespace between "-"
-    normalizedGuess = normalizedGuess.replace(/\s+-\s+/g, '-');
-    
-    // Case & šumnik insensitive
-    const normalizedObcina = obcina.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match); // if no match then null
-    normalizedGuess = normalizedGuess.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
+    text = text.replace(/\s+-\s+/g, '-');
 
-    // Return if guess is correct
+    // Case & šumnik insensitive
+    text = text.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
+
+    return text;
+}
+
+function isWin(guess: string, obcina: string) {
+    const normalizedGuess = normalizeText(guess);
+    const normalizedObcina = normalizeText(obcina);
+
     return normalizedGuess === normalizedObcina;
 }
 
@@ -70,11 +78,23 @@ export default function Game() {
     const [inputValue, setInputValue] = useState('');
     const [obcina, setObcina] = useState(''); // naziv
     const [numberOfGuesses, setNumberOfGuesses] = useState(1);
+
     const [isWrongGuess, setIsWrongGuess] = useState(false);
+    const [isUnknownGuess, setIsUnkownGuess] = useState(false);
+    const [lastUnknownGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
 
     const [obcinaFeature, setObcinaFeature] = useState<Feature>();
     const [allFeatures, setAllFeatures] = useState<Features>();
+    const [obcine, setObcine] = useState<string[]>();
 
+    // TODO: fix this with input.tsx and without allFeatures?
+    // Get all obcine
+    useEffect(() => {
+        if (allFeatures) {
+            const newObcine = getObcine(allFeatures);
+            setObcine(newObcine);
+        }
+    }, [allFeatures]);
 
 
     // Hints
@@ -128,7 +148,7 @@ export default function Game() {
             outline: false,
             region: false,
             adjacentObcine: false,
-            map: false,
+            map: false, 
         });
 
         fetchObcina()
@@ -156,34 +176,39 @@ export default function Game() {
     }, [])
 
     const handleGuess = useCallback((guess: string) => {
-        /* 
-            if (!obcine.includes(guess))
-                popup --> Ta obcina ne obstaja
-            return:
-        */
-        setNumberOfGuesses(prevCount => prevCount + 1);
+        const normalizedGuess = normalizeText(guess);
+        const normalizedObcine = obcine?.map(obcina => normalizeText(obcina));
 
-
-        // If correct word set win to true
-        const win = isWin(guess, obcina);
-        let lose = numberOfGuesses >= 5;
-        
-        // Update hints
-        const hintsLevel = numberOfGuesses;
-        updateHints(hintsLevel);
-
-        if (win) {
-            alert('You win!!!');
-            resetGame();
-        } 
-        else if (lose) {
-            alert(obcina);
-            resetGame();
+        // Unknown obcina typed
+        if (!normalizedObcine?.includes(normalizedGuess)) {
+            setLastGuess(guess);
+            setIsUnkownGuess(true);
+            setTimeout(() => setIsUnkownGuess(false), 2000);
         }
-        // Wrong guess
         else {
-            setIsWrongGuess(true);
-            setTimeout(() => setIsWrongGuess(false), 2000);
+            setNumberOfGuesses(prevCount => prevCount + 1);
+    
+            // If correct word set win to true
+            const win = isWin(guess, obcina);
+            let lose = numberOfGuesses >= 5;
+            
+            // Update hints
+            const hintsLevel = numberOfGuesses;
+            updateHints(hintsLevel);
+    
+            if (win) {
+                alert('You win!!!');
+                resetGame();
+            } 
+            else if (lose) {
+                alert(obcina);
+                resetGame();
+            }
+            // Wrong guess
+            else {
+                setIsWrongGuess(true);
+                setTimeout(() => setIsWrongGuess(false), 2000);
+            }
         }
     }, [obcina, numberOfGuesses, updateHints, resetGame]);
 
@@ -191,6 +216,9 @@ export default function Game() {
         <>
             {/* Wrong guess message */}
             { isWrongGuess && <WrongGuessMsg /> }
+
+            {/* Unknown guess message */}
+            { isUnknownGuess && <UnknownGuessMsg inputValue={lastUnknownGuess} /> }
 
             {/* Map */}
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex"> 
@@ -200,9 +228,10 @@ export default function Game() {
 
             {/* Input */}
             <div className="col-lg-6 offset-lg-3 mt-3">
-                <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} allFeatures={allFeatures!} />
+                { obcine && 
+                <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} obcine={obcine} />
+                }
             </div>
-
             {/* Region */}
             <div className="col-lg-6 offset-lg-5 mt-3">
                 { hints.region && <Region obcina={obcina} /> }

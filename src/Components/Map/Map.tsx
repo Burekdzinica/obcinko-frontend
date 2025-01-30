@@ -92,6 +92,8 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps)
                     console.error("Adjacent features is empty");
                     return null;
                 }
+                let analFissure = "is good";
+                console.log(analFissure);
 
                 // Add adjacent features to the map
                 adjacentFeatures.forEach(feature => {

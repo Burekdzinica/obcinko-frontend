@@ -1,4 +1,4 @@
-import { InputProps, InputEvent, FormEvent, ClickEvent, Features, KeyEvent } from "../../types/index";
+import { InputProps, InputEvent, FormEvent, ClickEvent, KeyEvent } from "../../types/index";
 
 import { Form, Dropdown, InputGroup, Button } from 'react-bootstrap';
 
@@ -6,37 +6,24 @@ import './input.css';
 import { useState, useRef, useEffect } from "react";
 
 
-// Return list of obcine
-function getObcine(allFeatures: Features) {
-    const obcine: string[] = []; 
+// function normalizeText(text: string) {
+//     // Remove whitespaces
+//     text = text.trim();
 
-    allFeatures.forEach(feature => {
-        if (!feature.properties) {
-            console.error("Feature properties are empty");
-            return;
-        }
-        const naziv = feature.properties.NAZIV;
-        obcine.push(naziv);
-    })
-    
-    return obcine; 
-}
+//     // Remove whitespace between "-"
+//     text = text.replace(/\s+-\s+/g, '-');
 
+//     // Case & šumnik insensitive
+//     text = text.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
 
-export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, allFeatures }: InputProps) {  
+//     return text;
+// }
+
+export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, obcine }: InputProps) {  
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [obcine, setObcine] = useState<string[]>([]);
     
     const dropdownRef = useRef<HTMLDivElement>(null); 
-
-    // Define obcine
-    useEffect(() => {
-        if (allFeatures) {
-            const newObcine = getObcine(allFeatures);
-            setObcine(newObcine);
-        }
-    }, [allFeatures]);
 
     // Update value with new value
     function handleInputChange(event: InputEvent) {
@@ -131,8 +118,10 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
     // TODO: nared to bols
     // Filter obcine based on inputValue
     function filterObcine() {
-        const x = obcine.filter((obcina) => 
+        // const normalizedInput = normalizeText(inputValue);
+        const x = obcine.filter(obcina => 
             obcina.toLowerCase().includes(inputValue.toLowerCase().trim())    // startsWith or include ????
+            // normalizeText(obcina).includes(normalizedInput)
         );
 
         // Sort by "alphabet"

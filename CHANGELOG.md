@@ -70,3 +70,14 @@
 ### Other
 
 - Improved component rendering (divs)
+
+## 2025-21-30
+
+### Added 
+
+- Unknown obcina popup
+- Normalize text function
+
+### Other
+
+- Passing obcine to input
