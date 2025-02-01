@@ -114,7 +114,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
 
         event.preventDefault(); // stays focused on input
     }
-
+    
     // TODO: nared to bols
     // Filter obcine based on inputValue
     function filterObcine() {
@@ -146,7 +146,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
             
             {/* Conditionally render the Dropdown */}
             {dropdownVisible && (
-                <Dropdown className="dropdown-list" ref={dropdownRef} >
+                <Dropdown className="dropdown-list" ref={dropdownRef} drop="up">
                     {/* Render every obcina */}
                     {filteredObcine.map((obcina, index) => (
                         <Dropdown.Item className={`dropdown-option ${selectedIndex === index ? "highlighted" : ""}`} key={index} onMouseDown={handleDropdownClick}>{obcina}</Dropdown.Item>

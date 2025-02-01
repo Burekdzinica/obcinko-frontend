@@ -1,0 +1,15 @@
+.map {
+    position: relative;
+    border: 1px solid rgb(46, 45, 45);
+    border-radius: 5px;
+    padding: 0 !important;
+    margin: auto;
+
+    /* Fullscreen */
+    /* width: 100vw;
+    height: 82vh; */
+    
+    width: 70vw;
+    height: 67vh;
+
+}

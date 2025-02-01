@@ -16,7 +16,6 @@
     white-space: nowrap;
 }
 
-/* Add a subtle fade-in and slide-down effect */
 @keyframes fade-slide-down {
     from {
         opacity: 0;

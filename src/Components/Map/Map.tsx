@@ -9,8 +9,8 @@ import './map.css'
 
 
 const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
-const zoomSizeCenter = 8;
-const zoomSizeAdjacent = 10.3;
+const zoomSizeCenter = 8.4;
+const zoomSizeAdjacent = 10.7;
 
 // Map styles
 const mapOptions = {
@@ -98,14 +98,14 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps)
                 // Add adjacent features to the map
                 adjacentFeatures.forEach(feature => {
                     const adjacentLayer = L.geoJSON(feature, 
-                        { style: { color: 'red', weight: 0.5 },
+                        { style: { color: "rgb(166, 245, 245)", weight: 0.5 },
                         // Add naziv to every adjacent obcina
                         onEachFeature: (feature: Feature, layer: L.Layer) => {
                             if (!feature.properties) {
                                 console.error("Feature properties is empty");
                                 return;
                             }
-
+                            // Bind obcine naziv to tooltip
                             layer.bindTooltip(feature.properties.NAZIV, {
                                 permanent: true,
                                 direction: "center"                                
@@ -121,7 +121,7 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps)
                 console.error("Error displaying adjacent features:", error);
                 return;
             });
-    }, []);
+    }, [allFeatures, map, targetFeature]);
     return null;
 }
 
@@ -138,7 +138,7 @@ function FitToBounds({ feature }: FitToBoundsProps) {
         else {
             console.log("Feature is empty: Map.jsx");
         }
-    }, []);
+    }, [feature, map]);
   
     return null;
 }
@@ -218,10 +218,10 @@ function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
             const tooltips = document.querySelectorAll(".leaflet-tooltip");
             tooltips.forEach(tooltip => {
                 const element = tooltip as HTMLElement;
-                element.style.fontSize = "7px";
+                element.style.fontSize = "9px";
             });
         }
-    }, []);
+    }, [allFeatures, feature, map, options]);
 
     return null;
 }

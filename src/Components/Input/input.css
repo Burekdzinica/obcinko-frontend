@@ -1,12 +1,18 @@
 .form-control:focus {
-    border-color: black;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px green;
     background-color: dimgray;
+    border-color: #444; /* Darker border */
+    box-shadow: 0 0 5px rgba(150, 150, 150, 0.5); /* Soft gray glow */
 }
 
 .form-control {
+    /* display: inline; */
     border-color: black !important;
     background-color: dimgray !important;
+}
+
+.input-group {
+    width: 30vw;
+    margin: auto;
 }
 
 #side-btn-container {
@@ -27,8 +33,10 @@
 }
 
 .dropdown-list {
-    max-height: 238px; /* directly for 7 options */
+    max-height: 9.7vw; /* 7 items */
+    max-width: 30vw;
     overflow: auto;
+    margin: auto;
 }
 
 /* .dropdown-list .dropdown-menu {
@@ -38,7 +46,7 @@
 .dropdown-option {
     background-color: dimgray;
     color: rgb(219, 217, 217);
-    padding: 5px;
+    padding: 3px;
 }
 
 .dropdown-option:hover {

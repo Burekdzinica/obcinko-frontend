@@ -1,21 +1,19 @@
 import './UI.css'
 
-// import Footer from '../Footer/Footer'
+import CustomNavbar from '../CustomNavbar/CustomNavbar'
 import Game from '../Game/Game'
+// import Footer from '../Footer/Footer'
 
 export default function UI() {
     return (
-        <div className="container">
-            { /* Game name */ }
-            <div className="navbar justify-content-center">
-                <h1 className="text-center"> Obcinko </h1>
-            </div>
+        <>
+        {/* <div className="container"> */}
+            <CustomNavbar />
 
-            {/* <div className="row mt-4 w-100"> */}
-                <Game />
-            {/* </div> */}
+            <Game />
 
             {/* <Footer /> */}
-        </div>
+        {/* </div> */}
+        </>
     )
 }

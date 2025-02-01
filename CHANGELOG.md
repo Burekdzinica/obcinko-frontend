@@ -81,3 +81,20 @@
 ### Other
 
 - Passing obcine to input
+
+
+## 2025-21-31
+
+### Added
+
+- Logo
+- Lose screen
+- Win screen + confetti
+
+### Other
+
+- Improved navbar
+- Map size
+- Region text/location
+- Dropdown size
+- Changed adjacent obcine color

@@ -1,0 +1,24 @@
+.lose-modal .modal-content {
+    background-color: #212529;
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.8 );
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.lose-modal .modal-dialog {
+    color: white;
+}
+
+@keyframes fadeIn {
+    0% { 
+        opacity: 0; 
+        transform: translateY(-50px); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.lose-modal h5 {
+    color: red;
+}

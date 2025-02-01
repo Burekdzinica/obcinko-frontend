@@ -3,12 +3,14 @@ import Map from "../Map/Map";
 import Region from "../Region/Region"
 import WrongGuessMsg from "../WrongGuessMsg/WrongGuessMsg";
 import UnknownGuessMsg from "../UnkownGuessMsg/UnknownGuessMsg";
+import LoseScreen from "../LoseScreen/LoseScreen";
+import WinScreen from "../WinScreen/WinScreen";
 
 import { GeoJsonProps, Features, Feature } from "../../types/index";
 
 import './game.css'
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 // Select random feature from json
@@ -86,6 +88,9 @@ export default function Game() {
     const [obcinaFeature, setObcinaFeature] = useState<Feature>();
     const [allFeatures, setAllFeatures] = useState<Features>();
     const [obcine, setObcine] = useState<string[]>();
+
+    const [lose, setLose] = useState(false);
+    const [win, setWin] = useState(false);
 
     // TODO: fix this with input.tsx and without allFeatures?
     // Get all obcine
@@ -175,66 +180,70 @@ export default function Game() {
         initGame();
     }, [])
 
-    const handleGuess = useCallback((guess: string) => {
+    // useCallback ?
+    function handleGuess(guess: string) {
         const normalizedGuess = normalizeText(guess);
         const normalizedObcine = obcine?.map(obcina => normalizeText(obcina));
-
+    
         // Unknown obcina typed
         if (!normalizedObcine?.includes(normalizedGuess)) {
             setLastGuess(guess);
             setIsUnkownGuess(true);
             setTimeout(() => setIsUnkownGuess(false), 2000);
-        }
+        } 
         else {
-            setNumberOfGuesses(prevCount => prevCount + 1);
-    
             // If correct word set win to true
             const win = isWin(guess, obcina);
             let lose = numberOfGuesses >= 5;
             
-            // Update hints
-            const hintsLevel = numberOfGuesses;
-            updateHints(hintsLevel);
-    
             if (win) {
-                alert('You win!!!');
-                resetGame();
+                setWin(true);
+                // alert('You win!!!');
+                // resetGame();
             } 
             else if (lose) {
-                alert(obcina);
-                resetGame();
+                setLose(true);
+                // alert(obcina);
+                // resetGame();
             }
             // Wrong guess
             else {
+                setNumberOfGuesses(prevCount => prevCount + 1);
+                
+                // Update hints
+                const hintsLevel = numberOfGuesses;
+                updateHints(hintsLevel);
+
                 setIsWrongGuess(true);
                 setTimeout(() => setIsWrongGuess(false), 2000);
             }
         }
-    }, [obcina, numberOfGuesses, updateHints, resetGame]);
+    }
+    
+    console.log(obcina);
+
 
     return (
         <>
-            {/* Wrong guess message */}
-            { isWrongGuess && <WrongGuessMsg /> }
-
             {/* Unknown guess message */}
             { isUnknownGuess && <UnknownGuessMsg inputValue={lastUnknownGuess} /> }
+            
+            { lose && <LoseScreen obcina={obcina} /> }
+            { win && <WinScreen /> }
 
             {/* Map */}
-            <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex"> 
+            <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex">
+                { isWrongGuess && <WrongGuessMsg /> }
+
                 {/* Show map or outline or adjacent obcine */}
                 { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature && <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} /> }
+                
+                { hints.region && <Region obcina={obcina} /> }
             </div>
 
             {/* Input */}
             <div className="col-lg-6 offset-lg-3 mt-3">
-                { obcine && 
-                <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} obcine={obcine} />
-                }
-            </div>
-            {/* Region */}
-            <div className="col-lg-6 offset-lg-5 mt-3">
-                { hints.region && <Region obcina={obcina} /> }
+                { obcine && <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} obcine={obcine} /> }
             </div>
         </>
     );

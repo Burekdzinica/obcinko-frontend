@@ -13,7 +13,7 @@ function fetchRegion(obcina: string) {
             if (!data) {
                 console.error("Data is empty");
                 console.log(obcina);
-                return;
+                // return;
             }
 
             for (let region in data) {
@@ -52,6 +52,8 @@ export default function Region({ obcina }: { obcina: string }) {
     }, []);
 
     return (
-        <h2>Regija: { region }</h2>
+        <div className="region-container">
+            <h2>Regija: { region }</h2>
+        </div>
     );
 }
