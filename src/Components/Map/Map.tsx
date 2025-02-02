@@ -243,21 +243,21 @@ function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
 
                     if (Array.isArray(position) && position.length === 2) {
                         const latLng = position as LatLngTuple;
-                        console.log(latLng);
+                        // console.log(latLng);
 
-                        const bounds = L.latLngBounds([
-                            [latLng[0] - 0.01 , latLng[1] - 0.01], // Bottom-left (expand outward)
-                            [latLng[0] + 0.01, latLng[1] + 0.01]  // Top-right (expand outward)
-                        ]);
+                        // const bounds = L.latLngBounds([
+                        //     [latLng[0] - 0.01 , latLng[1] - 0.01], // Bottom-left (expand outward)
+                        //     [latLng[0] + 0.01, latLng[1] + 0.01]  // Top-right (expand outward)
+                        // ]);
 
 
-                        let zoom = map.getBoundsZoom(bounds);
-                        console.log(zoom);
+                        // let zoom = map.getBoundsZoom(bounds);
+                        // console.log(zoom);
              
                         // map.fitBounds(bounds, { duration: 0.25 })
-                        // map.flyTo(latLng, zoom, { duration: 0.25 });
-                        map.flyTo(latLng);
-                        map.fitBounds(bounds);
+                        map.flyTo(latLng, zoomSizeAdjacent, { duration: 0.25 });
+                        // map.flyTo(latLng);
+                        // map.fitBounds(bounds);
                     } 
                     else {
                         console.error("Position is not a valid LatLngTuple");
