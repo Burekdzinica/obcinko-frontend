@@ -5,17 +5,15 @@ import { Modal } from 'react-bootstrap';
 
 import launchConfetti from './confetti/confetti';
 
-// https://www.npmjs.com/package/js-confetti
-
 export default function WinScreen() {
     useEffect(() => {
         launchConfetti();
     }, []);
 
     return (
-        <Modal className='win-modal' show > {/* Centered?? */}
+        <Modal className='win-modal' show centered >
             <Modal.Header>
-                <Modal.Title>Bravo</Modal.Title>
+                <Modal.Title>Čestitke!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <h5>Uspešno ste ugotovili občino</h5> 

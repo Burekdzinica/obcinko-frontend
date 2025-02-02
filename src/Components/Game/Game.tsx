@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 // Select random feature from json
 function fetchObcina() {
-    return fetch('../../obcine.json')
+    return fetch('../../jsons/obcine.json')
         .then(response => response.json())
         .then((data: GeoJsonProps) => {
             if (!data) {

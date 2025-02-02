@@ -1,18 +1,19 @@
 .form-control:focus {
     background-color: dimgray;
-    border-color: #444; /* Darker border */
-    box-shadow: 0 0 5px rgba(150, 150, 150, 0.5); /* Soft gray glow */
+    border-color: #444;
+    box-shadow: 0 0 5px rgba(150, 150, 150, 0.5);
 }
 
 .form-control {
-    /* display: inline; */
     border-color: black !important;
     background-color: dimgray !important;
+    caret-color: #444; /* ?? worth ?? */
 }
 
 .input-group {
     width: 30vw;
     margin: auto;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 #side-btn-container {
@@ -24,17 +25,23 @@
 #side-btn {
     background-color: dimgray;
     border: none;
+    /* color: black; */
+    /* color: var(--text-color); */
     color: black;
     border-radius: 0 5px 5px 0 !important;
 }
 
 #side-btn:hover {
-    background-color: rgb(85, 84, 84);
+    background-color: var(--hover-color);
+}
+
+#side-btn:active {
+    background-color: var(--active-color);
 }
 
 .dropdown-list {
-    max-height: 9.7vw; /* 7 items */
-    max-width: 30vw;
+    max-height: 150px;
+    width: 30vw;
     overflow: auto;
     margin: auto;
 }
@@ -45,16 +52,57 @@
 
 .dropdown-option {
     background-color: dimgray;
-    color: rgb(219, 217, 217);
+    color: var(--text-color);
     padding: 3px;
 }
 
 .dropdown-option:hover {
     background-color: rgb(85, 84, 84);
-    color: rgb(219, 217, 217);
+    /* color: rgb(219, 217, 217); */
+    color: var(--text-color);
 }
 
 .dropdown-option.highlighted {
     background-color: rgb(85, 84, 84);
-    color: rgb(219, 217, 217);
+    color: var(--text-color);
+}
+
+@media (width < 680px) {
+    .input-group {
+        width: 70vw;
+    }
+    .dropdown-list {
+        width: 70vw;
+        height: 150px;
+    }
+}
+
+@media (width >= 680px) and (width <= 800px) {
+    .input-group {
+        width: 60vw;
+    }
+    .dropdown-list {
+        width: 60vw;
+        height: 150px;
+    }
+}
+
+@media (width > 800px) and (width <= 1000px) {
+    .input-group {
+        width: 50vw;
+    }
+    .dropdown-list {
+        width: 50vw;
+        height: 150px;
+    }
+}
+
+@media (width > 1000px) and (width < 1650px) {
+    .input-group {
+        width: 40vw;
+    }
+    .dropdown-list {
+        width: 40vw;
+        height: 120px;
+    }
 }

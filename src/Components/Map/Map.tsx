@@ -7,24 +7,61 @@ import { Feature, Features ,RegionData, AdjacentObcineProps, FitToBoundsProps, M
 
 import './map.css'
 
-
 const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
-const zoomSizeCenter = 8.4;
-const zoomSizeAdjacent = 10.7;
+
+
+let zoomSizeCenter: number;
+let zoomSizeAdjacent: number;
+
+let width = document.documentElement.clientWidth;
+console.log(width);
+
+
+// if (width === 500) {
+//     zoomSizeCenter = 7.5;
+// }
+
+// if (width === 600) {
+//     zoomSizeCenter = 7.8;
+// }
+
+// if (width === 700) {
+//     zoomSizeCenter = 7.9;
+// }
+
+// if (width === 800) {
+//     zoomSizeCenter = 8.1;
+// }
+
+
+// if (width < 500) {
+//     zoomSizeCenter = 7.2;
+//     zoomSizeAdjacent = 9.5; 
+// }
+
+// else if (width < 800) {
+//     zoomSizeCenter = 7.6;
+//     zoomSizeAdjacent = 10;
+// }
+// // Fullscreen
+// else {
+    zoomSizeCenter = 8.5;
+    zoomSizeAdjacent = 10.7;
+// }
 
 // Map styles
 const mapOptions = {
-    scrollWheelZoom: false,
+    scrollWheelZoom: true,
     attributionControl: false,
-    zoomControl: false,
-    dragging: false,
+    zoomControl: true,
+    dragging: true,
     doubleClickZoom: false,
     style: { backgroundColor: "#090909" },
 };
 
 // Return list of adjacent obcine naziv
 function findAdjacentObcine(targetFeature: Feature) {
-    return fetch('../../sosednjeObcine.json')
+    return fetch('../../jsons/sosednjeObcine.json')
         .then(response => response.json())
         .then((data: RegionData) => {
             if (!targetFeature.properties) {
@@ -125,7 +162,6 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps)
     return null;
 }
 
-
 // TODO: this useles just make .fitBounds
 // Fit obcina to map center
 function FitToBounds({ feature }: FitToBoundsProps) {
@@ -167,6 +203,15 @@ function getCenterOfObcin(allFeatures: Features, targetFeature: Feature) {
         })
 }
 
+// Change naziv font size
+function changeTooltipFont() {
+    const tooltips = document.querySelectorAll(".leaflet-tooltip");
+    tooltips.forEach(tooltip => {
+        const element = tooltip as HTMLElement;
+        element.style.fontSize = "9px";
+    });
+}
+
 const Options = {
     ADJACENT: "ADJACENT" as const,
     CENTER: "CENTER" as const,
@@ -197,7 +242,22 @@ function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
                     }
 
                     if (Array.isArray(position) && position.length === 2) {
-                        map.flyTo(position as LatLngTuple, zoomSizeAdjacent, { duration: 0.25 });
+                        const latLng = position as LatLngTuple;
+                        console.log(latLng);
+
+                        const bounds = L.latLngBounds([
+                            [latLng[0] - 0.01 , latLng[1] - 0.01], // Bottom-left (expand outward)
+                            [latLng[0] + 0.01, latLng[1] + 0.01]  // Top-right (expand outward)
+                        ]);
+
+
+                        let zoom = map.getBoundsZoom(bounds);
+                        console.log(zoom);
+             
+                        // map.fitBounds(bounds, { duration: 0.25 })
+                        // map.flyTo(latLng, zoom, { duration: 0.25 });
+                        map.flyTo(latLng);
+                        map.fitBounds(bounds);
                     } 
                     else {
                         console.error("Position is not a valid LatLngTuple");
@@ -208,18 +268,15 @@ function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
         // Zoom out to whole map
         else if (options === Options.CENTER) {
             if (Array.isArray(centerSlovenia) && centerSlovenia.length === 2) {
+
+
                 map.flyTo(centerSlovenia as LatLngTuple, zoomSizeCenter, { duration: 0.25 });
             } 
             else {
                 console.error("Position is not a valid LatLngTuple");
             }
 
-            // Change naziv font size
-            const tooltips = document.querySelectorAll(".leaflet-tooltip");
-            tooltips.forEach(tooltip => {
-                const element = tooltip as HTMLElement;
-                element.style.fontSize = "9px";
-            });
+            changeTooltipFont();
         }
     }, [allFeatures, feature, map, options]);
 
@@ -233,7 +290,9 @@ export default function Map({ allFeatures, feature, hints }: MapProps) {
             <MapContainer {...mapOptions}>
                 {/* TODO: Remove names on map layer */}
                 <TileLayer
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                    // http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x} TILE layer (sattelite brother  )
+                    // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
+                    url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
                     attribution='&copy; <a href="https://carto.com/">CARTO</a>'
                 />
                 <GeoJSON data={feature} style={{weight: 0.5}} />

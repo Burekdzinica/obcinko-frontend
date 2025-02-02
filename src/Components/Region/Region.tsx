@@ -7,7 +7,7 @@ import "./region.css"
 
 // Fetch region name
 function fetchRegion(obcina: string) {
-    return fetch('../../regije.json')
+    return fetch('../../jsons/regije.json')
         .then(response => response.json())
         .then((data: RegionData) => {
             if (!data) {

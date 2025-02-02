@@ -1,0 +1,14 @@
+:root {
+    /* Modal */
+    --blur-size: 1px;
+    --backdrop-dim: rgba(0, 0, 0, 0.3);
+    --modal-padding: 5px;
+
+    --border-radius: 5px;
+    --map-container-bg-color: #0c0c0a;
+    --hover-color: rgb(85, 84, 84);
+    --active-color: rgb(51, 51, 51);
+    --text-color: #dee2e6;
+    --font-family-heading: "Roboto Condensed", sans-serif;
+
+}

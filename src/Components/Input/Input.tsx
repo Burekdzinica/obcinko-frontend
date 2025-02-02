@@ -19,6 +19,26 @@ import { useState, useRef, useEffect } from "react";
 //     return text;
 // }
 
+// Custom validation texts
+function validate(event: any) {
+    const input = event.target;
+    const validityState = input.validity;
+
+    if (validityState.valueMissing) {
+        input.setCustomValidity("Polje ne sme biti prazno");
+    }
+    else if (validityState.tooShort) {
+        input.setCustomValidity("Polje mora vsebovati vsaj 2 znaka");
+    }
+    else if (validityState.tooLong) {
+        input.setCustomValidity("Polje ne sme biti daljše od 40 znakov");
+    }
+
+    input.reportValidity();
+    
+    input.setCustomValidity("");
+}
+
 export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, obcine }: InputProps) {  
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -51,6 +71,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         setDropdownVisible(false);
     }
 
+    // Cycle through dropdown items
     function handleKeyDown(event: KeyEvent) {
         const filteredObcine = filterObcine();
   
@@ -137,7 +158,9 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         <>
             <Form onSubmit={handleSubmit}>
                 <InputGroup>
-                    <Form.Control placeholder="Vpiši občino" type="text" value={inputValue} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={handleKeyDown} required />
+                    <Form.Control id="inputId" placeholder="Vpiši občino" type="text" minLength={2} maxLength={40} value={inputValue} 
+                                  onChange={handleInputChange} onBlur={handleBlur} onKeyDown={handleKeyDown} required onInvalid={validate} />
+                    
                     <InputGroup.Text id="side-btn-container">
                         <Button className="rounded-0" id="side-btn" type="submit">{numberOfGuesses} / 5</Button>
                     </InputGroup.Text>

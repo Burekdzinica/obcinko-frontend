@@ -14,12 +14,12 @@
 4. Neighbouring municipalities
 5. Map with highlighted obcina
 
-![Example](res/image.png)
+![Example](public/res/image.png)
 
 
 ## Regije
 
-![Regije](res/obcine.png)
+![Regije](public/res/obcine.png)
 - https://www.stat.si/obcine/sl
 - Obcino poiscem v datoteki in berem regijo
 
