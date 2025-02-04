@@ -20,6 +20,7 @@ export interface MapProps {
     allFeatures: Features;
     feature: Feature;
     hints: Hints;
+    showSatellite: boolean;
 }
 
 export interface ZoomOutProps {

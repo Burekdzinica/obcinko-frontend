@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import L, { LatLngTuple } from "leaflet";
-import "leaflet/dist/leaflet.css";
 import { MapContainer, GeoJSON, useMap, TileLayer } from 'react-leaflet';
 import { centroid, featureCollection } from "@turf/turf"; 
 import { Feature, Features ,RegionData, AdjacentObcineProps, FitToBoundsProps, MapProps, ZoomOutProps } from "../../types/index";
 
+import "leaflet/dist/leaflet.css";
 import './map.css'
 
 const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
@@ -129,8 +129,6 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps)
                     console.error("Adjacent features is empty");
                     return null;
                 }
-                let analFissure = "is good";
-                console.log(analFissure);
 
                 // Add adjacent features to the map
                 adjacentFeatures.forEach(feature => {
@@ -159,10 +157,11 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps)
                 return;
             });
     }, [allFeatures, map, targetFeature]);
+    
     return null;
 }
 
-// TODO: this useles just make .fitBounds
+// TODO: this useles just make .fitBounds ?
 // Fit obcina to map center
 function FitToBounds({ feature }: FitToBoundsProps) {
     const map = useMap();
@@ -283,14 +282,25 @@ function ZoomOut({ options, allFeatures, feature }: ZoomOutProps) {
     return null;
 }
 
+
 // Maybe change how to return because its really reduntant
-export default function Map({ allFeatures, feature, hints }: MapProps) { 
-    if (hints.map) {
+export default function Map({ allFeatures, feature, hints, showSatellite }: MapProps) {
+    if (showSatellite) {
         return (
             <MapContainer {...mapOptions}>
-                {/* TODO: Remove names on map layer */}
                 <TileLayer
-                    // http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x} TILE layer (sattelite brother  )
+                    url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    attribution='&copy; <a href="https://server.arcgisonline.com/arcgis/rest/services">ArcGIS</a>'
+                />
+                <GeoJSON data={feature} />
+                <FitToBounds feature={feature} />
+            </MapContainer>
+        )  
+    } 
+    else if (hints.map) {
+        return (
+            <MapContainer {...mapOptions}>
+                <TileLayer
                     // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
                     url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
                     attribution='&copy; <a href="https://carto.com/">CARTO</a>'

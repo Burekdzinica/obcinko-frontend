@@ -92,6 +92,14 @@ export default function Game() {
     const [lose, setLose] = useState(false);
     const [win, setWin] = useState(false);
 
+
+    const [showSatellite, setShowSatellite] = useState(false);
+
+    // document.getElementById("satellite-btn")?.addEventListener("click", () => {
+    //     setShowSatellite(!showSatellite);
+    // }) 
+    
+
     // TODO: fix this with input.tsx and without allFeatures?
     // Get all obcine
     useEffect(() => {
@@ -221,6 +229,7 @@ export default function Game() {
     }
     
     console.log(obcina);
+    console.log(showSatellite);
 
 
     return (
@@ -235,8 +244,16 @@ export default function Game() {
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex">
                 { isWrongGuess && <WrongGuessMsg /> }
 
+                {/* FUj to */}
+                { hints.outline && 
+                    <button id="satellite-btn" onClick={() => setShowSatellite(prev => !prev)}  >
+                        <img id="satellite-img" src="../../res/satellite.svg" />
+                    </button> 
+                }
+                
+
                 {/* Show map or outline or adjacent obcine */}
-                { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature && <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} /> }
+                { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature && <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} showSatellite={showSatellite} /> }
                 
                 { hints.region && <Region obcina={obcina} /> }
             </div>

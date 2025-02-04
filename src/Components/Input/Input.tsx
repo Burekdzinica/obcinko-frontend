@@ -158,7 +158,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         <>
             <Form onSubmit={handleSubmit}>
                 <InputGroup>
-                    <Form.Control id="inputId" placeholder="Vpiši občino" type="text" minLength={2} maxLength={40} value={inputValue} 
+                    <Form.Control id="inputId" placeholder="Vpiši občino" type="text" minLength={2} maxLength={40} value={inputValue} autoComplete="off"
                                   onChange={handleInputChange} onBlur={handleBlur} onKeyDown={handleKeyDown} required onInvalid={validate} />
                     
                     <InputGroup.Text id="side-btn-container">
