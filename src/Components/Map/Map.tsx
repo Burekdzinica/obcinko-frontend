@@ -117,6 +117,9 @@ function findAdjacentFeatures(allFeatures: Features, targetFeature: Feature) {
 function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps) {
     const map = useMap();
 
+    // const renderer = L.canvas({ padding: 100 });
+    // map.getRenderer(renderer as L.Path).options.padding = 100;
+
     useEffect(() => {
         if (!targetFeature) {
             console.error("Feature is empty: showNearbyObcine");
@@ -165,6 +168,12 @@ function ShowAdjacentObcine({ allFeatures, targetFeature }: AdjacentObcineProps)
 // Fit obcina to map center
 function FitToBounds({ feature }: FitToBoundsProps) {
     const map = useMap();
+
+    // Removes clipping 
+    // https://github.com/Leaflet/Leaflet/issues/2814
+    const renderer = L.canvas({ padding: 100 });
+    map.getRenderer(renderer as L.Path).options.padding = 100;
+
     useEffect(() => {
         if (feature) {
             const geoJsonLayer: L.GeoJSON = L.geoJSON(feature);
@@ -309,7 +318,7 @@ export default function Map({ allFeatures, feature, hints, showSatellite }: MapP
                 <FitToBounds feature={feature} />
                 <ZoomOut options={Options.CENTER} />
             </MapContainer>
-        )  
+        )   
     }
     else if (hints.adjacentObcine) {
         return (
