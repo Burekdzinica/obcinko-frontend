@@ -14,25 +14,49 @@ import { useState, useEffect } from "react";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 // Select random feature from json
-function fetchObcina() {
-    return fetch('../../jsons/obcine.json')
-        .then(response => response.json())
-        .then((data: GeoJsonProps) => {
-            if (!data) {
-                console.error("No data received from obcine.json");
-                return;
-            }
+// function fetchObcina() {
+//     return fetch('../../jsons/obcine.json')
+//         .then(response => response.json())
+//         .then((data: GeoJsonProps) => {
+//             if (!data) {
+//                 console.error("No data received from obcine.json");
+//                 return;
+//             }
 
-            let features: Features  = data.features;
-            let randomIndex = Math.floor(Math.random() * features.length);
-            let randomFeature: Feature = features[randomIndex];
+//             let features: Features  = data.features;
+//             let randomIndex = Math.floor(Math.random() * features.length);
+//             let randomFeature: Feature = features[randomIndex];
 
-            return {"features": features, "randomFeature": randomFeature};
-        })
-        .catch(error => {
-            console.error("Error loading obcine.json: ", error)
+//             return {"features": features, "randomFeature": randomFeature};
+//         })
+//         .catch(error => {
+//             console.error("Error loading obcine.json: ", error)
+//             return;
+//         });
+// }
+
+// https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
+// Select random feature from json
+async function fetchObcina() {
+    try {
+        const response = await fetch('../../jsons/obcine.json');
+        const data: GeoJsonProps = await response.json();
+
+        if (!data) {
+            console.log("Data is empty");
             return;
-        });
+        }
+
+        let features: Features  = data.features;
+        let randomIndex = Math.floor(Math.random() * features.length);
+        let randomFeature: Feature = features[randomIndex];
+
+        return {"features": features, "randomFeature": randomFeature};
+    }
+    catch (error) {
+        console.error("Error loading obcine.json: ", error)
+        return;
+    }
 }
 
 // Return list of obcine
@@ -129,28 +153,24 @@ export default function Game() {
         }));
     }
 
-    function initGame() {
-        fetchObcina()
-            .then(data => {
-                if (!data) {
-                    console.error("No data received from obcine.json");
-                    return;
-                }
+    async function initGame() {
+        const data = await fetchObcina();
 
-                const { features, randomFeature } = data;
+        if (!data) {
+            console.log("Data is empty");
+            return;
+        }
 
-                if (!randomFeature.properties) {
-                    console.error("Random feature properties is empty");
-                    return;
-                }
+        const { features, randomFeature } = data;
 
-                setObcinaFeature(randomFeature);
-                setAllFeatures(features);
-                setObcina(randomFeature.properties.NAZIV);
-            })
-            .catch(error => {
-                console.error("Error fetching obcina data:", error);
-            });
+        if (!randomFeature.properties) {
+            console.error("Random feature properties is empty");
+            return;
+        }
+
+        setObcinaFeature(randomFeature);
+        setAllFeatures(features);
+        setObcina(randomFeature.properties.NAZIV);
     }
 
     // This is until i make it daily
@@ -229,7 +249,7 @@ export default function Game() {
     }
     
     console.log(obcina);
-    console.log(showSatellite);
+    // console.log(showSatellite);
 
 
     return (
@@ -251,7 +271,6 @@ export default function Game() {
                     </button> 
                 }
                 
-
                 {/* Show map or outline or adjacent obcine */}
                 { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature && <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} showSatellite={showSatellite} /> }
                 
