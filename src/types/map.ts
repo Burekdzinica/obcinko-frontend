@@ -8,6 +8,7 @@ export interface Hints {
 }
 
 export interface AdjacentObcineProps {
+    options: "ADJACENT" | "CENTER";    
     allFeatures: Features;
     targetFeature: Feature;
 }
@@ -21,10 +22,4 @@ export interface MapProps {
     feature: Feature;
     hints: Hints;
     showSatellite: boolean;
-}
-
-export interface ZoomOutProps {
-    options: "ADJACENT" | "CENTER";
-    allFeatures?: Features;
-    feature?: Feature;
 }

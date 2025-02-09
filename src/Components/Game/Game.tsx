@@ -14,29 +14,6 @@ import { useState, useEffect } from "react";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 // Select random feature from json
-// function fetchObcina() {
-//     return fetch('../../jsons/obcine.json')
-//         .then(response => response.json())
-//         .then((data: GeoJsonProps) => {
-//             if (!data) {
-//                 console.error("No data received from obcine.json");
-//                 return;
-//             }
-
-//             let features: Features  = data.features;
-//             let randomIndex = Math.floor(Math.random() * features.length);
-//             let randomFeature: Feature = features[randomIndex];
-
-//             return {"features": features, "randomFeature": randomFeature};
-//         })
-//         .catch(error => {
-//             console.error("Error loading obcine.json: ", error)
-//             return;
-//         });
-// }
-
-// https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
-// Select random feature from json
 async function fetchObcina() {
     try {
         const response = await fetch('../../jsons/obcine.json');
