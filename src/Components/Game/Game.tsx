@@ -93,13 +93,40 @@ export default function Game() {
     const [lose, setLose] = useState(false);
     const [win, setWin] = useState(false);
 
-
     const [showSatellite, setShowSatellite] = useState(false);
 
-    // document.getElementById("satellite-btn")?.addEventListener("click", () => {
-    //     setShowSatellite(!showSatellite);
-    // }) 
+     // Hints
+    const [hints, setHints] = useState({
+        outline: false,
+        region: false,
+        adjacentObcine: false,
+        map: false,
+    });
+
+    // Generate random guess on start
+    useEffect (() => {
+        async function initGame() {
+            const data = await fetchObcina();
     
+            if (!data) {
+                console.log("Data is empty");
+                return;
+            }
+    
+            const { features, randomFeature } = data;
+    
+            if (!randomFeature.properties) {
+                console.error("Random feature properties is empty");
+                return;
+            }
+    
+            setObcinaFeature(randomFeature);
+            setAllFeatures(features);
+            setObcina(randomFeature.properties.NAZIV);
+        }
+
+        initGame();
+    }, [])
 
     // TODO: fix this with input.tsx and without allFeatures?
     // Get all obcine
@@ -109,46 +136,6 @@ export default function Game() {
             setObcine(newObcine);
         }
     }, [allFeatures]);
-
-
-    // Hints
-    const [hints, setHints] = useState({
-        outline: false,
-        region: false,
-        adjacentObcine: false,
-        map: false,
-    });
-
-    // Update hints
-    function updateHints(level: number) {
-        setHints(prev => ({
-            ...prev, // copy previous object state
-            outline: level >= 1,
-            region: level >= 2,
-            adjacentObcine: level >= 3,
-            map: level >= 4,
-        }));
-    }
-
-    async function initGame() {
-        const data = await fetchObcina();
-
-        if (!data) {
-            console.log("Data is empty");
-            return;
-        }
-
-        const { features, randomFeature } = data;
-
-        if (!randomFeature.properties) {
-            console.error("Random feature properties is empty");
-            return;
-        }
-
-        setObcinaFeature(randomFeature);
-        setAllFeatures(features);
-        setObcina(randomFeature.properties.NAZIV);
-    }
 
     // This is until i make it daily
     function resetGame() {
@@ -180,10 +167,16 @@ export default function Game() {
             })
     }
 
-    // Generate random guess on start
-    useEffect (() => {
-        initGame();
-    }, [])
+    // Update hints
+    function updateHints(level: number) {
+        setHints(prev => ({
+            ...prev, // copy previous object state
+            outline: level >= 1,
+            region: level >= 2,
+            adjacentObcine: level >= 3,
+            map: level >= 4,
+        }));
+    }
 
     // useCallback ?
     function handleGuess(guess: string) {
@@ -227,7 +220,6 @@ export default function Game() {
     
     console.log(obcina);
     // console.log(showSatellite);
-
 
     return (
         <>

@@ -20,24 +20,35 @@ import { useState, useRef, useEffect } from "react";
 // }
 
 // Custom validation texts
-function validate(event: any) {
-    const input = event.target;
-    const validityState = input.validity;
+function validate() {   
+    const input = document.getElementById("inputId") as HTMLInputElement;
+    const value = input.value.trim();
 
-    if (validityState.valueMissing) {
+    let isValidated = false;
+
+    console.log(value);
+    if (value.length === 0) {
         input.setCustomValidity("Polje ne sme biti prazno");
-    }
-    else if (validityState.tooShort) {
+        isValidated = true;
+    } 
+    else if (value.length < 2) {
         input.setCustomValidity("Polje mora vsebovati vsaj 2 znaka");
+        isValidated = true;
     }
-    else if (validityState.tooLong) {
+    else if (value.length > 40) {
         input.setCustomValidity("Polje ne sme biti daljše od 40 znakov");
+        isValidated = true;
+    }
+    
+    input.reportValidity();
+
+    if (isValidated) {
+        input.setCustomValidity("");
     }
 
-    input.reportValidity();
-    
-    input.setCustomValidity("");
+    return isValidated;
 }
+
 
 export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, obcine }: InputProps) {  
     const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -63,6 +74,9 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
     
     function handleSubmit(event: FormEvent) {
         event.preventDefault();
+        
+        if (validate())
+            return;
 
         handleGuess(inputValue);
 
@@ -77,14 +91,14 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         const filteredObcine = filterObcine();
   
         if (event.key === "ArrowDown") {
-            setSelectedIndex(prevIndex => Math.min(prevIndex + 1, filteredObcine.length - 1)); // prevent going off dropdown list size 
+            setSelectedIndex(prevIndex => Math.min(prevIndex + 1, filteredObcine.length - 1));
         }
         else if (event.key === "ArrowUp") {
-            event.preventDefault(); // prevent the caret cursor from moving left
+            event.preventDefault();
             setSelectedIndex(prevIndex => Math.max(prevIndex - 1, 0));
         }
         else if (event.key === "Enter" && dropdownVisible) {
-            event.preventDefault(); // prevent form submission
+            event.preventDefault();
             handleSelect(filteredObcine[selectedIndex]);
         }   
     }
@@ -159,8 +173,8 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         <>
             <Form onSubmit={handleSubmit}>
                 <InputGroup>
-                    <Form.Control id="inputId" placeholder="Vpiši občino" type="text" minLength={2} maxLength={40} value={inputValue} autoComplete="off"
-                                  onChange={handleInputChange} onBlur={handleBlur} onKeyDown={handleKeyDown} required onInvalid={validate} />
+                    <Form.Control id="inputId" placeholder="Vpiši občino" type="text" maxLength={40} value={inputValue} autoComplete="off"
+                                  onChange={handleInputChange} onBlur={handleBlur} onKeyDown={handleKeyDown}  /* onInvalid={validate} */ />
                     
                     <InputGroup.Text id="side-btn-container">
                         <Button className="rounded-0" id="side-btn" type="submit">{numberOfGuesses} / 5</Button>
@@ -168,10 +182,8 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
                 </InputGroup>
             </Form>
             
-            {/* Conditionally render the Dropdown */}
             {dropdownVisible && (
                 <Dropdown className="dropdown-list" ref={dropdownRef} drop="up">
-                    {/* Render every obcina */}
                     {filteredObcine.map((obcina, index) => (
                         <Dropdown.Item className={`dropdown-option ${selectedIndex === index ? "highlighted" : ""}`} key={index} onMouseDown={handleDropdownClick}>{obcina}</Dropdown.Item>
                     ))}
