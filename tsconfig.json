@@ -29,6 +29,6 @@
     },
     "include": [
       "src/**/*" // *** The files TypeScript should type check ***
-    ],
+, "src/config"    ],
     "exclude": ["node_modules", "build", "res"] // *** The files to not type check ***
   }

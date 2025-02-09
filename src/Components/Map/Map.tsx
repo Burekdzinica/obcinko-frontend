@@ -3,32 +3,21 @@ import L, { } from "leaflet";
 import { MapContainer, GeoJSON, useMap, TileLayer, useMapEvent } from 'react-leaflet';
 import { Feature, Features ,RegionData, AdjacentObcineProps, FitToBoundsProps, MapProps } from "../../types/index";
 
+import rawConfig from "../../config/config.json";
+import { Config } from "../../config/config";
+
 import "leaflet/dist/leaflet.css";
 import './map.css'
+
+const config: Config = rawConfig;
+const mapOptions = config.mapOptions;
+const adjacentObcineOptions = config.adjacentObcineOptions;
+const boundsOptions = config.boundsOptions;
 
 const sloveniaBounds = L.latLngBounds(
     [45.42222, 13.37556], // Southwest corner
     [46.87667, 16.61056]  // Northeast corner
 );
-
-// Styles
-const mapOptions = {
-    scrollWheelZoom: true,
-    attributionControl: false,
-    zoomControl: true,
-    dragging: true,
-    doubleClickZoom: false,
-    style: { backgroundColor: "#090909" },
-    maxZoom: 14,
-    minZoom: 8,
-};
-
-const adjacentObcineOptions = {
-    style: {
-        color: "rgb(166, 245, 245)",
-        weight: 0.5
-    }
-};
 
 const tooltipOptions = {
     permanent: true,
@@ -141,7 +130,7 @@ function WholeMap() {
     const map = useMap();
 
     useEffect(() => {
-        map.fitBounds(sloveniaBounds);
+        map.flyToBounds(sloveniaBounds, boundsOptions);
     }, [map]);
 
     return null;
@@ -177,7 +166,7 @@ function AdjacentObcine({ options, allFeatures, targetFeature }: AdjacentObcineP
 
             // Don't fit if whole map
             if (options === Options.ADJACENT) {
-                map.fitBounds(featureGroup.getBounds());
+                map.flyToBounds(featureGroup.getBounds(), boundsOptions);
             }
         }
 
@@ -204,7 +193,8 @@ function Outline({ feature }: FitToBoundsProps) {
     useEffect(() => {
         const geoJsonLayer: L.GeoJSON = L.geoJSON(feature);
 
-        map.fitBounds(geoJsonLayer.getBounds());    
+        map.fitBounds(geoJsonLayer.getBounds());   
+        // map.flyToMap(geoJsonLayer.getBounds(), boundsOptions); 
     }, [feature, map]);
   
     return null;
