@@ -5,51 +5,40 @@ import { RegionData } from "../../types/index";
  
 import "./region.css"
 
-// Fetch region name
-function fetchRegion(obcina: string) {
-    return fetch('../../jsons/regije.json')
-        .then(response => response.json())
-        .then((data: RegionData) => {
-            if (!data) {
-                console.error("Data is empty");
-                console.log(obcina);
-                // return;
-            }
+async function fetchRegion(obcina: string) {
+    try {
+        const response = await fetch('../../jsons/regije.json');
+        const regions: RegionData = await response.json();
 
-            for (let region in data) {
-                if (data[region].includes(obcina)) {
-                    return region;
-                }
+        for (let region in regions) {
+            if (regions[region].includes(obcina)) {
+                return region;
             }
-        })
-        .catch(error => {
-            console.error("Error loading regije.json: ", error)
-            return null;
-        });
+        }
+    }
+    catch (error) {
+        console.error("Error loading regije.json: ", error)
+        return;
+    }
 }
 
 export default function Region({ obcina }: { obcina: string }) {
     const [region, setRegion] = useState("");
 
-    function updateRegion() {
-        fetchRegion(obcina)
-            .then(fetchedRegion => {
-                if (!fetchedRegion) {
-                    console.log("Region is empty(Region.jsx)");
-                    console.log(obcina);
-                    return;
-                }
-                setRegion(fetchedRegion);
-            })
-            .catch(error => {
-                console.error("Error getting fetched region", error);
-                return null;
-            })
-    }
+    async function updateRegion() {
+        const region = await fetchRegion(obcina);
 
+        if (!region) {
+            console.log("Region is empty " + obcina);
+            return;
+        }
+
+        setRegion(region);
+    }
+    
     useEffect(() => {
         updateRegion();
-    }, []);
+    }, [obcina]);
 
     return (
         <div className="region-container">

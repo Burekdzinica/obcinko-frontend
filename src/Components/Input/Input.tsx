@@ -63,6 +63,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
     
     function handleSubmit(event: FormEvent) {
         event.preventDefault();
+
         handleGuess(inputValue);
 
         // Clear text from input bar
