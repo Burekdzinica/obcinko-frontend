@@ -1,13 +1,15 @@
 import { useEffect } from "react";
-import L, { featureGroup, LatLngTuple, layerGroup, map } from "leaflet";
-import { MapContainer, GeoJSON, useMap, TileLayer } from 'react-leaflet';
+import L, { } from "leaflet";
+import { MapContainer, GeoJSON, useMap, TileLayer, useMapEvent } from 'react-leaflet';
 import { Feature, Features ,RegionData, AdjacentObcineProps, FitToBoundsProps, MapProps } from "../../types/index";
 
 import "leaflet/dist/leaflet.css";
 import './map.css'
 
-const centerSlovenia = [46.007, 14.856]; // Middle of Slovenia
-const zoomSizeCenter = 8.5;
+const sloveniaBounds = L.latLngBounds(
+    [45.42222, 13.37556], // Southwest corner
+    [46.87667, 16.61056]  // Northeast corner
+);
 
 // Styles
 const mapOptions = {
@@ -17,6 +19,8 @@ const mapOptions = {
     dragging: true,
     doubleClickZoom: false,
     style: { backgroundColor: "#090909" },
+    maxZoom: 14,
+    minZoom: 8,
 };
 
 const adjacentObcineOptions = {
@@ -85,23 +89,60 @@ async function findAdjacentFeatures(allFeatures: Features, targetFeature: Featur
     return adjacentFeatures;
 }
 
-function changeTooltipFontSize() {
-    const tooltips = document.querySelectorAll(".leaflet-tooltip");
+// Need this ????????
+
+// function changeTooltipFontSize(em: string) {
+//     const tooltips = document.querySelectorAll(".leaflet-tooltip");
+
+//     em = em + "em";
     
-    tooltips.forEach(tooltip => {
-        const element = tooltip as HTMLElement;
-        element.style.fontSize = "9px";
-    });
-}
+//     tooltips.forEach(tooltip => {
+//         const element = tooltip as HTMLElement;
+//         element.style.transition = "font-size 0.2 ease";
+//         element.style.fontSize = em;
+//     });
+// }
+
+// // Change tooltip based on zoom levels
+// function ChangeTooltipSize() {
+//     const map = useMapEvent("zoomend", () => {
+//         const zoomLevel = map.getZoom();
+
+//         console.log(zoomLevel);
+//         switch (zoomLevel) {
+//             case 8:
+//                 changeTooltipFontSize("0.5");
+//                 break;
+//             case 9:
+//                 changeTooltipFontSize("0.7");
+//                 break;
+//             case 10:
+//                 changeTooltipFontSize("0.9");
+//                 break;
+//             case 11:
+//                 changeTooltipFontSize("1.1");
+//                 break;
+//             case 12:
+//                 changeTooltipFontSize("1.3");
+//                 break;
+//             case 13:
+//                 changeTooltipFontSize("1.5");
+//                 break;
+//             default:
+//                 changeTooltipFontSize("1");
+//                 break;
+//         }
+//     });
+
+//     return null;
+// }
 
 function WholeMap() {
     const map = useMap();
 
     useEffect(() => {
-        map.flyTo(centerSlovenia as LatLngTuple, zoomSizeCenter, { duration: 0.25 });
-
-        changeTooltipFontSize();
-    }, []);
+        map.fitBounds(sloveniaBounds);
+    }, [map]);
 
     return null;
 }
@@ -147,7 +188,7 @@ function AdjacentObcine({ options, allFeatures, targetFeature }: AdjacentObcineP
             map.removeLayer(featureGroup);
         }
 
-    }, [allFeatures, targetFeature]);
+    }, [allFeatures, targetFeature, map, options]);
 
     return null;
 }
@@ -171,29 +212,31 @@ function Outline({ feature }: FitToBoundsProps) {
 
 function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
     let mapContent;
+    let satelliteContent;
+
+    if (showSatellite) {
+        satelliteContent = (
+            <TileLayer
+                url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                attribution='&copy; <a href="https://server.arcgisonline.com/arcgis/rest/services">ArcGIS</a>'
+            />
+        );
+    }
 
     switch (true) {
-        case showSatellite:
-            mapContent = (
-                <MapContainer {...mapOptions}>
-                    <TileLayer
-                        url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                        attribution='&copy; <a href="https://server.arcgisonline.com/arcgis/rest/services">ArcGIS</a>'
-                    />
-                    <GeoJSON data={feature} />
-                </MapContainer>
-            );  
-            break;
-
         case hints.map:
             mapContent = (
                 <MapContainer {...mapOptions}>
-                    <TileLayer
-                        // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
-                        url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
-                        attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-                    />
+                    {/* Change tile layer based on satellite */}
+                    {showSatellite ? (satelliteContent) : 
+                        <TileLayer
+                            // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
+                            url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+                            attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+                        />
+                    }
                     <GeoJSON data={feature} style={{weight: 0.5}} />
+                    {/* <ChangeTooltipSize /> */}
                     <AdjacentObcine options={Options.CENTER} allFeatures={allFeatures} targetFeature={feature} />
                     <WholeMap />
                 </MapContainer>
@@ -203,7 +246,9 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
         case hints.adjacentObcine:
             mapContent = (
                 <MapContainer {...mapOptions}>
+                    {satelliteContent}
                     <GeoJSON data={feature} />
+                    {/* <ChangeTooltipSize /> */}
                     <AdjacentObcine options={Options.ADJACENT} allFeatures={allFeatures} targetFeature={feature} />
                 </MapContainer>
             );
@@ -212,6 +257,7 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
         case hints.outline:
             mapContent = (
                 <MapContainer {...mapOptions}>
+                    {satelliteContent}
                     <GeoJSON data={feature} />
                     <Outline feature={feature} />
                 </MapContainer> 
@@ -222,7 +268,6 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
     return mapContent;
 }
 
-// Maybe change how to return because its really reduntant
 export default function Map({ allFeatures, feature, hints, showSatellite }: MapProps) {
     let mapContent = mapView({allFeatures, feature, hints, showSatellite});
 
