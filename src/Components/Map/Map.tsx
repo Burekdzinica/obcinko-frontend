@@ -128,6 +128,7 @@ async function findAdjacentFeatures(allFeatures: Features, targetFeature: Featur
 
 function WholeMap() {
     const map = useMap();
+    map.setMaxBounds(sloveniaBounds);
 
     useEffect(() => {
         map.flyToBounds(sloveniaBounds, boundsOptions);
@@ -138,6 +139,7 @@ function WholeMap() {
 
 function AdjacentObcine({ options, allFeatures, targetFeature }: AdjacentObcineProps) {
     const map = useMap();
+
     const featureGroup = L.featureGroup();
 
     useEffect(() => {        
@@ -167,6 +169,7 @@ function AdjacentObcine({ options, allFeatures, targetFeature }: AdjacentObcineP
             // Don't fit if whole map
             if (options === Options.ADJACENT) {
                 map.flyToBounds(featureGroup.getBounds(), boundsOptions);
+                map.setMaxBounds(featureGroup.getBounds());
             }
         }
 
@@ -193,7 +196,8 @@ function Outline({ feature }: FitToBoundsProps) {
     useEffect(() => {
         const geoJsonLayer: L.GeoJSON = L.geoJSON(feature);
 
-        map.fitBounds(geoJsonLayer.getBounds());   
+        map.fitBounds(geoJsonLayer.getBounds());
+        map.setMaxBounds(geoJsonLayer.getBounds());   
         // map.flyToMap(geoJsonLayer.getBounds(), boundsOptions); 
     }, [feature, map]);
   
