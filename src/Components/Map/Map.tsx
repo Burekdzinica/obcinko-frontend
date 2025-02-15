@@ -18,7 +18,6 @@ const Options = {
 
 
 // Need this ????????
-
 // function changeTooltipFontSize(em: string) {
 //     const tooltips = document.querySelectorAll(".leaflet-tooltip");
 
@@ -26,7 +25,7 @@ const Options = {
     
 //     tooltips.forEach(tooltip => {
 //         const element = tooltip as HTMLElement;
-//         element.style.transition = "font-size 0.2 ease";
+//         element.style.transition = "font-size 2 ease-in-out";
 //         element.style.fontSize = em;
 //     });
 // }
@@ -36,7 +35,6 @@ const Options = {
 //     const map = useMapEvent("zoomend", () => {
 //         const zoomLevel = map.getZoom();
 
-//         console.log(zoomLevel);
 //         switch (zoomLevel) {
 //             case 8:
 //                 changeTooltipFontSize("0.5");
@@ -90,8 +88,8 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
                             attribution='&copy; <a href="https://carto.com/">CARTO</a>'
                         />
                     }
-                    <GeoJSON data={feature} style={{weight: 0.5}} />
                     {/* <ChangeTooltipSize /> */}
+                    <Outline feature={feature} />
                     <AdjacentObcine options={Options.CENTER} allFeatures={allFeatures} targetFeature={feature} />
                     <WholeMap />
                 </MapContainer>
@@ -102,8 +100,8 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
             mapContent = (
                 <MapContainer {...mapOptions}>
                     {satelliteContent}
-                    <GeoJSON data={feature} />
                     {/* <ChangeTooltipSize /> */}
+                    <Outline feature={feature} />
                     <AdjacentObcine options={Options.ADJACENT} allFeatures={allFeatures} targetFeature={feature} />
                 </MapContainer>
             );
@@ -113,7 +111,6 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
             mapContent = (
                 <MapContainer {...mapOptions}>
                     {satelliteContent}
-                    <GeoJSON data={feature} />
                     <Outline feature={feature} />
                 </MapContainer> 
             );

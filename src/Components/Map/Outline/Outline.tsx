@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L, { } from "leaflet";
 import { FitToBoundsProps } from "../../../types/index";
+import { config } from "../../../config/config";
+
+const layerOptions = config.layerOptions;
 
 
 export default function Outline({ feature }: FitToBoundsProps) {
@@ -13,10 +16,16 @@ export default function Outline({ feature }: FitToBoundsProps) {
     map.getRenderer(renderer as L.Path).options.padding = 100;
 
     useEffect(() => {
-        const geoJsonLayer: L.GeoJSON = L.geoJSON(feature);
+        const geoJsonLayer: L.GeoJSON = L.geoJSON(feature, layerOptions);
+
+        geoJsonLayer.addTo(map);
 
         map.fitBounds(geoJsonLayer.getBounds());
         map.setMaxBounds(geoJsonLayer.getBounds());   
+
+        return () => {
+            map.removeLayer(geoJsonLayer);
+        }
     }, [feature, map]);
   
     return null;

@@ -2,7 +2,7 @@ import Input from "../Input/Input";
 import Map from "../Map/Map";
 import Region from "../Region/Region"
 import WrongGuessMsg from "../WrongGuessMsg/WrongGuessMsg";
-import UnknownGuessMsg from "../UnkownGuessMsg/UnknownGuessMsg";
+import UnknownGuessMsg from "../UnknownGuessMsg/UnknownGuessMsg";
 import LoseScreen from "../LoseScreen/LoseScreen";
 import WinScreen from "../WinScreen/WinScreen";
 
@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 // Select random feature from json
 async function fetchObcina() {
     try {
-        const response = await fetch('../../jsons/obcine.json');
+        const response = await fetch('/jsons/obcine.json');
         const data: GeoJsonProps = await response.json();
 
         if (!data) {
@@ -108,6 +108,7 @@ export default function Game() {
 
             if (savedState) {
                 setGameState(JSON.parse(savedState));
+                console.log(JSON.parse(savedState));
             }
             else {
                 setGameState({
@@ -136,14 +137,6 @@ export default function Game() {
             localStorage.setItem("gameState", JSON.stringify(gameState));
         }
     }, [gameState]);
-
-
-    if (!gameState) {
-        console.log("Game state is empty");
-
-        return;
-    }
-
 
     async function resetGame() {
         const data = await fetchObcina();
@@ -174,14 +167,18 @@ export default function Game() {
         });
 
     }
-    
-
+     
     // Reset game for now
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            resetGame();
+    useEffect(() => {
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                resetGame();
+            }
         }
-    });
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, []);
+    
 
     // Update hints
     function updateHints(level: number) {
@@ -284,8 +281,14 @@ export default function Game() {
             };
         })
     }
+    if (!gameState) {
+        console.log("Game state is empty");
+
+        return;
+    }
     
     console.log(gameState.obcina);
+
 
     return (
         <>

@@ -95,6 +95,8 @@ export default function AdjacentObcine({ options, allFeatures, targetFeature }: 
             // Don't fit if whole map
             if (options === Options.ADJACENT) {
                 map.flyToBounds(featureGroup.getBounds(), boundsOptions);
+                // map.fitBounds(featureGroup.getBounds());
+
                 // map.setMaxBounds(featureGroup.getBounds()); /* ????? ne fitta bounds po temu */
             }
         }
