@@ -6,7 +6,7 @@ import UnknownGuessMsg from "../UnkownGuessMsg/UnknownGuessMsg";
 import LoseScreen from "../LoseScreen/LoseScreen";
 import WinScreen from "../WinScreen/WinScreen";
 
-import { GeoJsonProps, Features, Feature } from "../../types/index";
+import { GeoJsonProps, Features, Feature, GameState } from "../../types/index";
 
 import './game.css'
 
@@ -79,32 +79,17 @@ function isWin(guess: string, obcina: string) {
 
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
-    const [obcina, setObcina] = useState(''); // naziv
-    const [numberOfGuesses, setNumberOfGuesses] = useState(1);
 
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
     const [lastUnknownGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
-
-    const [obcinaFeature, setObcinaFeature] = useState<Feature>();
+    
     const [allFeatures, setAllFeatures] = useState<Features>();
     const [obcine, setObcine] = useState<string[]>();
+   
+    const [gameState, setGameState] = useState<GameState>();
 
-    const [lose, setLose] = useState(false);
-    const [win, setWin] = useState(false);
-
-    const [showSatellite, setShowSatellite] = useState(false);
-
-     // Hints
-    const [hints, setHints] = useState({
-        outline: false,
-        region: false,
-        adjacentObcine: false,
-        map: false,
-    });
-
-    // Generate random guess on start
-    useEffect (() => {
+    useEffect(() => {
         async function initGame() {
             const data = await fetchObcina();
     
@@ -112,70 +97,111 @@ export default function Game() {
                 console.log("Data is empty");
                 return;
             }
-    
+
             const { features, randomFeature } = data;
-    
-            if (!randomFeature.properties) {
-                console.error("Random feature properties is empty");
-                return;
-            }
-    
-            setObcinaFeature(randomFeature);
             setAllFeatures(features);
-            setObcina(randomFeature.properties.NAZIV);
+
+            const newObcine = getObcine(features);
+            setObcine(newObcine);
+
+            const savedState = localStorage.getItem("gameState");
+
+            if (savedState) {
+                setGameState(JSON.parse(savedState));
+            }
+            else {
+                setGameState({
+                    obcina: randomFeature.properties?.NAZIV,
+                    obcinaFeature: randomFeature,
+                    numberOfGuesses: 1,
+                    showSatellite: false,
+                    win: false,
+                    lose: false,
+                    hints: {
+                        outline: false,
+                        region: false,
+                        adjacentObcine: false,
+                        map: false
+                    }
+                });
+            }
         }
 
         initGame();
-    }, [])
+    }, []);
 
-    // TODO: fix this with input.tsx and without allFeatures?
-    // Get all obcine
+    // Write to localStorage on gameState change
     useEffect(() => {
-        if (allFeatures) {
-            const newObcine = getObcine(allFeatures);
-            setObcine(newObcine);
+        if (gameState) {
+            localStorage.setItem("gameState", JSON.stringify(gameState));
         }
-    }, [allFeatures]);
+    }, [gameState]);
 
-    // This is until i make it daily
-    function resetGame() {
-        setNumberOfGuesses(1);
-        
-        setHints({
-            outline: false,
-            region: false,
-            adjacentObcine: false,
-            map: false, 
+
+    if (!gameState) {
+        console.log("Game state is empty");
+
+        return;
+    }
+
+
+    async function resetGame() {
+        const data = await fetchObcina();
+        if (!data) {
+            console.log("Data is empty");
+            return;
+        }
+    
+        const { features, randomFeature } = data;
+        setAllFeatures(features);
+    
+        const newObcine = getObcine(features);
+        setObcine(newObcine);
+    
+        setGameState({
+            obcina: randomFeature.properties?.NAZIV,
+            obcinaFeature: randomFeature,
+            numberOfGuesses: 1,
+            showSatellite: false,
+            win: false,
+            lose: false,
+            hints: {
+                outline: false,
+                region: false,
+                adjacentObcine: false,
+                map: false,
+            },
         });
 
-        fetchObcina()
-            .then(data => {
-                if (!data) {
-                    console.error("No data received from obcine.json");
-                    return;
-                }
-
-                const { randomFeature } = data;
-
-                if (!randomFeature.properties) {
-                    console.error("Random feature properties is empty");
-                    return null;
-                }
-
-                setObcinaFeature(randomFeature);
-                setObcina(randomFeature.properties.NAZIV);
-            })
     }
+    
+
+    // Reset game for now
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            resetGame();
+        }
+    });
 
     // Update hints
     function updateHints(level: number) {
-        setHints(prev => ({
-            ...prev, // copy previous object state
+        const newHints = {
             outline: level >= 1,
             region: level >= 2,
             adjacentObcine: level >= 3,
             map: level >= 4,
-        }));
+        };
+        // setHints(newHints);
+    
+        setGameState(prev => {
+            if (!prev) {
+                return prev;
+            }
+            return {
+                ...prev,
+                hints: newHints
+            }
+        });
     }
 
     // useCallback ?
@@ -190,26 +216,55 @@ export default function Game() {
             setTimeout(() => setIsUnkownGuess(false), 2000);
         } 
         else {
+            if (!gameState) {
+                return;
+            }
+            
             // If correct word set win to true
-            const win = isWin(guess, obcina);
-            let lose = numberOfGuesses >= 5;
+            const win = isWin(guess, gameState.obcina);
+            let lose = gameState.numberOfGuesses >= 5;
             
             if (win) {
-                setWin(true);
-                // alert('You win!!!');
-                // resetGame();
+                setGameState(prev => {
+                    if (!prev) {
+                        return prev;
+                    }
+                    return {
+                        ...prev,
+                        win: true,
+                    };
+                });
             } 
+
             else if (lose) {
-                setLose(true);
-                // alert(obcina);
-                // resetGame();
+                setGameState(prev => {
+                    if (!prev) {
+                        return prev;
+                    } 
+                    return {
+                        ...prev,
+                        lose: true,
+                    };
+                });
             }
+
             // Wrong guess
             else {
-                setNumberOfGuesses(prevCount => prevCount + 1);
-                
+                setGameState(prev => {
+                    if (!prev) {
+                        return prev;
+                    }
+                    return {
+                        ...prev,
+                        numberOfGuesses: prev.numberOfGuesses + 1,
+                    };
+                });
+                    
+                if (!gameState) {
+                    return;
+                }
                 // Update hints
-                const hintsLevel = numberOfGuesses;
+                const hintsLevel = gameState.numberOfGuesses;
                 updateHints(hintsLevel);
 
                 setIsWrongGuess(true);
@@ -217,38 +272,50 @@ export default function Game() {
             }
         }
     }
+
+    function handleSatellite() {
+        setGameState(prev => {
+            if (!prev) {
+                return;
+            }
+            return {
+                ...prev,
+                showSatellite: !prev.showSatellite
+            };
+        })
+    }
     
-    console.log(obcina);
-    // console.log(showSatellite);
+    console.log(gameState.obcina);
 
     return (
         <>
             {/* Unknown guess message */}
             { isUnknownGuess && <UnknownGuessMsg inputValue={lastUnknownGuess} /> }
             
-            { lose && <LoseScreen obcina={obcina} /> }
-            { win && <WinScreen /> }
+            { gameState.lose && <LoseScreen obcina={gameState.obcina} /> }
+            { gameState.win && <WinScreen /> }
 
             {/* Map */}
             <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex">
                 { isWrongGuess && <WrongGuessMsg /> }
 
                 {/* FUj to */}
-                { hints.outline && 
-                    <button id="satellite-btn" onClick={() => setShowSatellite(prev => !prev)}  >
+                { gameState.hints.outline && 
+                    <button id="satellite-btn" onClick={handleSatellite}>
                         <img id="satellite-img" src="../../res/satellite.svg" />
                     </button> 
                 }
                 
                 {/* Show map or outline or adjacent obcine */}
-                { (hints.map || hints.outline || hints.adjacentObcine) && allFeatures && obcinaFeature && <Map allFeatures={allFeatures} feature={obcinaFeature} hints={hints} showSatellite={showSatellite} /> }
+                { (gameState.hints.map || gameState.hints.outline || gameState.hints.adjacentObcine) && allFeatures && 
+                   gameState.obcinaFeature && <Map allFeatures={allFeatures} feature={gameState.obcinaFeature} hints={gameState.hints} showSatellite={gameState.showSatellite} /> }
                 
-                { hints.region && <Region obcina={obcina} /> }
+                { gameState.hints.region && <Region obcina={gameState.obcina} /> }
             </div>
 
             {/* Input */}
             <div className="col-lg-6 offset-lg-3 mt-3">
-                { obcine && <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={numberOfGuesses} obcine={obcine} /> }
+                { obcine && <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={gameState.numberOfGuesses} obcine={obcine} /> }
             </div>
         </>
     );
