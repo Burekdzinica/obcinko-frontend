@@ -1,5 +1,5 @@
 .lose-modal .modal-content {
-    background-color: #212529;
+    background-color: var(--modal-bg-color);
     color: var(--text-color);
 
     border: 1px solid red;

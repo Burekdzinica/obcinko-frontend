@@ -4,7 +4,7 @@ import { Modal } from 'react-bootstrap';
 
 export default function LoseScreen({ obcina }: {obcina: string}) {
     return (
-        <Modal className='lose-modal' show centered >
+        <Modal data-bs-theme="dark" className='lose-modal' show centered >
             <Modal.Header>
                 <Modal.Title>Pravilna občina: { obcina } </Modal.Title>
             </Modal.Header>

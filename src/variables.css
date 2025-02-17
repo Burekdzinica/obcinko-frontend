@@ -3,6 +3,7 @@
     --blur-size: 1px;
     --backdrop-dim: rgba(0, 0, 0, 0.3);
     --modal-padding: 5px;
+    --modal-bg-color: #212529;
 
     --border-radius: 5px;
     --map-container-bg-color: #0c0c0a;

@@ -1,0 +1,15 @@
+.stats-modal .modal-content {
+    background-color: var(--modal-bg-color);
+    color: var(--text-color);
+    padding: var(--modal-padding);
+    z-index: 999;
+}
+
+.stats-modal {
+    background-color: var(--backdrop-dim);
+    backdrop-filter: blur(var(--blur-size));
+}
+
+/* .stats-modal .btn-close {
+    color: var(--text-color) ;
+} */

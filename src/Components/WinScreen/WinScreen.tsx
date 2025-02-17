@@ -11,7 +11,7 @@ export default function WinScreen() {
     }, []);
 
     return (
-        <Modal className='win-modal' show centered >
+        <Modal data-bs-theme="dark" className='win-modal' show centered >
             <Modal.Header>
                 <Modal.Title>Čestitke!</Modal.Title>
             </Modal.Header>

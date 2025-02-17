@@ -17,3 +17,11 @@ export interface GameState {
         map: boolean;
     };
 }
+
+export interface Stats {
+    playedGames: number;
+    wins: number;
+    winProcentile: number;
+    streak: number;
+    maxStreak: number;
+}

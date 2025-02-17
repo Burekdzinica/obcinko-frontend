@@ -6,7 +6,7 @@ import UnknownGuessMsg from "../UnknownGuessMsg/UnknownGuessMsg";
 import LoseScreen from "../LoseScreen/LoseScreen";
 import WinScreen from "../WinScreen/WinScreen";
 
-import { GeoJsonProps, Features, Feature, GameState } from "../../types/index";
+import { GeoJsonProps, Features, Feature, GameState, Stats } from "../../types/index";
 
 import './game.css'
 
@@ -88,27 +88,33 @@ export default function Game() {
     const [obcine, setObcine] = useState<string[]>();
    
     const [gameState, setGameState] = useState<GameState>();
+    const [stats, setStats] = useState<Stats>();
 
-    useEffect(() => {
-        async function initGame() {
-            const data = await fetchObcina();
-    
-            if (!data) {
-                console.log("Data is empty");
-                return;
-            }
 
-            const { features, randomFeature } = data;
-            setAllFeatures(features);
+    function loadStats() {
+        const savedStats = localStorage.getItem("stats");
 
-            const newObcine = getObcine(features);
-            setObcine(newObcine);
+        if (savedStats) {
+            setStats(JSON.parse(savedStats));
+        }
+        else {
+            setStats({
+                playedGames: 0,
+                wins: 0,
+                winProcentile: 0,
+                streak: 0,
+                maxStreak: 0
+            })
+        }
+    } 
 
-            const savedState = localStorage.getItem("gameState");
+
+    // Get gameState from localStorage
+    function loadGameState(randomFeature: Feature) {
+        const savedState = localStorage.getItem("gameState");
 
             if (savedState) {
                 setGameState(JSON.parse(savedState));
-                console.log(JSON.parse(savedState));
             }
             else {
                 setGameState({
@@ -126,6 +132,26 @@ export default function Game() {
                     }
                 });
             }
+    }
+
+    // Init game
+    useEffect(() => {
+        async function initGame() {
+            const data = await fetchObcina();
+    
+            if (!data) {
+                console.log("Data is empty");
+                return;
+            }
+
+            const { features, randomFeature } = data;
+            setAllFeatures(features);
+
+            const newObcine = getObcine(features);
+            setObcine(newObcine);
+
+            loadGameState(randomFeature);
+            loadStats();
         }
 
         initGame();
@@ -137,6 +163,18 @@ export default function Game() {
             localStorage.setItem("gameState", JSON.stringify(gameState));
         }
     }, [gameState]);
+
+    // Write to localStorage on stats change
+    useEffect(() => {
+        console.log("eqe");
+        if (stats) {
+            stats.winProcentile = stats.playedGames > 0 ? Math.round((stats.wins / stats.playedGames) * 100) : 0;
+   
+            localStorage.setItem("stats", JSON.stringify(stats));
+        }
+    }, [stats]);
+
+    console.log(localStorage.getItem("stats"));
 
     async function resetGame() {
         const data = await fetchObcina();
@@ -188,17 +226,11 @@ export default function Game() {
             adjacentObcine: level >= 3,
             map: level >= 4,
         };
-        // setHints(newHints);
     
-        setGameState(prev => {
-            if (!prev) {
-                return prev;
-            }
-            return {
-                ...prev,
-                hints: newHints
-            }
-        });
+        setGameState(prev => ({
+            ...prev!,
+            hints: newHints
+        }));
     }
 
     // useCallback ?
@@ -214,6 +246,7 @@ export default function Game() {
         } 
         else {
             if (!gameState) {
+                console.log("Game state is empty");
                 return;
             }
             
@@ -222,42 +255,52 @@ export default function Game() {
             let lose = gameState.numberOfGuesses >= 5;
             
             if (win) {
-                setGameState(prev => {
-                    if (!prev) {
-                        return prev;
+                setGameState(prev => ({
+                    ...prev!,
+                    win: true,
+                }));
+
+                if (stats) {    
+                    let newMaxStreak: number;
+
+                    if (stats.streak + 1 > stats.maxStreak) { // + 1, da steje to zmago
+                        newMaxStreak = stats.streak + 1;                       
                     }
-                    return {
-                        ...prev,
-                        win: true,
-                    };
-                });
+
+                    setStats(prev => ({ 
+                        ...prev!, 
+                        playedGames: prev!.playedGames++,
+                        wins: prev!.wins++,
+                        streak: prev!.streak++,
+                        maxStreak: newMaxStreak
+                    }));
+                }
             } 
 
             else if (lose) {
-                setGameState(prev => {
-                    if (!prev) {
-                        return prev;
-                    } 
-                    return {
-                        ...prev,
-                        lose: true,
-                    };
-                });
+                setGameState(prev => ({
+                    ...prev!,
+                    lose: true,
+                }));
+
+                if (stats) {
+                    setStats(prev => ({ 
+                        ...prev!, 
+                        playedGames: prev!.playedGames++,
+                        streak: 0
+                    }));
+                }
             }
 
             // Wrong guess
             else {
-                setGameState(prev => {
-                    if (!prev) {
-                        return prev;
-                    }
-                    return {
-                        ...prev,
-                        numberOfGuesses: prev.numberOfGuesses + 1,
-                    };
-                });
-                    
+                setGameState(prev => ({
+                    ...prev!,
+                    numberOfGuesses: prev!.numberOfGuesses + 1
+                }));
+
                 if (!gameState) {
+                    console.log("Game state is empty");
                     return;
                 }
                 // Update hints
@@ -271,16 +314,12 @@ export default function Game() {
     }
 
     function handleSatellite() {
-        setGameState(prev => {
-            if (!prev) {
-                return;
-            }
-            return {
-                ...prev,
-                showSatellite: !prev.showSatellite
-            };
-        })
+        setGameState(prev => ({
+            ...prev!,
+            showSatellite: !prev!.showSatellite
+        }));
     }
+
     if (!gameState) {
         console.log("Game state is empty");
 
@@ -288,6 +327,8 @@ export default function Game() {
     }
     
     console.log(gameState.obcina);
+
+    
 
 
     return (
