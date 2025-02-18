@@ -91,6 +91,7 @@ export default function Game() {
     const [stats, setStats] = useState<Stats>();
 
 
+    // Get stats from localStorage or create new stats
     function loadStats() {
         const savedStats = localStorage.getItem("stats");
 
@@ -109,7 +110,7 @@ export default function Game() {
     } 
 
 
-    // Get gameState from localStorage
+    // Get gameState from localStorage or create new gameState
     function loadGameState(randomFeature: Feature) {
         const savedState = localStorage.getItem("gameState");
 
@@ -325,10 +326,7 @@ export default function Game() {
 
         return;
     }
-    
-    console.log(gameState.obcina);
-
-    
+        
 
 
     return (

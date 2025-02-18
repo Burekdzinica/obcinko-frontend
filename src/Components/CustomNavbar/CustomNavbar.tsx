@@ -1,6 +1,6 @@
-import Stats from '../Stats/Stats';
 import './customNavbar.css';
 
+import Statistics from '../Statistics/Statistics';
 import { Navbar } from 'react-bootstrap';
 
 export default function CustomNavbar() {
@@ -13,7 +13,7 @@ export default function CustomNavbar() {
             <Navbar.Brand id='title'>Občinko</Navbar.Brand>
             
             <Navbar.Brand className='ms-auto'>
-                <Stats />
+                <Statistics />
             </Navbar.Brand>
         </Navbar>
     );
