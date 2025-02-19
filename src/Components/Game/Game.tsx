@@ -6,11 +6,15 @@ import UnknownGuessMsg from "../UnknownGuessMsg/UnknownGuessMsg";
 import LoseScreen from "../LoseScreen/LoseScreen";
 import WinScreen from "../WinScreen/WinScreen";
 
+// import { writeObcineToFile } from '../../utils/utils';
+
 import { GeoJsonProps, Features, Feature, GameState, Stats } from "../../types/index";
 
 import './game.css'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
+import { writeObcineToFile } from "../../utils/utils";
+// import { writeAdjacentObcineToFile, writeObcineToFile } from "../../utils/utils";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 // Select random feature from json
@@ -18,6 +22,8 @@ async function fetchObcina() {
     try {
         const response = await fetch('/jsons/obcine.json');
         const data: GeoJsonProps = await response.json();
+
+        console.log(data);
 
         if (!data) {
             console.log("Data is empty");
@@ -51,11 +57,7 @@ function getObcine(allFeatures: Features) {
     
     return obcine; 
 }
-
-// https://www.youtube.com/watch?v=TNhaISOUy6Q 
-//https://miro.com/
  
-
 // Remove whitespaces, cases and šumniks
 function normalizeText(text: string) {
     // Remove whitespaces
@@ -77,6 +79,20 @@ function isWin(guess: string, obcina: string) {
     return normalizedGuess === normalizedObcina;
 }
 
+// Fetch dailies from daily.txt
+async function fetchDailies() {
+    try {
+        const response = await fetch("jsons/dailies.json");
+        const dailies = await response.json();
+
+        return dailies;
+    } 
+    catch (error) {
+        console.error("Error loading dailies.json: ", error)
+        return;
+    }
+}
+
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
 
@@ -90,6 +106,15 @@ export default function Game() {
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
+    useEffect(() => {
+        async function getDailies() {
+            const dailies = await fetchDailies();
+
+            console.log(dailies);
+        }
+        getDailies();
+        // writeObcineToFile();
+    }, []);
 
     // Get stats from localStorage or create new stats
     function loadStats() {
@@ -108,7 +133,6 @@ export default function Game() {
             })
         }
     } 
-
 
     // Get gameState from localStorage or create new gameState
     function loadGameState(randomFeature: Feature) {
@@ -167,15 +191,12 @@ export default function Game() {
 
     // Write to localStorage on stats change
     useEffect(() => {
-        console.log("eqe");
         if (stats) {
             stats.winProcentile = stats.playedGames > 0 ? Math.round((stats.wins / stats.playedGames) * 100) : 0;
    
             localStorage.setItem("stats", JSON.stringify(stats));
         }
     }, [stats]);
-
-    console.log(localStorage.getItem("stats"));
 
     async function resetGame() {
         const data = await fetchObcina();
@@ -262,7 +283,7 @@ export default function Game() {
                 }));
 
                 if (stats) {    
-                    let newMaxStreak: number;
+                    let newMaxStreak = stats.maxStreak;
 
                     if (stats.streak + 1 > stats.maxStreak) { // + 1, da steje to zmago
                         newMaxStreak = stats.streak + 1;                       
@@ -326,8 +347,8 @@ export default function Game() {
 
         return;
     }
-        
-
+    
+    console.log("Correct obcina: ", gameState.obcina);
 
     return (
         <>

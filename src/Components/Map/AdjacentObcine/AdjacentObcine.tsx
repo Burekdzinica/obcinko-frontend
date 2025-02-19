@@ -13,53 +13,44 @@ const Options = {
     CENTER: "CENTER" as const,
 };
 
-
-async function findAdjacentObcine(targetFeature: Feature) {
+// Return list of features of adjacent obcine
+async function findAdjacentFeatures(allFeatures: Features, targetFeature: Feature) {
     try {
         const response = await fetch('../../jsons/sosednjeObcine.json');
         const obcine: RegionData = await response.json();
 
-        if (!targetFeature.properties) {
-            console.log("Target feature is empty");
-            return;
-        }
-
-        const targetObcina = targetFeature.properties.NAZIV;
+        // Get obcine naziv from adjacent obcina
+        const targetObcina = targetFeature.properties?.NAZIV;
         const adjacentObcine = obcine[targetObcina];
 
-        return adjacentObcine;
-    }
-    catch (error) {
-        console.error("Error loading sosednjeObcine.json: ", error)
-        return;
-    }
-}
-
-// Return list of features of adjacent obcine
-async function findAdjacentFeatures(allFeatures: Features, targetFeature: Feature) {
-    const adjacentObcine = await findAdjacentObcine(targetFeature);
-
-    if (!adjacentObcine) {
-        console.log("Adjacent features are empty");
-        return;
-    }
-
-    let adjacentFeatures: Features = [];
-
-    allFeatures.forEach(feature => {
-        if (!feature.properties) {
-            console.error("Random feature properties is empty");
+        // const adjacentObcine = await findAdjacentObcine(targetFeature);
+    
+        if (!adjacentObcine) {
+            console.log("Adjacent features are empty");
             return;
         }
-
-        const obcina = feature.properties.NAZIV;
-
-        if (adjacentObcine.includes(obcina)) {
-            adjacentFeatures.push(feature);
-        }
-    })
-
-    return adjacentFeatures;
+    
+        let adjacentFeatures: Features = [];
+    
+        allFeatures.forEach(feature => {
+            if (!feature.properties) {
+                console.error("Random feature properties is empty");
+                return;
+            }
+    
+            const obcina = feature.properties.NAZIV;
+    
+            if (adjacentObcine.includes(obcina)) {
+                adjacentFeatures.push(feature);
+            }
+        })
+    
+        return adjacentFeatures;
+    }
+    catch (error) {
+        console.error("Error loading sosednjeObcine.json: ", error);
+        return;
+    }
 }
 
 

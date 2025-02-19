@@ -12,6 +12,7 @@ export default function WholeMap() {
 
     useEffect(() => {
         map.flyToBounds(sloveniaBounds, boundsOptions);
+
     }, [map]);
 
     return null;

@@ -1,4 +1,4 @@
-import { MapContainer, GeoJSON, TileLayer, useMapEvent } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvent } from 'react-leaflet';
 import { MapProps } from "../../types/index";
 import Outline from "./Outline/Outline";
 import AdjacentObcine from "./AdjacentObcine/AdjacentObcine";
