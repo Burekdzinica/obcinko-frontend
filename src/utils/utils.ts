@@ -51,7 +51,8 @@ async function fetchObcineNaziv() {
                 return;
             }
 
-            obcine.push(feature.id as string);
+            // obcine.push(feature.id as string); // ID
+            obcine.push(feature.properties.NAZIV as string); // Naziv
         })
         
         return obcine;
@@ -83,18 +84,19 @@ function shuffle(array: string[]) {
 }
 
 function formatObcine(obcine: string[], startDate: string) {
-    const formattedObcine = obcine.map((obcina, index) => {
-        const date = new Date(startDate);
-        date.setDate(date.getDate() + index); // increment day
+    let formattedObcine: Record<string, string> = {};
 
-        return {
-            date: date.toISOString().split('T')[0], // yyyy-mm-dd
-            obcina: obcina
-        };
-    });
-    
+    for (let i = 0; i < obcine.length; i++) {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i); // increment day
+
+        let dateJson = date.toISOString().split('T')[0];
+        formattedObcine[dateJson] = obcine[i]; 
+    }
+
     return formattedObcine;
 }
+
 
 // Write obcine to file for daily guesses
 export async function writeObcineToFile() {
@@ -106,7 +108,7 @@ export async function writeObcineToFile() {
     }
 
     const combinedObcine: string[] = [];
-    const startDate = "2025-2-21";
+    const startDate = "2025-3-2";
     
     /*
         Obcine: 212
@@ -119,11 +121,11 @@ export async function writeObcineToFile() {
 
        combinedObcine.push(...shuffledObcine); // flatten array
     }
-    // const formattedObcine = formatObcine(combinedObcine, startDate);
-    // saveTextAsFile(JSON.stringify(formattedObcine, null, 4), "daily.json", "application/json");
+    const formattedObcine = formatObcine(combinedObcine, startDate);
+    saveTextAsFile(JSON.stringify(formattedObcine, null, 4), "daily.json", "application/json");
 
     // saveTextAsFile(JSON.stringify(combinedObcine, null, 4), "daily.json", "application/json");
-    saveTextAsFile(combinedObcine.join("\n"), "dailies.txt", "txt");
+    // saveTextAsFile(combinedObcine.join("\n"), "dailies.txt", "txt");
 }
 
 
@@ -173,4 +175,18 @@ export function writeAdjacentObcineToFile(allFeatures: Features) {
     let x = JSON.stringify(list, null, 2);
 
     dowloadJson(x, "sosednjeObcine.json");
+}
+
+// Remove whitespaces, cases and šumniks
+export function normalizeText(text: string) {
+    // Remove whitespaces
+    text = text.trim();
+
+    // Remove whitespace between "-"
+    text = text.replace(/\s+-\s+/g, '-');
+
+    // Case & šumnik insensitive
+    text = text.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
+
+    return text;
 }

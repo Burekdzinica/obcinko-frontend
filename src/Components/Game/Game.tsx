@@ -12,18 +12,38 @@ import { GeoJsonProps, Features, Feature, GameState, Stats } from "../../types/i
 
 import './game.css'
 
-import { useState, useEffect, use } from "react";
-import { writeObcineToFile } from "../../utils/utils";
-// import { writeAdjacentObcineToFile, writeObcineToFile } from "../../utils/utils";
+import { useState, useEffect } from "react";
+import { normalizeText } from "../../utils/utils";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
+
 // Select random feature from json
-async function fetchObcina() {
+async function fetchRandomFeature() {
     try {
         const response = await fetch('/jsons/obcine.json');
         const data: GeoJsonProps = await response.json();
 
-        console.log(data);
+        if (!data) {
+            console.log("Data is empty");
+            return;
+        }
+
+        let features: Features = data.features;
+        let randomIndex = Math.floor(Math.random() * features.length);
+        let randomFeature: Feature = features[randomIndex];
+
+        return randomFeature;
+    }
+    catch (error) {
+        console.error("Error loading obcine.json: ", error)
+        return;
+    }
+}
+
+async function fetchAllFeatures() {
+    try {
+        const response = await fetch('/jsons/obcine.json');
+        const data: GeoJsonProps = await response.json();
 
         if (!data) {
             console.log("Data is empty");
@@ -31,10 +51,8 @@ async function fetchObcina() {
         }
 
         let features: Features  = data.features;
-        let randomIndex = Math.floor(Math.random() * features.length);
-        let randomFeature: Feature = features[randomIndex];
 
-        return {"features": features, "randomFeature": randomFeature};
+        return features;
     }
     catch (error) {
         console.error("Error loading obcine.json: ", error)
@@ -43,7 +61,7 @@ async function fetchObcina() {
 }
 
 // Return list of obcine
-function getObcine(allFeatures: Features) {
+function getObcineFromFeatures(allFeatures: Features) {
     const obcine: string[] = []; 
 
     allFeatures.forEach(feature => {
@@ -57,40 +75,12 @@ function getObcine(allFeatures: Features) {
     
     return obcine; 
 }
- 
-// Remove whitespaces, cases and šumniks
-function normalizeText(text: string) {
-    // Remove whitespaces
-    text = text.trim();
 
-    // Remove whitespace between "-"
-    text = text.replace(/\s+-\s+/g, '-');
-
-    // Case & šumnik insensitive
-    text = text.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
-
-    return text;
-}
-
-function isWin(guess: string, obcina: string) {
+function isWin(guess: string, solution: string) {
     const normalizedGuess = normalizeText(guess);
-    const normalizedObcina = normalizeText(obcina);
+    const normalizedSolution = normalizeText(solution);
 
-    return normalizedGuess === normalizedObcina;
-}
-
-// Fetch dailies from daily.txt
-async function fetchDailies() {
-    try {
-        const response = await fetch("jsons/dailies.json");
-        const dailies = await response.json();
-
-        return dailies;
-    } 
-    catch (error) {
-        console.error("Error loading dailies.json: ", error)
-        return;
-    }
+    return normalizedGuess === normalizedSolution;
 }
 
 export default function Game() {
@@ -98,7 +88,7 @@ export default function Game() {
 
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
-    const [lastUnknownGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
+    const [lastGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
     
     const [allFeatures, setAllFeatures] = useState<Features>();
     const [obcine, setObcine] = useState<string[]>();
@@ -106,14 +96,63 @@ export default function Game() {
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
+    // Daily obcina
     useEffect(() => {
-        async function getDailies() {
-            const dailies = await fetchDailies();
+        async function fetchSolution(url: string) {
+            try {
+                const response = await fetch(url);
+                const solution = await response.json();
 
-            console.log(dailies);
+                return solution;
+            }
+            catch (error) {
+                console.error("Error loading solutions.json: ", error)
+                return;
+            }
         }
-        getDailies();
-        // writeObcineToFile();
+
+        async function getDaily() {
+            const date = new Date();
+            const formattedDate = date.toISOString().split('T')[0]; // yyyy-mm-dd
+
+            const apiUrl = "localhost:5001/api/" + formattedDate;
+
+            const solution = await fetchSolution(apiUrl);
+            console.log(solution);
+
+            return solution;
+        }
+
+        async function getFeatureFromNaziv(features: Features, naziv: string) {
+            return features.find((feature) => feature.properties?.NAZIV === naziv);
+        }
+
+        async function initGame() {
+            const daily = await getDaily();
+            const allFeatures = await fetchAllFeatures();
+    
+            if (!allFeatures) {
+                console.log("Data is empty");
+                return;
+            }
+    
+            setAllFeatures(allFeatures);
+
+            const newObcine = getObcineFromFeatures(allFeatures);
+            setObcine(newObcine);
+
+            const dailyFeature = await getFeatureFromNaziv(allFeatures, daily);
+
+            if (!dailyFeature) {
+                console.log("Daily feature is empty");
+                return;
+            }
+
+            loadGameState(dailyFeature);
+            loadStats();
+        }
+
+        initGame();
     }, []);
 
     // Get stats from localStorage or create new stats
@@ -130,57 +169,63 @@ export default function Game() {
                 winProcentile: 0,
                 streak: 0,
                 maxStreak: 0
-            })
+            });
         }
     } 
 
     // Get gameState from localStorage or create new gameState
-    function loadGameState(randomFeature: Feature) {
+    function loadGameState(feature: Feature) {
         const savedState = localStorage.getItem("gameState");
 
-            if (savedState) {
-                setGameState(JSON.parse(savedState));
-            }
-            else {
-                setGameState({
-                    obcina: randomFeature.properties?.NAZIV,
-                    obcinaFeature: randomFeature,
-                    numberOfGuesses: 1,
-                    showSatellite: false,
-                    win: false,
-                    lose: false,
-                    hints: {
-                        outline: false,
-                        region: false,
-                        adjacentObcine: false,
-                        map: false
-                    }
-                });
-            }
+        if (savedState) {
+            setGameState(JSON.parse(savedState));
+        }
+        else {
+            setGameState({
+                solution: feature.properties?.NAZIV,
+                obcinaFeature: feature,
+                numberOfGuesses: 1,
+                showSatellite: false,
+                win: false,
+                lose: false,
+                hints: {
+                    outline: false,
+                    region: false,
+                    adjacentObcine: false,
+                    map: false
+                }
+            });
+        }
     }
 
     // Init game
-    useEffect(() => {
-        async function initGame() {
-            const data = await fetchObcina();
+    // Random obcina gamemode
+    // useEffect(() => {
+    //     async function initGame() {
+    //         const allFeatures = await fetchAllFeatures();
+    //         const randomFeature = await fetchRandomFeature();
     
-            if (!data) {
-                console.log("Data is empty");
-                return;
-            }
+    //         if (!randomFeature) {
+    //             console.log("Random feature is empty");
+    //             return;
+    //         }
 
-            const { features, randomFeature } = data;
-            setAllFeatures(features);
+    //         if (!allFeatures) {
+    //             console.log("All features is empty");
+    //             return;
+    //         }
 
-            const newObcine = getObcine(features);
-            setObcine(newObcine);
+    //         setAllFeatures(allFeatures);
 
-            loadGameState(randomFeature);
-            loadStats();
-        }
+    //         const newObcine = getObcineFromFeatures(allFeatures);
+    //         setObcine(newObcine);
 
-        initGame();
-    }, []);
+    //         loadGameState(randomFeature);
+    //         loadStats();
+    //     }
+
+    //     initGame();
+    // }, []);
 
     // Write to localStorage on gameState change
     useEffect(() => {
@@ -199,20 +244,27 @@ export default function Game() {
     }, [stats]);
 
     async function resetGame() {
-        const data = await fetchObcina();
-        if (!data) {
-            console.log("Data is empty");
+        // const data = await fetchObcina();
+        const allFeatures = await fetchAllFeatures();
+        const randomFeature = await fetchRandomFeature();
+
+        if (!randomFeature) {
+            console.log("Random feature is empty");
             return;
         }
+            
+        if (!allFeatures) {
+            console.log("All features is empty");
+            return;
+        }
+
+        setAllFeatures(allFeatures);
     
-        const { features, randomFeature } = data;
-        setAllFeatures(features);
-    
-        const newObcine = getObcine(features);
+        const newObcine = getObcineFromFeatures(allFeatures);
         setObcine(newObcine);
     
         setGameState({
-            obcina: randomFeature.properties?.NAZIV,
+            solution: randomFeature.properties?.NAZIV,
             obcinaFeature: randomFeature,
             numberOfGuesses: 1,
             showSatellite: false,
@@ -228,7 +280,7 @@ export default function Game() {
 
     }
      
-    // Reset game for now
+    // Reset game on ESC for now
     useEffect(() => {
         function handleKeyDown(event: KeyboardEvent) {
             if (event.key === "Escape") {
@@ -273,7 +325,7 @@ export default function Game() {
             }
             
             // If correct word set win to true
-            const win = isWin(guess, gameState.obcina);
+            const win = isWin(guess, gameState.solution);
             let lose = gameState.numberOfGuesses >= 5;
             
             if (win) {
@@ -344,18 +396,17 @@ export default function Game() {
 
     if (!gameState) {
         console.log("Game state is empty");
-
         return;
     }
     
-    console.log("Correct obcina: ", gameState.obcina);
+    console.log("Correct obcina: ", gameState.solution);
 
     return (
         <>
             {/* Unknown guess message */}
-            { isUnknownGuess && <UnknownGuessMsg inputValue={lastUnknownGuess} /> }
+            { isUnknownGuess && <UnknownGuessMsg inputValue={lastGuess} /> }
             
-            { gameState.lose && <LoseScreen obcina={gameState.obcina} /> }
+            { gameState.lose && <LoseScreen obcina={gameState.solution} /> }
             { gameState.win && <WinScreen /> }
 
             {/* Map */}
@@ -373,7 +424,7 @@ export default function Game() {
                 { (gameState.hints.map || gameState.hints.outline || gameState.hints.adjacentObcine) && allFeatures && 
                    gameState.obcinaFeature && <Map allFeatures={allFeatures} feature={gameState.obcinaFeature} hints={gameState.hints} showSatellite={gameState.showSatellite} /> }
                 
-                { gameState.hints.region && <Region obcina={gameState.obcina} /> }
+                { gameState.hints.region && <Region obcina={gameState.solution} /> }
             </div>
 
             {/* Input */}

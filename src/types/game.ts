@@ -4,7 +4,7 @@ export type Feature = GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonPropertie
 
 
 export interface GameState {
-    obcina: string;
+    solution: string;
     numberOfGuesses: number;
     obcinaFeature: Feature;
     showSatellite: boolean;
