@@ -85,7 +85,7 @@ function isWin(guess: string, solution: string) {
 
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
-
+    // lmao I'm a comment hehehaha
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
     const [lastGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
