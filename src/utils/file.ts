@@ -1,6 +1,5 @@
-import { polygon, booleanIntersects } from "@turf/turf"; 
 import { Feature, Features } from "../types";
-import { json } from "express";
+import { polygon, booleanIntersects } from "@turf/turf"; 
 
 // https://www.amitmerchant.com/create-and-download-text-files-using-javascript/
 function saveTextAsFile(textToWrite: any, fileNameToSaveAs: string, fileType: string) {
@@ -128,12 +127,6 @@ export async function writeObcineToFile() {
     // saveTextAsFile(combinedObcine.join("\n"), "dailies.txt", "txt");
 }
 
-
-
-
-
-
-
 // Dowload json file to dowloads
 function dowloadJson(data: any, filename: string) {
     const blob = new Blob([data], { type: 'application/json' });
@@ -175,22 +168,4 @@ export function writeAdjacentObcineToFile(allFeatures: Features) {
     let x = JSON.stringify(list, null, 2);
 
     dowloadJson(x, "sosednjeObcine.json");
-}
-
-// Remove whitespaces, cases and šumniks
-export function normalizeText(text: string) {
-    // Remove whitespaces
-    text = text.trim();
-
-    // Remove whitespace between "-"
-    text = text.replace(/\s+-\s+/g, '-');
-
-    // Case & šumnik insensitive
-    text = text.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
-
-    return text;
-}
-
-export async function getFeatureFromNaziv(features: Features, naziv: string) {
-    return features.find((feature) => feature.properties?.NAZIV === naziv);
 }

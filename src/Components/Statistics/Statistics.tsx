@@ -19,6 +19,7 @@ export default function Statistics() {
         if (savedStats) {
             setStats(JSON.parse(savedStats));
         }
+        // Need this'??
         else {
             setStats({
                 playedGames: 0,
@@ -40,7 +41,8 @@ export default function Statistics() {
             </button> */}
 
             <div id='stats-btn' onClick={handleShow}>
-                <img id='logo' src='res/stats2.svg' alt='stats' />
+                {/* TODO: fit to parent inmstead of fixed width */}
+                <img className='w-12' src='res/stats2.svg' alt='stats' />
             </div>
       
             <Modal data-bs-theme="dark" className='stats-modal' show={show} onHide={handleClose} centered >

@@ -11,12 +11,12 @@ export default function WinScreen() {
     }, []);
 
     return (
-        <Modal data-bs-theme="dark" className='win-modal' show centered >
-            <Modal.Header>
+        <Modal data-bs-theme="dark" className='win-modal bg-backdropDim z-999 text-center text-txt animate-fadeIn' show centered >
+            <Modal.Header className='block'>
                 <Modal.Title>Čestitke!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5>Uspešno ste ugotovili občino</h5> 
+                <h5 className='font-bold text-winGreen'>Uspešno ste ugotovili občino</h5> 
                 Igro lahko nadaljujete naslednji dan.
             </Modal.Body>
         </Modal>

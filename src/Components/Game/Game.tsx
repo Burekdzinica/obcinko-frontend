@@ -13,7 +13,8 @@ import { GeoJsonProps, Features, Feature, GameState, Stats } from "../../types/i
 import './game.css'
 
 import { useState, useEffect } from "react";
-import { normalizeText, getFeatureFromNaziv } from "../../utils/utils";
+import { normalizeText } from "../../utils/other";
+import { getFeatureFromNaziv, getObcineFromFeatures } from "../../utils/feature";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 
@@ -73,20 +74,15 @@ async function fetchSolution(url: string) {
     }
 }
 
-// Return list of obcine
-function getObcineFromFeatures(allFeatures: Features) {
-    const obcine: string[] = []; 
+async function getDaily() {
+    const date = new Date();
+    const formattedDate = date.toISOString().split('T')[0]; // yyyy-mm-dd
 
-    allFeatures.forEach(feature => {
-        if (!feature.properties) {
-            console.error("Feature properties are empty");
-            return;
-        }
-        const naziv = feature.properties.NAZIV;
-        obcine.push(naziv);
-    })
-    
-    return obcine; 
+    const apiUrl = "http://localhost:5001/api/" + formattedDate;
+
+    const solution = await fetchSolution(apiUrl);
+
+    return solution;
 }
 
 function isWin(guess: string, solution: string) {
@@ -109,24 +105,8 @@ export default function Game() {
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
-    
-    async function getDaily() {
-        const date = new Date();
-        const formattedDate = date.toISOString().split('T')[0]; // yyyy-mm-dd
-
-        const apiUrl = "http://localhost:5001/api/" + formattedDate;
-
-        const solution = await fetchSolution(apiUrl);
-
-        return solution;
-    }
-
     // Daily obcina
     useEffect(() => {
-        async function getFeatureFromNaziv(features: Features, naziv: string) {
-            return features.find((feature) => feature.properties?.NAZIV === naziv);
-        }
-
         async function initGame() {
             const daily = await getDaily();
             const allFeatures = await fetchAllFeatures();

@@ -1,38 +1,13 @@
 .win-modal .modal-content {
-    background-color: var(--modal-bg-color);
-    color: var(--text-color);
-
     border: 1px solid green;
     box-shadow: inset 0 0 4px rgba(0, 255, 0, 0.2); 
-        
-    animation: fadeIn 0.5s ease-in-out;
-    text-align: center;
     padding: var(--modal-padding);
-    z-index: 999;
 }
 
 .win-modal {
     backdrop-filter: blur(var(--blur-size));
-    background-color: var(--backdrop-dim);
 }
 
 .win-modal .modal-header {
-    display: block; /* to align text */
+    display: block;
 }
-
-@keyframes fadeIn {
-    0% { 
-        opacity: 0; 
-        transform: translateY(-50px); 
-    }
-    100% { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
-}
-
-.win-modal h5 {
-    color: rgb(0, 190, 0);
-    font-weight: bold;
-}
-
