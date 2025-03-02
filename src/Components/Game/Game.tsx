@@ -13,7 +13,7 @@ import { GeoJsonProps, Features, Feature, GameState, Stats } from "../../types/i
 import './game.css'
 
 import { useState, useEffect } from "react";
-import { normalizeText } from "../../utils/utils";
+import { normalizeText, getFeatureFromNaziv } from "../../utils/utils";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 
@@ -60,6 +60,19 @@ async function fetchAllFeatures() {
     }
 }
 
+async function fetchSolution(url: string) {
+    try {
+        const response = await fetch(url);
+        const solution = await response.json();
+
+        return solution;
+    }
+    catch (error) {
+        console.error("Error loading solutions.json: ", error)
+        return;
+    }
+}
+
 // Return list of obcine
 function getObcineFromFeatures(allFeatures: Features) {
     const obcine: string[] = []; 
@@ -85,7 +98,7 @@ function isWin(guess: string, solution: string) {
 
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
-    // lmao I'm a comment hehehaha
+    // lmao I'm a comment 
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
     const [lastGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
@@ -96,33 +109,20 @@ export default function Game() {
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
+    
+    async function getDaily() {
+        const date = new Date();
+        const formattedDate = date.toISOString().split('T')[0]; // yyyy-mm-dd
+
+        const apiUrl = "http://localhost:5001/api/" + formattedDate;
+
+        const solution = await fetchSolution(apiUrl);
+
+        return solution;
+    }
+
     // Daily obcina
     useEffect(() => {
-        async function fetchSolution(url: string) {
-            try {
-                const response = await fetch(url);
-                const solution = await response.json();
-
-                return solution;
-            }
-            catch (error) {
-                console.error("Error loading solutions.json: ", error)
-                return;
-            }
-        }
-
-        async function getDaily() {
-            const date = new Date();
-            const formattedDate = date.toISOString().split('T')[0]; // yyyy-mm-dd
-
-            const apiUrl = "localhost:5001/api/" + formattedDate;
-
-            const solution = await fetchSolution(apiUrl);
-            console.log(solution);
-
-            return solution;
-        }
-
         async function getFeatureFromNaziv(features: Features, naziv: string) {
             return features.find((feature) => feature.properties?.NAZIV === naziv);
         }
@@ -141,7 +141,7 @@ export default function Game() {
             const newObcine = getObcineFromFeatures(allFeatures);
             setObcine(newObcine);
 
-            const dailyFeature = await getFeatureFromNaziv(allFeatures, daily);
+            const dailyFeature = await getFeatureFromNaziv(allFeatures, daily.solution);
 
             if (!dailyFeature) {
                 console.log("Daily feature is empty");
@@ -244,28 +244,29 @@ export default function Game() {
     }, [stats]);
 
     async function resetGame() {
-        // const data = await fetchObcina();
+        const daily = await getDaily();
         const allFeatures = await fetchAllFeatures();
-        const randomFeature = await fetchRandomFeature();
 
-        if (!randomFeature) {
-            console.log("Random feature is empty");
-            return;
-        }
-            
         if (!allFeatures) {
-            console.log("All features is empty");
+            console.log("Data is empty");
             return;
         }
 
         setAllFeatures(allFeatures);
-    
+
         const newObcine = getObcineFromFeatures(allFeatures);
         setObcine(newObcine);
-    
+
+        const dailyFeature = await getFeatureFromNaziv(allFeatures, daily.solution);
+
+        if (!dailyFeature) {
+            console.log("Daily feature is empty");
+            return;
+        }
+
         setGameState({
-            solution: randomFeature.properties?.NAZIV,
-            obcinaFeature: randomFeature,
+            solution: dailyFeature.properties?.NAZIV,
+            obcinaFeature: dailyFeature,
             numberOfGuesses: 1,
             showSatellite: false,
             win: false,
@@ -278,6 +279,7 @@ export default function Game() {
             },
         });
 
+        // loadStats();
     }
      
     // Reset game on ESC for now
@@ -420,10 +422,11 @@ export default function Game() {
                     </button> 
                 }
                 
-                {/* Show map or outline or adjacent obcine */}
+                {/* Show map */}
                 { (gameState.hints.map || gameState.hints.outline || gameState.hints.adjacentObcine) && allFeatures && 
                    gameState.obcinaFeature && <Map allFeatures={allFeatures} feature={gameState.obcinaFeature} hints={gameState.hints} showSatellite={gameState.showSatellite} /> }
                 
+                {/* Show region */}
                 { gameState.hints.region && <Region obcina={gameState.solution} /> }
             </div>
 

@@ -5,20 +5,6 @@ import { Form, Dropdown, InputGroup, Button } from 'react-bootstrap';
 import './input.css';
 import { useState, useRef, useEffect } from "react";
 
-
-// function normalizeText(text: string) {
-//     // Remove whitespaces
-//     text = text.trim();
-
-//     // Remove whitespace between "-"
-//     text = text.replace(/\s+-\s+/g, '-');
-
-//     // Case & šumnik insensitive
-//     text = text.toLowerCase().replace(/[čšž]/g, match => ({ č: 'c', š: 's', ž: 'z' })[match] ?? match);
-
-//     return text;
-// }
-
 // Custom validation texts
 function validate() {   
     const input = document.getElementById("inputId") as HTMLInputElement;
