@@ -11,6 +11,8 @@ module.exports = {
         txt: "var(--text-color)",
         modal: "var(--modal-bg-color)",
         navbar: "var(--bg-navbar)",
+        hover: "var(--hover-color)",
+        active: "var(--active-color)",
       },
 
       padding: {

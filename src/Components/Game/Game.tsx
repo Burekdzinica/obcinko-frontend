@@ -78,7 +78,7 @@ async function getDaily() {
     const date = new Date();
     const formattedDate = date.toISOString().split('T')[0]; // yyyy-mm-dd
 
-    const apiUrl = "http://localhost:5001/api/" + formattedDate;
+    const apiUrl = process.env.REACT_APP_API_URL + formattedDate;
 
     const solution = await fetchSolution(apiUrl);
 

@@ -37,33 +37,31 @@ export default function Statistics() {
 
     return (
         <>
-            {/* <button onClick={handleShow} >
-            </button> */}
-
-            <div id='stats-btn' onClick={handleShow}>
+            {/* Icon */ }
+            <div className='rounded-primary active:bg-active active:scale-90 hover:bg-hover p-1 hover:scale-105' onClick={handleShow}>
                 {/* TODO: fit to parent inmstead of fixed width */}
                 <img className='w-12' src='res/stats2.svg' alt='stats' />
             </div>
       
-            <Modal data-bs-theme="dark" className='stats-modal' show={show} onHide={handleClose} centered >
-                <Modal.Header closeButton data-bs-theme="dark">
+            <Modal data-bs-theme="dark" className='stats-modal bg-[linear-gradient(135deg,rgb(30,30,30),rgb(15,15,15))] bg-backdropDim animate-fadeIn text-txt p-modal text-center ' show={show} onHide={handleClose} centered >
+                <Modal.Header className='p-2 relative' closeButton data-bs-theme="dark">
                     <Modal.Title>Statistika</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <div>
-                        Igrane igre <br/> <span className="stats-atr">{stats?.playedGames}</span>
+                <Modal.Body className='flex flex-col gap-2.5 text-lg'>
+                    <div className='bg-stone-100/5 p-2 rounded-primary duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Igrane igre <br/> <span className="text-green-600">{stats?.playedGames}</span>
                     </div>
-                    <div>
-                        Zmage <br/> <span className="stats-atr">{stats?.wins}</span>
+                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Zmage <br/> <span className="text-green-600">{stats?.wins}</span>
                     </div>
-                    <div>
-                        Zmage % <br/> <span className="stats-atr">{stats?.winProcentile}%</span>
+                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Zmage % <br/> <span className="text-green-600">{stats?.winProcentile}%</span>
                     </div>
-                    <div>
-                        Zaporednih zmag <br/> <span className="stats-atr">{stats?.streak}</span>
+                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Zaporednih zmag <br/> <span className="text-green-600">{stats?.streak}</span>
                     </div>
-                    <div>
-                        Najvecje zaporedje zmag <br/> <span className="stats-atr">{stats?.maxStreak}</span>
+                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Najvecje zaporedje zmag <br/> <span className="text-green-600">{stats?.maxStreak}</span>
                     </div>
                 </Modal.Body>
             </Modal>

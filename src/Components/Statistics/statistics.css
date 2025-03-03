@@ -1,30 +1,12 @@
 .stats-modal .modal-content {
-    /* background-color: var(--modal-bg-color); */
-    color: var(--text-color);
-    padding: var(--modal-padding);
-    z-index: 999;
-    text-align: center;
-
     background: linear-gradient(135deg, rgb(30, 30, 30), rgb(15, 15, 15));
     border: 2px solid rgba(0, 255, 100, 0.5);
     box-shadow: 0 0 15px rgba(0, 255, 100, 0.3);
-    animation: fadeIn 0.3s ease-in-out;
 }
 
 /* Background */
 .stats-modal {
-    background-color: var(--backdrop-dim);
     backdrop-filter: blur(var(--blur-size));
-}
-
-/* Modal header */
-.stats-modal .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0.5em;
-    position: relative;
 }
 
 /* Modal title */
@@ -32,7 +14,6 @@
     font-weight: bold;
     font-size: 2em;
     flex-grow: 1;
-    /* margin-left: 1em; */
 
     background: linear-gradient(90deg, rgb(240, 243, 37) 0%, rgba(131,208,34,1) 30%, rgba(40,199,82,1) 100%); 
     background-clip: text;
@@ -42,24 +23,8 @@
 
 /* Modal body */
 .stats-modal .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 1.2em;
     padding: 1.5em;
 }
-
-.stats-modal .modal-body div {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 0.5em;
-    border-radius: var(--border-radius);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.stats-modal .modal-body div:hover {
-    box-shadow: 0 0 10px rgba(0, 255, 100, 0.3);
-}
-
 
 /* Modal close button (X) */
 .stats-modal .btn-close {
@@ -69,35 +34,4 @@
     transform: translateY(-50%);
 }
 
-/* Button */
-#stats-btn {
-    padding: 0.2em;
-    /* filter: invert(62%) sepia(68%) saturate(5%) hue-rotate(11deg) brightness(95%) contrast(96%); */
-}
-
-#stats-btn:hover {
-    background-color: var(--hover-color);
-    border-radius: var(--border-radius);
-    transform: scale(1.05);
-}
-
-#stats-btn:active {
-    background-color: var(--active-color);
-    border-radius: var(--border-radius);
-    transform: scale(0.9);
-}
-
-.stats-atr {
-    color: rgb(34, 153, 34);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* filter: invert(62%) sepia(68%) saturate(5%) hue-rotate(11deg) brightness(95%) contrast(96%); */

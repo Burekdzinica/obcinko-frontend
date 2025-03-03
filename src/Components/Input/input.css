@@ -16,57 +16,6 @@
     box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-#side-btn-container {
-    background-color: dimgray;
-    border: 1px solid black;
-    padding: 0;
-}
-
-#side-btn {
-    background-color: dimgray;
-    border: none;
-    /* color: black; */
-    /* color: var(--text-color); */
-    color: black;
-    border-radius: 0 5px 5px 0 !important;
-}
-
-#side-btn:hover {
-    background-color: var(--hover-color);
-}
-
-#side-btn:active {
-    background-color: var(--active-color);
-}
-
-.dropdown-list {
-    max-height: 150px;
-    width: 30vw;
-    overflow: auto;
-    margin: auto;
-}
-
-/* .dropdown-list .dropdown-menu {
-    border-radius: 10px !important;
-} */
-
-.dropdown-option {
-    background-color: dimgray;
-    color: var(--text-color);
-    padding: 3px;
-}
-
-.dropdown-option:hover {
-    background-color: rgb(85, 84, 84);
-    /* color: rgb(219, 217, 217); */
-    color: var(--text-color);
-}
-
-.dropdown-option.highlighted {
-    background-color: rgb(85, 84, 84);
-    color: var(--text-color);
-}
-
 @media (width < 680px) {
     .input-group {
         width: 70vw;
