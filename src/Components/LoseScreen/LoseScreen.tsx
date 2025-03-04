@@ -4,12 +4,15 @@ import { Modal } from 'react-bootstrap';
 
 export default function LoseScreen({ obcina }: {obcina: string}) {
     return (
-        <Modal data-bs-theme="dark" className='lose-modal' show centered >
-            <Modal.Header>
+        <Modal className='lose-modal bg-backdropDim text-center animate-fadeIn text-txt' 
+            data-bs-theme="dark" 
+            show centered 
+        >
+            <Modal.Header className='!block'>
                 <Modal.Title>Pravilna občina: { obcina } </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5>Konec igre</h5> 
+                <h5 className='font-bold text-red-700' >Konec igre</h5> 
                 Igro lahko nadaljujete naslednji dan.
             </Modal.Body>
         </Modal>

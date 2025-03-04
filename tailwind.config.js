@@ -13,6 +13,7 @@ module.exports = {
         navbar: "var(--bg-navbar)",
         hover: "var(--hover-color)",
         active: "var(--active-color)",
+        map: " var(--map-container-bg-color)",
       },
 
       padding: {

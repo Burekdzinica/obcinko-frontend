@@ -90,7 +90,11 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
                     }
                     {/* <ChangeTooltipSize /> */}
                     <Outline feature={feature} />
-                    <AdjacentObcine options={Options.CENTER} allFeatures={allFeatures} targetFeature={feature} />
+                    <AdjacentObcine 
+                        options={Options.CENTER} 
+                        allFeatures={allFeatures} 
+                        targetFeature={feature} 
+                    />
                     <WholeMap />
                 </MapContainer>
             );
@@ -102,7 +106,11 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
                     {satelliteContent}
                     {/* <ChangeTooltipSize /> */}
                     <Outline feature={feature} />
-                    <AdjacentObcine options={Options.ADJACENT} allFeatures={allFeatures} targetFeature={feature} />
+                    <AdjacentObcine 
+                        options={Options.ADJACENT} 
+                        allFeatures={allFeatures} 
+                        targetFeature={feature} 
+                    />
                 </MapContainer>
             );
             break;

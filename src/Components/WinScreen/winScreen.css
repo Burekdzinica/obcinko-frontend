@@ -7,7 +7,3 @@
 .win-modal {
     backdrop-filter: blur(var(--blur-size));
 }
-
-.win-modal .modal-header {
-    display: block;
-}

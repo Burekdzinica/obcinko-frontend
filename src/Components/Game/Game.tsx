@@ -5,6 +5,7 @@ import WrongGuessMsg from "../WrongGuessMsg/WrongGuessMsg";
 import UnknownGuessMsg from "../UnknownGuessMsg/UnknownGuessMsg";
 import LoseScreen from "../LoseScreen/LoseScreen";
 import WinScreen from "../WinScreen/WinScreen";
+import SatelliteBtn from "../SatelliteBtn/SatelliteBtn";
 
 // import { writeObcineToFile } from '../../utils/utils';
 
@@ -94,7 +95,6 @@ function isWin(guess: string, solution: string) {
 
 export default function Game() {
     const [inputValue, setInputValue] = useState('');
-    // lmao I'm a comment 
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
     const [lastGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
@@ -386,33 +386,56 @@ export default function Game() {
     return (
         <>
             {/* Unknown guess message */}
-            { isUnknownGuess && <UnknownGuessMsg inputValue={lastGuess} /> }
+            { isUnknownGuess && 
+                <UnknownGuessMsg inputValue={lastGuess} /> 
+            }
             
-            { gameState.lose && <LoseScreen obcina={gameState.solution} /> }
-            { gameState.win && <WinScreen /> }
+            { gameState.lose && 
+                <LoseScreen obcina={gameState.solution} /> 
+            }
+
+            { gameState.win && 
+                <WinScreen /> 
+            }
 
             {/* Map */}
-            <div className="map offset-lg-3 col-lg-6 offset-md-1 col-md-10 justify-content-center d-flex">
-                { isWrongGuess && <WrongGuessMsg /> }
+            <div className="relative rounded-primary p-0 m-auto bg-map !w-[70vw] h-[67vh] border-1 border-1 border-white/25">
+                { isWrongGuess && 
+                    <WrongGuessMsg /> 
+                }
 
                 {/* FUj to */}
                 { gameState.hints.outline && 
-                    <button id="satellite-btn" onClick={handleSatellite}>
-                        <img id="satellite-img" src="../../res/satellite.svg" />
-                    </button> 
+                    <SatelliteBtn handleSatellite={handleSatellite} />
                 }
                 
                 {/* Show map */}
-                { (gameState.hints.map || gameState.hints.outline || gameState.hints.adjacentObcine) && allFeatures && 
-                   gameState.obcinaFeature && <Map allFeatures={allFeatures} feature={gameState.obcinaFeature} hints={gameState.hints} showSatellite={gameState.showSatellite} /> }
+                { (gameState.hints.map || gameState.hints.outline || gameState.hints.adjacentObcine) && 
+                    <Map 
+                        allFeatures={allFeatures!} 
+                        feature={gameState.obcinaFeature} 
+                        hints={gameState.hints} 
+                        showSatellite={gameState.showSatellite} 
+                    /> 
+                }
                 
                 {/* Show region */}
-                { gameState.hints.region && <Region obcina={gameState.solution} /> }
+                { gameState.hints.region && 
+                    <Region obcina={gameState.solution} /> 
+                }
             </div>
 
             {/* Input */}
             <div className="col-lg-6 offset-lg-3 mt-3">
-                { obcine && <Input inputValue={inputValue} setInputValue={setInputValue} handleGuess={handleGuess} numberOfGuesses={gameState.numberOfGuesses} obcine={obcine} /> }
+                { obcine && 
+                    <Input 
+                        inputValue={inputValue} 
+                        setInputValue={setInputValue} 
+                        handleGuess={handleGuess} 
+                        numberOfGuesses={gameState.numberOfGuesses} 
+                        obcine={obcine} 
+                    /> 
+                }
             </div>
         </>
     );
