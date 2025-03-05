@@ -224,13 +224,25 @@ export default function Game({ gameMode }: GameProps) {
                 newMaxStreak = stats.streak + 1;                       
             }
     
-            setStats(prev => ({ 
-                ...prev!, 
-                playedGames: prev!.playedGames++,
-                wins: prev!.wins++,
-                streak: prev!.streak++,
-                maxStreak: newMaxStreak
-            }));
+            // setStats(prev => ({ 
+            //     ...prev, 
+            //     playedGames: prev!.playedGames++,
+            //     wins: prev!.wins++,
+            //     streak: prev!.streak++,
+            //     maxStreak: newMaxStreak
+            // }));
+            setStats(prev => {
+                if (!prev) return prev; // Ensure `prev` exists before updating
+            
+                return {
+                    ...prev,
+                    playedGames: prev.playedGames + 1,
+                    wins: win ? prev.wins + 1 : prev.wins,
+                    streak: win ? prev.streak + 1 : 0,
+                    maxStreak: win && prev.streak + 1 > prev.maxStreak ? prev.streak + 1 : prev.maxStreak,
+                };
+            });
+            
         }
 
         else if (lose) {
