@@ -210,7 +210,6 @@ export default function Game({ gameMode }: GameProps) {
         }
 
         setAllFeatures(allFeatures);
-
         initGameState(feature);
     }
 
@@ -242,7 +241,6 @@ export default function Game({ gameMode }: GameProps) {
             }));
         }
     }
-
 
     // Write to localStorage on stats change
     useEffect(() => {
