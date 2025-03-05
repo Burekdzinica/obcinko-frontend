@@ -25,3 +25,12 @@ export interface Stats {
     streak: number;
     maxStreak: number;
 }
+
+export interface GameProps {
+    gameMode: GAME_MODES;
+}
+
+export enum GAME_MODES {
+    DAILY,
+    PRACTICE
+};

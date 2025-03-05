@@ -9,7 +9,7 @@ import SatelliteBtn from "../SatelliteBtn/SatelliteBtn";
 
 // import { writeObcineToFile } from '../../utils/utils';
 
-import { GeoJsonProps, Features, Feature, GameState, Stats } from "../../types/index";
+import { GeoJsonProps, Features, Feature, GameState, Stats, GameProps, GAME_MODES } from "../../types/index";
 
 import './game.css'
 
@@ -93,7 +93,7 @@ function isWin(guess: string, solution: string) {
     return normalizedGuess === normalizedSolution;
 }
 
-export default function Game() {
+export default function Game({ gameMode }: GameProps) {
     const [inputValue, setInputValue] = useState('');
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);

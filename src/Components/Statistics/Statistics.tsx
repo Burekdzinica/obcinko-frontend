@@ -38,16 +38,31 @@ export default function Statistics() {
     return (
         <>
             {/* Icon */ }
-            <div className='rounded-primary active:bg-active active:scale-90 hover:bg-hover p-1 hover:scale-105' onClick={handleShow}>
+            <div className='rounded-primary active:bg-active active:scale-90 hover:bg-hover p-1 hover:scale-105' 
+                onClick={handleShow}
+            >
                 {/* TODO: fit to parent inmstead of fixed width */}
-                <img className='w-12' src='res/stats2.svg' alt='stats' />
+                <img className='w-12' 
+                    src='res/stats2.svg' 
+                    alt='stats' 
+                />
             </div>
       
-            <Modal data-bs-theme="dark" className='stats-modal bg-[linear-gradient(135deg,rgb(30,30,30),rgb(15,15,15))] bg-backdropDim animate-fadeIn text-txt p-modal text-center ' show={show} onHide={handleClose} centered >
-                <Modal.Header className='p-2 relative' closeButton data-bs-theme="dark">
-                    <Modal.Title>Statistika</Modal.Title>
+            <Modal className='stats-modal bg-[linear-gradient(135deg,rgb(30,30,30),rgb(15,15,15))] bg-backdropDim animate-fadeIn text-txt p-modal text-center ' 
+                data-bs-theme="dark"
+                show={show} 
+                onHide={handleClose} 
+                centered 
+            >
+                <Modal.Header className='p-2 relative' 
+                    closeButton 
+                    data-bs-theme="dark"
+                >
+                    <Modal.Title className='!font-bold !text-[2em] !text-transparent !bg-clip-text tracking-wider grow bg-gradient-to-r from-yellow-400 via-lime-500 to-green-600'>
+                        Statistika
+                    </Modal.Title>
                 </Modal.Header>
-                <Modal.Body className='flex flex-col gap-2.5 text-lg'>
+                <Modal.Body className='flex flex-col gap-2.5 text-lg !p-[1.5em]'>
                     <div className='bg-stone-100/5 p-2 rounded-primary duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
                         Igrane igre <br/> <span className="text-green-600">{stats?.playedGames}</span>
                     </div>

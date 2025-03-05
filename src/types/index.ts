@@ -3,3 +3,4 @@ export * from "./input";
 export * from "./game";
 export * from "./map";
 export * from "./satelliteBtn";
+export * from "./gameModes";

@@ -9,23 +9,6 @@
     backdrop-filter: blur(var(--blur-size));
 }
 
-/* Modal title */
-.stats-modal .modal-title {
-    font-weight: bold;
-    font-size: 2em;
-    flex-grow: 1;
-
-    background: linear-gradient(90deg, rgb(240, 243, 37) 0%, rgba(131,208,34,1) 30%, rgba(40,199,82,1) 100%); 
-    background-clip: text;
-    color: transparent;
-    letter-spacing: 1.5px;
-}
-
-/* Modal body */
-.stats-modal .modal-body {
-    padding: 1.5em;
-}
-
 /* Modal close button (X) */
 .stats-modal .btn-close {
     position: absolute;
