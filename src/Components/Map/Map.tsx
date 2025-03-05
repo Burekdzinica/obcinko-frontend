@@ -66,7 +66,7 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
             );
             break;
 
-        case hints.outline:
+        case true:
             mapContent = (
                 <MapContainer {...mapOptions}>
                     {satelliteContent}

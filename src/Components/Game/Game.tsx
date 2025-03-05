@@ -94,33 +94,32 @@ function isWin(guess: string, solution: string) {
 }
 
 export default function Game({ gameMode }: GameProps) {
+    // Input & Guess managment
     const [inputValue, setInputValue] = useState('');
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
     const [lastGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
     
+    // Game Data
     const [allFeatures, setAllFeatures] = useState<Features>();
     const [obcine, setObcine] = useState<string[]>();
    
+    // States
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
+    // Screens
     const [lastSolution, setLastSolution] = useState("");
     const [showLoseScreen, setShowLoseScreen] = useState<boolean>(false);
     const [showWinScreen, setShowWinScreen] = useState<boolean>(false);
 
-    function loadLocalStorage() {
-        // const savedGameState = loadFromLocalStorage("gameState", config.gameStateDefault);
-        const savedStats = loadFromLocalStorage("stats", config.statsDefault);
-    
-        // setGameState(savedGameState);
-        setStats(savedStats);
-    }
-
+    // Load stats from local storage
     useEffect(() => {
-        loadLocalStorage();
+        const savedStats = loadFromLocalStorage("stats", config.statsDefault);
+        setStats(savedStats);
     }, []);
 
+    // Handle game mode changes
     useEffect(() => {
         switch (gameMode) {
             case GAME_MODES.DAILY:
@@ -134,13 +133,21 @@ export default function Game({ gameMode }: GameProps) {
 
     }, [gameMode]);
 
-
+    // Write to localStorage on gameState change
     useEffect(() => {
-        if (gameState?.win) {
+        if (!gameState)
+            return;
+
+        // Add gameState to localStorage only on daily mode
+        if (gameMode === GAME_MODES.DAILY) {
+            localStorage.setItem("gameState", JSON.stringify(gameState));
+        }
+
+        if (gameState.win) {
             setShowWinScreen(true);
         }
 
-        else if (gameState?.lose) {
+        else if (gameState.lose) {
             setShowLoseScreen(true);
         }
 
@@ -155,10 +162,10 @@ export default function Game({ gameMode }: GameProps) {
             win: false,
             lose: false,
             hints: {
-                outline: false,
                 region: false,
                 adjacentObcine: false,
-                map: false
+                map: false,
+                satellite: false,
             }
         });
     }
@@ -185,13 +192,7 @@ export default function Game({ gameMode }: GameProps) {
         }
 
         const savedState = localStorage.getItem("gameState");
-
-        if (savedState) {
-            setGameState(JSON.parse(savedState));
-        }
-        else {
-            initGameState(feature);
-        }
+        savedState ? setGameState(JSON.parse(savedState)) : initGameState(feature);
     }
 
     async function startPracticeGame() {
@@ -242,16 +243,6 @@ export default function Game({ gameMode }: GameProps) {
         }
     }
 
-    // Write to localStorage on gameState change
-    useEffect(() => {
-        if (!gameState)
-            return;
-            
-        // Only save daily games
-        if (gameMode === GAME_MODES.DAILY)
-            localStorage.setItem("gameState", JSON.stringify(gameState));
-        
-    }, [gameState]);
 
     // Write to localStorage on stats change
     useEffect(() => {
@@ -279,10 +270,10 @@ export default function Game({ gameMode }: GameProps) {
             win: false,
             lose: false,
             hints: {
-                outline: false,
                 region: false,
                 adjacentObcine: false,
                 map: false,
+                satellite: false,
             },
         });
     }
@@ -290,18 +281,11 @@ export default function Game({ gameMode }: GameProps) {
     // Update hints
     function updateHints(level: number) {
         const newHints = {
-            outline: level >= 1,
-            region: level >= 2,
-            adjacentObcine: level >= 3,
-            map: level >= 4,
+            region: level >= 1,
+            adjacentObcine: level >= 2,
+            map: level >= 3,
+            satellite: level >= 4,
         };
-        
-        // const newHints = {
-        //     region: level >= 1,
-        //     adjacentObcine: level >= 2,
-        //     map: level >= 3,
-        //     satellite: level >= 4,
-        // };
     
         setGameState(prev => ({
             ...prev!,
@@ -459,7 +443,7 @@ export default function Game({ gameMode }: GameProps) {
                 /> 
             }
 
-            { gameState && 
+            { gameState?.win && 
                 <WinScreen 
                     show={showWinScreen}
                     setShow={setShowWinScreen}
@@ -474,19 +458,28 @@ export default function Game({ gameMode }: GameProps) {
                 }
 
                 {/* FUj to */}
-                { gameState?.hints.outline && 
+                { gameState?.hints.satellite && 
                     <SatelliteBtn handleSatellite={handleSatellite} />
                 }
                 
                 {/* Show map */}
-                { (gameState?.hints.map || gameState?.hints.outline || gameState?.hints.adjacentObcine) && 
+                { gameState && 
+                    <Map 
+                            allFeatures={allFeatures!} 
+                            feature={gameState.feature} 
+                            hints={gameState.hints} 
+                            showSatellite={gameState.showSatellite} 
+                    /> 
+
+                }
+                {/* { (gameState?.hints.map || gameState?.hints.outline || gameState?.hints.adjacentObcine) && 
                     <Map 
                         allFeatures={allFeatures!} 
                         feature={gameState.feature} 
                         hints={gameState.hints} 
                         showSatellite={gameState.showSatellite} 
                     /> 
-                }
+                } */}
                 
                 {/* Show region */}
                 { gameState?.hints.region && 

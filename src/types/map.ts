@@ -1,10 +1,10 @@
 import { Feature, Features } from "./game";
 
 export interface Hints {
-    outline: boolean;
     region: boolean;
     adjacentObcine: boolean;
     map: boolean;
+    satellite: boolean;
 }
 
 export interface AdjacentObcineProps {

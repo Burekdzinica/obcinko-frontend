@@ -11,10 +11,10 @@ export interface GameState {
     win: boolean;
     lose: boolean;
     hints: {
-        outline: boolean;
         region: boolean;
         adjacentObcine: boolean;
         map: boolean;
+        satellite: boolean;
     };
 }
 
