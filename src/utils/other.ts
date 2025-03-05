@@ -11,3 +11,8 @@ export function normalizeText(text: string) {
 
     return text;
 }
+
+export function loadFromLocalStorage<T>(key: string, defaultValue: T): T {
+    const savedData = localStorage.getItem(key);
+    return savedData ? JSON.parse(savedData) : defaultValue;
+}

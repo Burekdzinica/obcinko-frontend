@@ -14,7 +14,7 @@ export default async function launchConfetti() {
     startVelocity: 60,
     particleCount: 300,
     scalar: 3,
-    zIndex: 1000,
+    zIndex: -1,
     shapes: ["image"],
     shapeOptions: {
       // https://sl.wikipedia.org/wiki/Seznam_ob%C4%8Din_v_Sloveniji

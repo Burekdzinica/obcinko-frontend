@@ -10,6 +10,11 @@ export default function GameModesBtn({ setGameMode }: GameModesProps) {
     const handleClose = () => setShow(false); 
     const handleShow = () => setShow(true);
 
+    const handleGameModeSelect = (mode: GAME_MODES) => {
+        setGameMode(mode);
+        handleClose();
+    };
+
     return (
         <>
             <button className="rounded-primary active:bg-active active:scale-90 hover:bg-hover p-1 hover:scale-105" >
@@ -30,20 +35,22 @@ export default function GameModesBtn({ setGameMode }: GameModesProps) {
                     closeButton 
                     data-bs-theme="dark"
                 >
-                    <Modal.Title className="w-100 text-center !font-bold !text-txt">
+                    <Modal.Title className="w-full text-center !font-bold !text-txt">
                         Načini igre
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="text-txt text-center flex justify-evenly">
-                    <button className="border p-2 rounded-primary bg-stone-900 hover:bg-hover active:bg-active"
-                        onClick={() => setGameMode(GAME_MODES.DAILY)}
+                <Modal.Body className="text-white text-center space-y-4">
+                    <button
+                        className="border border-transparent p-3 rounded-full bg-stone-800 hover:bg-hover active:bg-active text-white w-full transition-all"
+                        onClick={() => handleGameModeSelect(GAME_MODES.DAILY)}
                     >
-                        Daily
+                        Dnevno
                     </button>
-                    <button className="border p-2 rounded-primary bg-stone-900 hover:bg-hover active:bg-active"
-                        onClick={() => setGameMode(GAME_MODES.PRACTICE)}
+                    <button
+                        className="border border-transparent p-3 rounded-full bg-stone-800 hover:bg-hover active:bg-active text-white w-full transition-all"
+                        onClick={() => handleGameModeSelect(GAME_MODES.PRACTICE)}
                     >
-                        Practice
+                        Vaja
                     </button>
                 </Modal.Body>
             </Modal>

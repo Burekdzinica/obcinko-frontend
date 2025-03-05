@@ -7,3 +7,10 @@
 .lose-modal {
     backdrop-filter: blur(var(--blur-size));
 }
+
+.lose-modal .btn-close {
+    position: absolute;
+    right: 1em;
+    top: 27%;
+    transform: translateY(-50%);
+}

@@ -1,14 +1,24 @@
+import { useState } from 'react';
 import './loseScreen.css';
 
 import { Modal } from 'react-bootstrap';
 
 export default function LoseScreen({ obcina }: {obcina: string}) {
+    const [show, setShow] = useState(true);
+
+    const handleClose = () => setShow(false); 
+
     return (
         <Modal className='lose-modal bg-backdropDim text-center animate-fadeIn text-txt' 
             data-bs-theme="dark" 
-            show centered 
+            centered 
+            show={show}
+            onHide={handleClose}
         >
-            <Modal.Header className='!block'>
+            <Modal.Header className='!block'
+                onHide={handleClose}
+                closeButton
+            >
                 <Modal.Title>Pravilna občina: { obcina } </Modal.Title>
             </Modal.Header>
             <Modal.Body>

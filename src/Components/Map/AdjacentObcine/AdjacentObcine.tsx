@@ -13,11 +13,17 @@ const Options = {
     CENTER: "CENTER" as const,
 };
 
-// Return list of features of adjacent obcine
+// Return list of features from sosednjeObcine.json
 async function findAdjacentFeatures(allFeatures: Features, targetFeature: Feature) {
     try {
+        if (!targetFeature) {
+            console.log("Target feature is empty");
+            return;
+        }
+        
         const response = await fetch('../../jsons/sosednjeObcine.json');
         const obcine: RegionData = await response.json();
+
 
         // Get obcine naziv from adjacent obcina
         const targetObcina = targetFeature.properties?.NAZIV;
@@ -31,7 +37,7 @@ async function findAdjacentFeatures(allFeatures: Features, targetFeature: Featur
         }
     
         let adjacentFeatures: Features = [];
-    
+
         allFeatures.forEach(feature => {
             if (!feature.properties) {
                 console.error("Random feature properties is empty");

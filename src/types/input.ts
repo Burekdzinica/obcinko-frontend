@@ -1,3 +1,5 @@
+import { GameState } from "./game";
+
 export type InputEvent = React.ChangeEvent<HTMLInputElement>;
 export type FormEvent = React.FormEvent<HTMLFormElement>;
 export type ClickEvent = React.MouseEvent<HTMLElement>;
@@ -9,4 +11,5 @@ export interface InputProps {
     handleGuess: (guess: string) => void;
     numberOfGuesses: number;
     obcine: string[];
+    gameState: GameState;
 }

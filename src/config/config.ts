@@ -32,5 +32,26 @@ export const config = {
         style: {
             weight: 2
         }
+    },
+    gameStateDefault:  {
+        solution: "",
+        feature: null,
+        numberOfGuesses: 1,
+        showSatellite: false,
+        win: false,
+        lose: false,
+        hints: {
+            outline: false,
+            region: false,
+            adjacentObcine: false,
+            map: false
+        }
+    },
+    statsDefault: {
+        playedGames: 0,
+        wins: 0,
+        winProcentile: 0,
+        streak: 0,
+        maxStreak: 0
     }
 };

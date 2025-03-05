@@ -3,7 +3,7 @@ import { InputProps, InputEvent, FormEvent, ClickEvent, KeyEvent } from "../../t
 import { Form, Dropdown, InputGroup, Button } from 'react-bootstrap';
 
 import './input.css';
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 
 // Custom validation texts
 function validate() {   
@@ -12,7 +12,6 @@ function validate() {
 
     let isValidated = false;
 
-    console.log(value);
     if (value.length === 0) {
         input.setCustomValidity("Polje ne sme biti prazno");
         isValidated = true;
@@ -36,12 +35,23 @@ function validate() {
 }
 
 
-export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, obcine }: InputProps) {  
+export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, obcine, gameState }: InputProps) {  
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [filteredObcine, setFilteredObcine] = useState<string[]>();
+    const [placeholderText, setPlaceholderText] = useState<string>("Vpiši občino");
     
     const dropdownRef = useRef<HTMLDivElement>(null); 
+
+    useEffect(() => {
+        if (gameState.win || gameState.lose) {
+            setPlaceholderText("Konec igre, jutri lahko ponovno igrate.");
+        }
+        else {
+            setPlaceholderText("Vpiši občino");
+        }
+
+    }, [gameState]);
 
     // Update value with new value
     function handleInputChange(event: InputEvent) {
@@ -159,6 +169,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
     }, [inputValue])
 
 
+
     // const filteredObcine = useCallback(() => filterObcine(), [allFeatures]);
 
     return (
@@ -167,13 +178,14 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
                 <InputGroup>
                     <Form.Control 
                         id="inputId" 
-                        placeholder="Vpiši občino" 
+                        placeholder={placeholderText}
                         type="text" maxLength={40} 
                         value={inputValue} 
                         autoComplete="off"
                         onChange={handleInputChange} 
                         onBlur={handleBlur} 
                         onKeyDown={handleKeyDown}  
+                        disabled={gameState.win || gameState.lose}
                         /* onInvalid={validate} */ 
                     />
                     <InputGroup.Text className="bg-[dimgray] p-0 border border-black">

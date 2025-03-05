@@ -8,13 +8,13 @@ import WinScreen from "../WinScreen/WinScreen";
 import SatelliteBtn from "../SatelliteBtn/SatelliteBtn";
 
 // import { writeObcineToFile } from '../../utils/utils';
-
+import { config } from "../../config/config";
 import { GeoJsonProps, Features, Feature, GameState, Stats, GameProps, GAME_MODES } from "../../types/index";
 
 import './game.css'
 
 import { useState, useEffect } from "react";
-import { normalizeText } from "../../utils/other";
+import { normalizeText, loadFromLocalStorage } from "../../utils/other";
 import { getFeatureFromNaziv, getObcineFromFeatures } from "../../utils/feature";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
@@ -105,125 +105,49 @@ export default function Game({ gameMode }: GameProps) {
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
-    // Daily obcina
-    useEffect(() => {
-        async function initGame() {
-            const daily = await getDaily();
-            const allFeatures = await fetchAllFeatures();
+    function loadLocalStorage() {
+        // const savedGameState = loadFromLocalStorage("gameState", config.gameStateDefault);
+        const savedStats = loadFromLocalStorage("stats", config.statsDefault);
     
-            if (!allFeatures) {
-                console.log("Data is empty");
-                return;
-            }
-    
-            setAllFeatures(allFeatures);
-
-            const newObcine = getObcineFromFeatures(allFeatures);
-            setObcine(newObcine);
-
-            const dailyFeature = await getFeatureFromNaziv(allFeatures, daily.solution);
-
-            if (!dailyFeature) {
-                console.log("Daily feature is empty");
-                return;
-            }
-
-            loadGameState(dailyFeature);
-            loadStats();
-        }
-
-        initGame();
-    }, []);
-
-    // Get stats from localStorage or create new stats
-    function loadStats() {
-        const savedStats = localStorage.getItem("stats");
-
-        if (savedStats) {
-            setStats(JSON.parse(savedStats));
-        }
-        else {
-            setStats({
-                playedGames: 0,
-                wins: 0,
-                winProcentile: 0,
-                streak: 0,
-                maxStreak: 0
-            });
-        }
-    } 
-
-    // Get gameState from localStorage or create new gameState
-    function loadGameState(feature: Feature) {
-        const savedState = localStorage.getItem("gameState");
-
-        if (savedState) {
-            setGameState(JSON.parse(savedState));
-        }
-        else {
-            setGameState({
-                solution: feature.properties?.NAZIV,
-                obcinaFeature: feature,
-                numberOfGuesses: 1,
-                showSatellite: false,
-                win: false,
-                lose: false,
-                hints: {
-                    outline: false,
-                    region: false,
-                    adjacentObcine: false,
-                    map: false
-                }
-            });
-        }
+        // setGameState(savedGameState);
+        setStats(savedStats);
     }
 
-    // Init game
-    // Random obcina gamemode
-    // useEffect(() => {
-    //     async function initGame() {
-    //         const allFeatures = await fetchAllFeatures();
-    //         const randomFeature = await fetchRandomFeature();
+    useEffect(() => {
+        loadLocalStorage();
+    }, []);
+
+    useEffect(() => {
+        switch (gameMode) {
+            case GAME_MODES.DAILY:
+                startDailyGame();
+                break;
+
+            case GAME_MODES.PRACTICE:
+                startPracticeGame();
+                break;
+        }
+
+    }, [gameMode]);
+
+    function initGameState(feature: Feature) {
+        setGameState({
+            solution: feature.properties?.NAZIV,
+            feature: feature,
+            numberOfGuesses: 1,
+            showSatellite: false,
+            win: false,
+            lose: false,
+            hints: {
+                outline: false,
+                region: false,
+                adjacentObcine: false,
+                map: false
+            }
+        });
+    }
     
-    //         if (!randomFeature) {
-    //             console.log("Random feature is empty");
-    //             return;
-    //         }
-
-    //         if (!allFeatures) {
-    //             console.log("All features is empty");
-    //             return;
-    //         }
-
-    //         setAllFeatures(allFeatures);
-
-    //         const newObcine = getObcineFromFeatures(allFeatures);
-    //         setObcine(newObcine);
-
-    //         loadGameState(randomFeature);
-    //         loadStats();
-    //     }
-
-    //     initGame();
-    // }, []);
-
-    // Write to localStorage on gameState change
-    useEffect(() => {
-        if (gameState) {
-            localStorage.setItem("gameState", JSON.stringify(gameState));
-        }
-    }, [gameState]);
-
-    // Write to localStorage on stats change
-    useEffect(() => {
-        if (stats) {
-            stats.winProcentile = stats.playedGames > 0 ? Math.round((stats.wins / stats.playedGames) * 100) : 0;
-   
-            localStorage.setItem("stats", JSON.stringify(stats));
-        }
-    }, [stats]);
-
-    async function resetGame() {
+    async function startDailyGame() {
         const daily = await getDaily();
         const allFeatures = await fetchAllFeatures();
 
@@ -237,16 +161,109 @@ export default function Game({ gameMode }: GameProps) {
         const newObcine = getObcineFromFeatures(allFeatures);
         setObcine(newObcine);
 
-        const dailyFeature = await getFeatureFromNaziv(allFeatures, daily.solution);
+        const feature = await getFeatureFromNaziv(allFeatures, daily.solution);
 
-        if (!dailyFeature) {
-            console.log("Daily feature is empty");
+        if (!feature) {
+            console.log("Feature is empty");
+            return;
+        }
+
+        const savedState = localStorage.getItem("gameState");
+
+        if (savedState) {
+            setGameState(JSON.parse(savedState));
+        }
+        else {
+            initGameState(feature);
+        }
+    }
+
+    async function startPracticeGame() {
+        const feature = await fetchRandomFeature();
+        const allFeatures = await fetchAllFeatures();
+
+        if (!allFeatures) {
+            console.log("Data is empty");
+            return;
+        }
+
+        if (!feature) {
+            console.log("Feature is empty");
+            return;
+        }
+
+        setAllFeatures(allFeatures);
+
+        initGameState(feature);
+    }
+
+   
+
+    
+    function updateStats(win: boolean, lose: boolean) {
+        if (!stats) 
+            return;
+
+        if (win) {
+            let newMaxStreak = stats.maxStreak;
+    
+            if (stats.streak + 1 > stats.maxStreak) { // + 1, da steje to zmago
+                newMaxStreak = stats.streak + 1;                       
+            }
+    
+            setStats(prev => ({ 
+                ...prev!, 
+                playedGames: prev!.playedGames++,
+                wins: prev!.wins++,
+                streak: prev!.streak++,
+                maxStreak: newMaxStreak
+            }));
+        }
+
+        else if (lose) {
+            setStats(prev => ({ 
+                ...prev!, 
+                playedGames: prev!.playedGames++,
+                streak: 0
+            }));
+        }
+    }
+
+    // Write to localStorage on gameState change
+    useEffect(() => {
+        if (!gameState)
+            return;
+            
+        // Only save daily games
+        if (gameMode === GAME_MODES.DAILY)
+            localStorage.setItem("gameState", JSON.stringify(gameState));
+        
+    }, [gameState]);
+
+    // Write to localStorage on stats change
+    useEffect(() => {
+        if (stats) {
+            stats.winProcentile = stats.playedGames > 0 ? Math.round((stats.wins / stats.playedGames) * 100) : 0;
+   
+            localStorage.setItem("stats", JSON.stringify(stats));
+        }
+    }, [stats]);
+
+
+
+
+    // For practice mode
+    async function restartGame() {
+        const feature = await fetchRandomFeature();
+
+        if (!feature) {
+            console.log("Feature is empty");
             return;
         }
 
         setGameState({
-            solution: dailyFeature.properties?.NAZIV,
-            obcinaFeature: dailyFeature,
+            solution: feature.properties?.NAZIV,
+            feature: feature,
             numberOfGuesses: 1,
             showSatellite: false,
             win: false,
@@ -258,22 +275,8 @@ export default function Game({ gameMode }: GameProps) {
                 map: false,
             },
         });
-
-        // loadStats();
     }
-     
-    // Reset game on ESC for now
-    useEffect(() => {
-        function handleKeyDown(event: KeyboardEvent) {
-            if (event.key === "Escape") {
-                resetGame();
-            }
-        }
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, []);
-    
-
+         
     // Update hints
     function updateHints(level: number) {
         const newHints = {
@@ -289,7 +292,87 @@ export default function Game({ gameMode }: GameProps) {
         }));
     }
 
-    // useCallback ?
+    function handleDailyMode(win: boolean, lose: boolean) {
+        if (win) {
+            setGameState(prev => ({
+                ...prev!,
+                win: true,
+            }));
+        } 
+
+        else if (lose) {
+            setGameState(prev => ({
+                ...prev!,
+                lose: true,
+            }));
+        }
+
+        // Wrong guess
+        else {
+            setGameState(prev => ({
+                ...prev!,
+                numberOfGuesses: prev!.numberOfGuesses + 1
+            }));
+
+            if (!gameState) {
+                console.log("Game state is empty");
+                return;
+            }
+            // Update hints
+            const hintsLevel = gameState.numberOfGuesses;
+            updateHints(hintsLevel);
+
+            // WrongGuess msg
+            setIsWrongGuess(true);
+            setTimeout(() => setIsWrongGuess(false), 2000);
+        }
+
+        if (win || lose) {
+            updateStats(win, lose);
+        }
+    }
+
+    function handlePracticeMode(win: boolean, lose: boolean) {
+        if (win) {
+            setGameState(prev => ({
+                ...prev!,
+                win: true,
+            }));
+        } 
+
+        else if (lose) {
+            setGameState(prev => ({
+                ...prev!,
+                lose: true,
+            }));
+        }
+
+        // Wrong guess
+        else {
+            setGameState(prev => ({
+                ...prev!,
+                numberOfGuesses: prev!.numberOfGuesses + 1
+            }));
+
+            if (!gameState) {
+                console.log("Game state is empty");
+                return;
+            }
+            // Update hints
+            const hintsLevel = gameState.numberOfGuesses;
+            updateHints(hintsLevel);
+
+            // WrongGuess msg
+            setIsWrongGuess(true);
+            setTimeout(() => setIsWrongGuess(false), 2000);
+        }
+
+        if (win || lose) {
+            updateStats(win, lose);
+            restartGame();
+        }
+    }
+
     function handleGuess(guess: string) {
         const normalizedGuess = normalizeText(guess);
         const normalizedObcine = obcine?.map(obcina => normalizeText(obcina));
@@ -309,62 +392,15 @@ export default function Game({ gameMode }: GameProps) {
             // If correct word set win to true
             const win = isWin(guess, gameState.solution);
             let lose = gameState.numberOfGuesses >= 5;
-            
-            if (win) {
-                setGameState(prev => ({
-                    ...prev!,
-                    win: true,
-                }));
 
-                if (stats) {    
-                    let newMaxStreak = stats.maxStreak;
+            switch (gameMode) {
+                case  GAME_MODES.DAILY: 
+                    handleDailyMode(win, lose);
+                    break;
 
-                    if (stats.streak + 1 > stats.maxStreak) { // + 1, da steje to zmago
-                        newMaxStreak = stats.streak + 1;                       
-                    }
-
-                    setStats(prev => ({ 
-                        ...prev!, 
-                        playedGames: prev!.playedGames++,
-                        wins: prev!.wins++,
-                        streak: prev!.streak++,
-                        maxStreak: newMaxStreak
-                    }));
-                }
-            } 
-
-            else if (lose) {
-                setGameState(prev => ({
-                    ...prev!,
-                    lose: true,
-                }));
-
-                if (stats) {
-                    setStats(prev => ({ 
-                        ...prev!, 
-                        playedGames: prev!.playedGames++,
-                        streak: 0
-                    }));
-                }
-            }
-
-            // Wrong guess
-            else {
-                setGameState(prev => ({
-                    ...prev!,
-                    numberOfGuesses: prev!.numberOfGuesses + 1
-                }));
-
-                if (!gameState) {
-                    console.log("Game state is empty");
-                    return;
-                }
-                // Update hints
-                const hintsLevel = gameState.numberOfGuesses;
-                updateHints(hintsLevel);
-
-                setIsWrongGuess(true);
-                setTimeout(() => setIsWrongGuess(false), 2000);
+                case GAME_MODES.PRACTICE:
+                    handlePracticeMode(win, lose);
+                    break;
             }
         }
     }
@@ -376,25 +412,18 @@ export default function Game({ gameMode }: GameProps) {
         }));
     }
 
-    if (!gameState) {
-        console.log("Game state is empty");
-        return;
-    }
-    
-    console.log("Correct obcina: ", gameState.solution);
-
     return (
-        <>
+        <>         
             {/* Unknown guess message */}
             { isUnknownGuess && 
                 <UnknownGuessMsg inputValue={lastGuess} /> 
             }
             
-            { gameState.lose && 
+            { gameState?.lose && 
                 <LoseScreen obcina={gameState.solution} /> 
             }
 
-            { gameState.win && 
+            { gameState?.win && 
                 <WinScreen /> 
             }
 
@@ -405,22 +434,22 @@ export default function Game({ gameMode }: GameProps) {
                 }
 
                 {/* FUj to */}
-                { gameState.hints.outline && 
+                { gameState?.hints.outline && 
                     <SatelliteBtn handleSatellite={handleSatellite} />
                 }
                 
                 {/* Show map */}
-                { (gameState.hints.map || gameState.hints.outline || gameState.hints.adjacentObcine) && 
+                { (gameState?.hints.map || gameState?.hints.outline || gameState?.hints.adjacentObcine) && 
                     <Map 
                         allFeatures={allFeatures!} 
-                        feature={gameState.obcinaFeature} 
+                        feature={gameState.feature} 
                         hints={gameState.hints} 
                         showSatellite={gameState.showSatellite} 
                     /> 
                 }
                 
                 {/* Show region */}
-                { gameState.hints.region && 
+                { gameState?.hints.region && 
                     <Region obcina={gameState.solution} /> 
                 }
             </div>
@@ -432,8 +461,9 @@ export default function Game({ gameMode }: GameProps) {
                         inputValue={inputValue} 
                         setInputValue={setInputValue} 
                         handleGuess={handleGuess} 
-                        numberOfGuesses={gameState.numberOfGuesses} 
+                        numberOfGuesses={gameState!.numberOfGuesses} 
                         obcine={obcine} 
+                        gameState={gameState!}
                     /> 
                 }
             </div>
