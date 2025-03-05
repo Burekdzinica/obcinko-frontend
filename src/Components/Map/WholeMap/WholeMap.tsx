@@ -8,7 +8,7 @@ const boundsOptions = config.boundsOptions;
 
 export default function WholeMap() {
     const map = useMap();
-    map.setMaxBounds(sloveniaBounds);
+    // map.setMaxBounds(sloveniaBounds);
 
     useEffect(() => {
         map.flyToBounds(sloveniaBounds, boundsOptions);

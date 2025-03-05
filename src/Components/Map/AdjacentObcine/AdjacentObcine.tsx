@@ -5,7 +5,6 @@ import { AdjacentObcineProps, Feature, Features, RegionData } from "../../../typ
 import { config } from "../../../config/config";
 
 const adjacentObcineOptions = config.adjacentObcineOptions;
-const boundsOptions = config.boundsOptions;
 const tooltipOptions = config.tooltipOptions;
 
 const Options = {
@@ -91,10 +90,7 @@ export default function AdjacentObcine({ options, allFeatures, targetFeature }: 
             
             // Don't fit if whole map
             if (options === Options.ADJACENT) {
-                map.flyToBounds(featureGroup.getBounds(), boundsOptions);
-                // map.fitBounds(featureGroup.getBounds());
-
-                // map.setMaxBounds(featureGroup.getBounds()); /* ????? ne fitta bounds po temu */
+                map.fitBounds(featureGroup.getBounds());
             }
         }
 

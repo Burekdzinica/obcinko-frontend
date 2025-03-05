@@ -105,6 +105,10 @@ export default function Game({ gameMode }: GameProps) {
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
+    const [lastSolution, setLastSolution] = useState("");
+    const [showLoseScreen, setShowLoseScreen] = useState<boolean>(false);
+    const [showWinScreen, setShowWinScreen] = useState<boolean>(false);
+
     function loadLocalStorage() {
         // const savedGameState = loadFromLocalStorage("gameState", config.gameStateDefault);
         const savedStats = loadFromLocalStorage("stats", config.statsDefault);
@@ -129,6 +133,18 @@ export default function Game({ gameMode }: GameProps) {
         }
 
     }, [gameMode]);
+
+
+    useEffect(() => {
+        if (gameState?.win) {
+            setShowWinScreen(true);
+        }
+
+        else if (gameState?.lose) {
+            setShowLoseScreen(true);
+        }
+
+    }, [gameState]);
 
     function initGameState(feature: Feature) {
         setGameState({
@@ -197,9 +213,6 @@ export default function Game({ gameMode }: GameProps) {
         initGameState(feature);
     }
 
-   
-
-    
     function updateStats(win: boolean, lose: boolean) {
         if (!stats) 
             return;
@@ -249,9 +262,6 @@ export default function Game({ gameMode }: GameProps) {
         }
     }, [stats]);
 
-
-
-
     // For practice mode
     async function restartGame() {
         const feature = await fetchRandomFeature();
@@ -285,6 +295,13 @@ export default function Game({ gameMode }: GameProps) {
             adjacentObcine: level >= 3,
             map: level >= 4,
         };
+        
+        // const newHints = {
+        //     region: level >= 1,
+        //     adjacentObcine: level >= 2,
+        //     map: level >= 3,
+        //     satellite: level >= 4,
+        // };
     
         setGameState(prev => ({
             ...prev!,
@@ -298,6 +315,8 @@ export default function Game({ gameMode }: GameProps) {
                 ...prev!,
                 win: true,
             }));
+
+            setShowWinScreen(true);
         } 
 
         else if (lose) {
@@ -305,6 +324,8 @@ export default function Game({ gameMode }: GameProps) {
                 ...prev!,
                 lose: true,
             }));
+
+            setShowLoseScreen(true);
         }
 
         // Wrong guess
@@ -329,6 +350,7 @@ export default function Game({ gameMode }: GameProps) {
 
         if (win || lose) {
             updateStats(win, lose);
+            setLastSolution(gameState!.solution);
         }
     }
 
@@ -338,6 +360,8 @@ export default function Game({ gameMode }: GameProps) {
                 ...prev!,
                 win: true,
             }));
+
+            setShowWinScreen(true);
         } 
 
         else if (lose) {
@@ -345,6 +369,8 @@ export default function Game({ gameMode }: GameProps) {
                 ...prev!,
                 lose: true,
             }));
+
+            setShowLoseScreen(true);
         }
 
         // Wrong guess
@@ -368,8 +394,9 @@ export default function Game({ gameMode }: GameProps) {
         }
 
         if (win || lose) {
-            updateStats(win, lose);
             restartGame();
+            setLastSolution(gameState!.solution);
+
         }
     }
 
@@ -419,12 +446,25 @@ export default function Game({ gameMode }: GameProps) {
                 <UnknownGuessMsg inputValue={lastGuess} /> 
             }
             
-            { gameState?.lose && 
+            {/* { gameState?.lose && 
                 <LoseScreen obcina={gameState.solution} /> 
+            } */}
+
+            { gameState && 
+                <LoseScreen 
+                    obcina={lastSolution} 
+                    show={showLoseScreen} 
+                    setShow={setShowLoseScreen} 
+                    gameMode={gameMode}
+                /> 
             }
 
-            { gameState?.win && 
-                <WinScreen /> 
+            { gameState && 
+                <WinScreen 
+                    show={showWinScreen}
+                    setShow={setShowWinScreen}
+                    gameMode={gameMode}
+                /> 
             }
 
             {/* Map */}

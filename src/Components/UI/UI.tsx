@@ -12,7 +12,7 @@ export default function UI() {
     return (
         <>
         {/* <div className="container"> */}
-            <CustomNavbar setGameMode={setGameMode} />
+            <CustomNavbar gameMode={gameMode} setGameMode={ setGameMode } />
 
             <Game gameMode={gameMode} />
 

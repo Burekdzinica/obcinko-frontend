@@ -1,12 +1,24 @@
 import { Modal } from "react-bootstrap"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GAME_MODES, GameModesProps } from "../../types";
 import "./gameModes.css"
 
-export default function GameModesBtn({ setGameMode }: GameModesProps) {
+export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) {
     const [show, setShow] = useState(false);
-    // const [gameMode, setGameMode] = useState<GAME_MODES>(GAME_MODES.DAILY);
+    const [gameModeText, setGameModeText] = useState("");
     
+    useEffect(() => {
+        switch (gameMode) {
+            case GAME_MODES.DAILY:
+                setGameModeText("Dnevno");
+                break;
+            
+            case GAME_MODES.PRACTICE:
+                setGameModeText("Vaja");
+                break;
+        }
+    }, [gameMode]);
+
     const handleClose = () => setShow(false); 
     const handleShow = () => setShow(true);
 
@@ -40,6 +52,10 @@ export default function GameModesBtn({ setGameMode }: GameModesProps) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="text-white text-center space-y-4">
+                    <div className="mb-1">
+                        <strong>Trenutni način igre: </strong>
+                        <span className="text-txt">{gameModeText}</span>
+                    </div>
                     <button
                         className="border border-transparent p-3 rounded-full bg-stone-800 hover:bg-hover active:bg-active text-white w-full transition-all"
                         onClick={() => handleGameModeSelect(GAME_MODES.DAILY)}

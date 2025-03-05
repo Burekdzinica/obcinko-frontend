@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMapEvent } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import { MapProps } from "../../types/index";
 import Outline from "./Outline/Outline";
 import AdjacentObcine from "./AdjacentObcine/AdjacentObcine";
@@ -15,53 +15,6 @@ const Options = {
     ADJACENT: "ADJACENT" as const,
     CENTER: "CENTER" as const,
 };
-
-
-// Need this ????????
-// function changeTooltipFontSize(em: string) {
-//     const tooltips = document.querySelectorAll(".leaflet-tooltip");
-
-//     em = em + "em";
-    
-//     tooltips.forEach(tooltip => {
-//         const element = tooltip as HTMLElement;
-//         element.style.transition = "font-size 2 ease-in-out";
-//         element.style.fontSize = em;
-//     });
-// }
-
-// // Change tooltip based on zoom levels
-// function ChangeTooltipSize() {
-//     const map = useMapEvent("zoomend", () => {
-//         const zoomLevel = map.getZoom();
-
-//         switch (zoomLevel) {
-//             case 8:
-//                 changeTooltipFontSize("0.5");
-//                 break;
-//             case 9:
-//                 changeTooltipFontSize("0.7");
-//                 break;
-//             case 10:
-//                 changeTooltipFontSize("0.9");
-//                 break;
-//             case 11:
-//                 changeTooltipFontSize("1.1");
-//                 break;
-//             case 12:
-//                 changeTooltipFontSize("1.3");
-//                 break;
-//             case 13:
-//                 changeTooltipFontSize("1.5");
-//                 break;
-//             default:
-//                 changeTooltipFontSize("1");
-//                 break;
-//         }
-//     });
-
-//     return null;
-// }
 
 function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
     let mapContent;
@@ -88,7 +41,6 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
                             attribution='&copy; <a href="https://carto.com/">CARTO</a>'
                         />
                     }
-                    {/* <ChangeTooltipSize /> */}
                     <Outline feature={feature} />
                     <AdjacentObcine 
                         options={Options.CENTER} 
@@ -104,7 +56,6 @@ function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
             mapContent = (
                 <MapContainer {...mapOptions}>
                     {satelliteContent}
-                    {/* <ChangeTooltipSize /> */}
                     <Outline feature={feature} />
                     <AdjacentObcine 
                         options={Options.ADJACENT} 
