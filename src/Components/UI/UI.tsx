@@ -11,7 +11,7 @@ export default function UI() {
     
     return (
         <>
-        {/* <div className="container"> */}
+            {/* <div className="container"> */}
             <CustomNavbar gameMode={gameMode} setGameMode={ setGameMode } />
 
             <Game gameMode={gameMode} />

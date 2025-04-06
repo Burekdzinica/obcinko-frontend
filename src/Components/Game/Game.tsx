@@ -192,6 +192,13 @@ export default function Game({ gameMode }: GameProps) {
         }
 
         const savedState = localStorage.getItem("gameState");
+        // if solution from local storage is different then new solution then use the new state 
+        // if (daily.solution != savedState?.solution) {
+        //     initGameState(feature);
+        // } 
+        // else {
+        //     setGameState(JSON.parse(savedState));
+        // }
         savedState ? setGameState(JSON.parse(savedState)) : initGameState(feature);
     }
 
