@@ -1,57 +1,12 @@
 .form-control:focus {
-    background-color: dimgray;
     border-color: #444;
     box-shadow: 0 0 5px rgba(150, 150, 150, 0.5);
+    color: rgb(223, 219, 219);
 }
 
 .form-control {
     border-color: black !important;
     background-color: dimgray !important;
-    caret-color: #444; /* ?? worth ?? */
-}
-
-.input-group {
-    width: 30vw;
-    margin: auto;
-    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-@media (width < 680px) {
-    .input-group {
-        width: 70vw;
-    }
-    .dropdown-list {
-        width: 70vw;
-        height: 150px;
-    }
-}
-
-@media (width >= 680px) and (width <= 800px) {
-    .input-group {
-        width: 60vw;
-    }
-    .dropdown-list {
-        width: 60vw;
-        height: 150px;
-    }
-}
-
-@media (width > 800px) and (width <= 1000px) {
-    .input-group {
-        width: 50vw;
-    }
-    .dropdown-list {
-        width: 50vw;
-        height: 150px;
-    }
-}
-
-@media (width > 1000px) and (width < 1650px) {
-    .input-group {
-        width: 40vw;
-    }
-    .dropdown-list {
-        width: 40vw;
-        height: 120px;
-    }
+    /* caret-color: #444; */
+    color: rgb(223, 219, 219);
 }

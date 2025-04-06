@@ -3,7 +3,7 @@ import { InputProps, InputEvent, FormEvent, ClickEvent, KeyEvent } from "../../t
 import { Form, Dropdown, InputGroup, Button } from 'react-bootstrap';
 
 import './input.css';
-import { useState, useRef, useEffect, use } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // Custom validation texts
 function validate() {   
@@ -168,48 +168,57 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
         setFilteredObcine(filterObcine());
     }, [inputValue])
 
-
-
     // const filteredObcine = useCallback(() => filterObcine(), [allFeatures]);
 
     return (
         <>
-            <Form onSubmit={handleSubmit}>
-                <InputGroup>
-                    <Form.Control 
-                        id="inputId" 
-                        placeholder={placeholderText}
-                        type="text" maxLength={40} 
-                        value={inputValue} 
-                        autoComplete="off"
-                        onChange={handleInputChange} 
-                        onBlur={handleBlur} 
-                        onKeyDown={handleKeyDown}  
-                        disabled={gameState.win || gameState.lose}
-                        /* onInvalid={validate} */ 
-                    />
-                    <InputGroup.Text className="bg-[dimgray] p-0 border border-black">
-                        <Button className="!rounded-[0_5px_5px_0] text-black border-0 !bg-[dimgray] hover:bg-hover active:bg-active" 
-                            type="submit"
-                        >
-                            {numberOfGuesses} / 5
-                        </Button>
-                    </InputGroup.Text>
-                </InputGroup>
-            </Form>
-            
-            {dropdownVisible && (
-                <Dropdown className="dropdown-list max-h-[150px] w-[30vw] overflow-auto m-auto bg-[dimgray]" 
-                    ref={dropdownRef} 
-                    drop="up"
+            <div className="relative m-auto w-full max-sm:w-3/4 max-md:w-1/2 max-lg:w-3/4">
+                <Form onSubmit={handleSubmit} >
+                    <InputGroup>
+                        <Form.Control
+                            id="inputId" // for js  
+                            placeholder={placeholderText}
+                            type="text" 
+                            maxLength={40} 
+                            value={inputValue} 
+                            autoComplete="off"
+                            onChange={handleInputChange} 
+                            onBlur={handleBlur} 
+                            onKeyDown={handleKeyDown}  
+                            disabled={gameState.win || gameState.lose}
+                            /* onInvalid={validate} */ 
+                        />
+                        <InputGroup.Text className="bg-[dimgray] p-0 border border-black">
+                            <Button className="!rounded-[0_5px_5px_0] text-black border-0 !bg-[dimgray] hover:bg-hover active:bg-active" 
+                                type="submit"
+                            >
+                                {numberOfGuesses} / 5
+                            </Button>
+                        </InputGroup.Text>
+                    </InputGroup>
+                </Form>
+                
+                { dropdownVisible && (
+                    <Dropdown
+                    className="!absolute left-1/2 -translate-x-1/2 z-[10000] w-full m-auto"
                 >
-                    { filteredObcine?.map((obcina, index) => (
-                        <Dropdown.Item className={`bg-[dimgray] text-zinc-500 !p-[3px] hover:!text-txt hover:!bg-neutral-600 
-                            ${selectedIndex === index ? "!text-txt !bg-neutral-600" : ""}`} key={index} onMouseDown={handleDropdownClick}>{obcina}
-                        </Dropdown.Item>
-                    ))}
+                    <div className="max-h-[10.1rem] overflow-auto bg-[dimgray] border border-black rounded"
+                        ref={dropdownRef}
+                    >
+                        {filteredObcine?.map((obcina, index) => (
+                            <Dropdown.Item className={`dropdown-option bg-[dimgray] text-zinc-500 p-1 hover:!text-txt hover:!bg-neutral-600 
+                                ${selectedIndex === index ? "!text-txt !bg-neutral-600" : ""}`}
+                                key={index}
+                                onMouseDown={handleDropdownClick}
+                            >
+                                {obcina}
+                            </Dropdown.Item>
+                        ))}
+                    </div>
                 </Dropdown>
-            )}
+                
+                )}
+            </div>
         </>
     )
 }

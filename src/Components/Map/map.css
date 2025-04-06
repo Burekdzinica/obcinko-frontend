@@ -21,6 +21,7 @@
     border: none !important;
 }
 
+/* Zoom controls */
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
     background-color: var(--map-container-bg-color) !important;

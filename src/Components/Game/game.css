@@ -1,6 +1,6 @@
 /* Responsiveness */
 
-@media (width < 680px) {
+/* @media (width < 680px) {
     .map {
         width: 90vw;
         height: 80vw;
@@ -25,4 +25,4 @@
     .map {
         width: 80vw;
     }
-}
+} */

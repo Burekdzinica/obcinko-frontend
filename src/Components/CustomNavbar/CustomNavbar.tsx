@@ -15,7 +15,7 @@ export default function CustomNavbar({ gameMode, setGameMode }: GameModesProps) 
             <Navbar.Brand className='p-0 font-semibold text-txt !text-4xl'>
                 Občinko
             </Navbar.Brand>            
-            <Navbar.Brand className='flex ms-auto gap-3'>
+            <Navbar.Brand className='flex ms-auto gap-2'>
                 <GameModesBtn gameMode={gameMode} setGameMode={setGameMode} />
                 <Statistics />
             </Navbar.Brand>

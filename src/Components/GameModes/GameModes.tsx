@@ -1,7 +1,8 @@
 import { Modal } from "react-bootstrap"
 import { useEffect, useState } from "react";
 import { GAME_MODES, GameModesProps } from "../../types";
-import "./gameModes.css"
+import "./gameModes.css";
+import { Gamepad2 } from "lucide-react";
 
 export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) {
     const [show, setShow] = useState(false);
@@ -29,11 +30,9 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
 
     return (
         <>
-            <button className="rounded-primary active:bg-active active:scale-90 hover:bg-hover p-1 hover:scale-105" >
-                <img className="w-12" 
+            <button className="rounded-primary active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105" >
+                <Gamepad2 className="scale-150" 
                     onClick={handleShow}
-                    src="../../res/gameModes.svg"
-                    alt="GameModesBtn" 
                 />
             </button> 
 
@@ -57,14 +56,21 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
                         <span className="text-txt">{gameModeText}</span>
                     </div>
                     <button
-                        className="border border-transparent p-3 rounded-full bg-stone-800 hover:bg-hover active:bg-active text-white w-full transition-all"
+                        className={`border border-transparent p-3 rounded-full text-white w-full
+                            ${gameMode === GAME_MODES.DAILY ? 
+                                "bg-emerald-800 hover:bg-emerald-800" : 
+                                "bg-stone-800 hover:bg-stone-900 active:bg-stone-950"}`}
                         onClick={() => handleGameModeSelect(GAME_MODES.DAILY)}
+                        disabled={gameMode === GAME_MODES.DAILY}
                     >
                         Dnevno
                     </button>
-                    <button
-                        className="border border-transparent p-3 rounded-full bg-stone-800 hover:bg-hover active:bg-active text-white w-full transition-all"
+                    <button className={`border border-transparent p-3 rounded-full text-white w-full
+                            ${gameMode === GAME_MODES.PRACTICE ? 
+                                "bg-emerald-800 hover:bg-emerald-900" : 
+                                "bg-stone-800 hover:bg-stone-900 active:bg-stone-950"}`}
                         onClick={() => handleGameModeSelect(GAME_MODES.PRACTICE)}
+                        disabled={gameMode === GAME_MODES.PRACTICE}
                     >
                         Vaja
                     </button>

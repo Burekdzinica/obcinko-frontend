@@ -3,6 +3,8 @@ import './statistics.css';
 import { Stats } from "../../types/index";
 import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { ChartNoAxesColumnIncreasing } from "lucide-react";
+
 
 export default function Statistics() {
     const [show, setShow] = useState(false);
@@ -38,14 +40,10 @@ export default function Statistics() {
     return (
         <>
             {/* Icon */ }
-            <div className='rounded-primary active:bg-active active:scale-90 hover:bg-hover p-1 hover:scale-105' 
+            <div className='rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105' 
                 onClick={handleShow}
             >
-                {/* TODO: fit to parent inmstead of fixed width */}
-                <img className='w-12' 
-                    src='res/stats2.svg' 
-                    alt='stats' 
-                />
+                <ChartNoAxesColumnIncreasing className='scale-150' />
             </div>
       
             <Modal className='stats-modal bg-[linear-gradient(135deg,rgb(30,30,30),rgb(15,15,15))] bg-backdropDim animate-fadeIn text-txt p-modal text-center ' 

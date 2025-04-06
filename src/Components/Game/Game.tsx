@@ -225,11 +225,11 @@ export default function Game({ gameMode }: GameProps) {
             return;
 
         if (win) {
-            let newMaxStreak = stats.maxStreak;
+            // let newMaxStreak = stats.maxStreak;
     
-            if (stats.streak + 1 > stats.maxStreak) { // + 1, da steje to zmago
-                newMaxStreak = stats.streak + 1;                       
-            }
+            // if (stats.streak + 1 > stats.maxStreak) { // + 1, da steje to zmago
+            //     newMaxStreak = stats.streak + 1;                       
+            // }
     
             // setStats(prev => ({ 
             //     ...prev, 
@@ -468,8 +468,22 @@ export default function Game({ gameMode }: GameProps) {
                 /> 
             }
 
+            {/* Input */}
+            <div className="col-lg-6 offset-lg-3 mb-4">
+                { obcine && 
+                    <Input 
+                        inputValue={inputValue} 
+                        setInputValue={setInputValue} 
+                        handleGuess={handleGuess} 
+                        numberOfGuesses={gameState!.numberOfGuesses} 
+                        obcine={obcine} 
+                        gameState={gameState!}
+                    /> 
+                }
+            </div>
+
             {/* Map */}
-            <div className="relative rounded-primary p-0 m-auto bg-map !w-[70vw] h-[67vh] border-1 border-1 border-white/25">
+            <div className="relative rounded-primary m-auto bg-map !w-[70vw] h-[67vh] border-1 border-1 border-white/25 max-sm:h-80  ">
                 { isWrongGuess && 
                     <WrongGuessMsg /> 
                 }
@@ -504,19 +518,7 @@ export default function Game({ gameMode }: GameProps) {
                 }
             </div>
 
-            {/* Input */}
-            <div className="col-lg-6 offset-lg-3 mt-3">
-                { obcine && 
-                    <Input 
-                        inputValue={inputValue} 
-                        setInputValue={setInputValue} 
-                        handleGuess={handleGuess} 
-                        numberOfGuesses={gameState!.numberOfGuesses} 
-                        obcine={obcine} 
-                        gameState={gameState!}
-                    /> 
-                }
-            </div>
+            
         </>
     );
 }

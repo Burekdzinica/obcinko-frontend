@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { RegionData } from "../../types/index";
- 
-import "./region.css"
 
 async function fetchRegion(obcina: string) {
     try {
@@ -41,8 +39,8 @@ export default function Region({ obcina }: { obcina: string }) {
     }, [obcina]);
 
     return (
-        <div className="region-container rounded-primary z-[999] p-1.5 bg-black absolute bottom-2.5 right-2.5 border-1 border-white/50">
-            <h2 className="text-txt m-0">Regija: { region }</h2>
+        <div className="region-container rounded z-[999] p-1.5 bg-black absolute bottom-2.5 right-2.5 border-1 border-white/50">
+            <h2 className="text-txt m-0 max-sm:text-sm">Regija: { region }</h2>
         </div>
     );
 }
