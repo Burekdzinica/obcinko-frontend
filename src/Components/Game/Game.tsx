@@ -483,7 +483,7 @@ export default function Game({ gameMode }: GameProps) {
             </div>
 
             {/* Map */}
-            <div className="relative rounded-primary m-auto bg-map !w-[70vw] h-[67vh] border-1 border-1 border-white/25 max-sm:h-80  ">
+            <div className="relative rounded m-auto bg-map !w-[70vw] h-[67vh] border-1 border-1 border-white/25 max-sm:h-80  ">
                 { isWrongGuess && 
                     <WrongGuessMsg /> 
                 }

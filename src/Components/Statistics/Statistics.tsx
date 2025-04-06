@@ -61,19 +61,19 @@ export default function Statistics() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='flex flex-col gap-2.5 text-lg !p-[1.5em]'>
-                    <div className='bg-stone-100/5 p-2 rounded-primary duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                    <div className='bg-stone-100/5 p-2 rounded duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
                         Igrane igre <br/> <span className="text-green-600">{stats?.playedGames}</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
                         Zmage <br/> <span className="text-green-600">{stats?.wins}</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
                         Zmage % <br/> <span className="text-green-600">{stats?.winProcentile}%</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
                         Zaporednih zmag <br/> <span className="text-green-600">{stats?.streak}</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded-primary transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
                         Najvecje zaporedje zmag <br/> <span className="text-green-600">{stats?.maxStreak}</span>
                     </div>
                 </Modal.Body>

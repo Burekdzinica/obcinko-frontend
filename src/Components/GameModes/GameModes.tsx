@@ -30,7 +30,7 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
 
     return (
         <>
-            <button className="rounded-primary active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105" 
+            <button className="rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105" 
                 onClick={handleShow}
             >
                 <Gamepad2 className="scale-150" />

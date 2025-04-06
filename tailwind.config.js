@@ -20,10 +20,6 @@ module.exports = {
         modal: "var(--modal-padding)",
       },
 
-      borderRadius: {
-        primary: "var(--border-radius)",
-      },
-
       animation: {
         "fadeIn": "fadeIn 0.5s ease-in-out",
         "fadeSlideDown": "fadeSlideDown 0.15s ease-in-out", 
