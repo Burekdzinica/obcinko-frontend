@@ -34,7 +34,6 @@ function validate() {
     return isValidated;
 }
 
-
 export default function Input({ inputValue, setInputValue, handleGuess, numberOfGuesses, obcine, gameState }: InputProps) {  
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);

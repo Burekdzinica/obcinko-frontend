@@ -40,7 +40,7 @@ export default function Statistics() {
     return (
         <>
             {/* Icon */ }
-            <div className='rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105' 
+            <div className='rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105 cursor-pointer' 
                 onClick={handleShow}
             >
                 <ChartNoAxesColumnIncreasing className='scale-150' />
@@ -74,7 +74,7 @@ export default function Statistics() {
                         Zaporednih zmag <br/> <span className="text-green-600">{stats?.streak}</span>
                     </div>
                     <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
-                        Najvecje zaporedje zmag <br/> <span className="text-green-600">{stats?.maxStreak}</span>
+                        Največje zaporedje zmag <br/> <span className="text-green-600">{stats?.maxStreak}</span>
                     </div>
                 </Modal.Body>
             </Modal>

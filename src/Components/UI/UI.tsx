@@ -4,7 +4,7 @@ import CustomNavbar from '../CustomNavbar/CustomNavbar'
 import Game from '../Game/Game'
 import { useState } from 'react';
 import { GAME_MODES } from '../../types';
-// import Footer from '../Footer/Footer'
+import Footer from '../Footer/Footer'
 
 export default function UI() {
     const [gameMode, setGameMode] = useState<GAME_MODES>(GAME_MODES.DAILY);
@@ -16,7 +16,7 @@ export default function UI() {
 
             <Game gameMode={gameMode} />
 
-            {/* <Footer /> */}
+            <Footer />
         {/* </div> */}
         </>
     )

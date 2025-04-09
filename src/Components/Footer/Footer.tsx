@@ -1,9 +1,11 @@
 export default function Footer() {
     return (
-        <div className="navbar fixed-bottom">
-            <footer className="ms-lg-2 h-24">
-                <p className='text-[dimgray]'> Author: Matevž Srša </p>
-            </footer>  
-        </div>
-    )
+        <footer className="fixed-bottom">
+            <div className="text-center">
+                <p className="text-neutral-400 text-sm">
+                    © 2025 Obcinko
+                </p>
+            </div>
+        </footer>
+    );
 }

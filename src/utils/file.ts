@@ -1,4 +1,4 @@
-import { Feature, Features } from "../types";
+import { Features } from "../types";
 import { polygon, booleanIntersects } from "@turf/turf"; 
 
 // https://www.amitmerchant.com/create-and-download-text-files-using-javascript/

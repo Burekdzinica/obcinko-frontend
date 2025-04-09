@@ -16,6 +16,7 @@ import './game.css'
 import { useState, useEffect } from "react";
 import { normalizeText, loadFromLocalStorage } from "../../utils/other";
 import { getFeatureFromNaziv, getObcineFromFeatures } from "../../utils/feature";
+import Footer from "../Footer/Footer";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 
@@ -75,12 +76,12 @@ async function fetchSolution(url: string) {
     }
 }
 
-async function getDaily() {
+async function getDailySolution() {
     const date = new Date();
     const formattedDate = date.toISOString().split('T')[0]; // yyyy-mm-dd
 
     const apiUrl = process.env.REACT_APP_API_URL + formattedDate;
-    console.log(apiUrl);
+
     const solution = await fetchSolution(apiUrl);
 
     return solution;
@@ -171,7 +172,7 @@ export default function Game({ gameMode }: GameProps) {
     }
     
     async function startDailyGame() {
-        const daily = await getDaily();
+        const daily = await getDailySolution();
         const allFeatures = await fetchAllFeatures();
 
         if (!allFeatures) {
@@ -191,15 +192,24 @@ export default function Game({ gameMode }: GameProps) {
             return;
         }
 
-        const savedState = localStorage.getItem("gameState");
-        // if solution from local storage is different then new solution then use the new state 
-        // if (daily.solution != savedState?.solution) {
-        //     initGameState(feature);
-        // } 
-        // else {
-        //     setGameState(JSON.parse(savedState));
-        // }
-        savedState ? setGameState(JSON.parse(savedState)) : initGameState(feature);
+        let savedState = localStorage.getItem("gameState");
+
+        // If no game has been played, start the game
+        if (!savedState) {
+            initGameState(feature);
+            return;
+        }
+            
+        let savedGameState: GameState = JSON.parse(savedState);
+
+        // If daily solution doesnt match the saved state, start new game        
+        if (daily.solution !== savedGameState.solution) {
+            initGameState(feature);
+        }
+        // Read the saved state
+        else {
+            setGameState(savedGameState);
+        }
     }
 
     async function startPracticeGame() {
