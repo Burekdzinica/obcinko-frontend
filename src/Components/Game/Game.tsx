@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import { normalizeText, loadFromLocalStorage } from "../../utils/other";
 import { getFeatureFromNaziv, getObcineFromFeatures } from "../../utils/feature";
 import GuessList from "../GuessList/GuessList";
+import AlreadyGuessedMsg from "../AlreadyGuessedMsg/AlreadyGuessedMsg";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 
@@ -99,6 +100,7 @@ export default function Game({ gameMode }: GameProps) {
     const [inputValue, setInputValue] = useState('');
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
+    const [isAlreadyGuessed, setIsAlreadyGuessed] = useState(false);
     const [lastGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
     
     // Game Data
@@ -435,6 +437,15 @@ export default function Game({ gameMode }: GameProps) {
 
         const prevGuesses = localStorage.getItem("prevGuesses");
 
+        // If already guessed obcina in playthrough
+        if (prevGuesses?.includes(guess)) {
+            setLastGuess(guess);
+            setIsAlreadyGuessed(true);
+            setTimeout(() => setIsAlreadyGuessed(false), 2000);
+
+            return;
+        }
+
         // If prevGuesses are in storage then concatanete them with ,
         if (prevGuesses) {
             const newPrevGuesses = prevGuesses + "," + guess;
@@ -443,7 +454,6 @@ export default function Game({ gameMode }: GameProps) {
         else {
             localStorage.setItem("prevGuesses", guess);
         }
-      
 
 
         switch (gameMode) {
@@ -470,11 +480,12 @@ export default function Game({ gameMode }: GameProps) {
             { isUnknownGuess && 
                 <UnknownGuessMsg inputValue={lastGuess} /> 
             }
-            
-            {/* { gameState?.lose && 
-                <LoseScreen obcina={gameState.solution} /> 
-            } */}
 
+            {/* Already guessed message */}
+            { isAlreadyGuessed && 
+                <AlreadyGuessedMsg obcina={lastGuess} />
+            }
+            
             { gameState && 
                 <LoseScreen 
                     obcina={lastSolution} 
@@ -542,7 +553,7 @@ export default function Game({ gameMode }: GameProps) {
                 }
             </div>
 
-            <GuessList />
+            <GuessList solution={gameState?.solution!} />
         </>
     );
 }
