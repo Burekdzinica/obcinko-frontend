@@ -2,6 +2,7 @@ import Statistics from '../Statistics/Statistics';
 import GameModesBtn from '../GameModes/GameModes';
 import { Navbar } from 'react-bootstrap';
 import { GameModesProps } from '../../types';
+import Help from '../Help/Help';
 
 export default function CustomNavbar({ gameMode, setGameMode }: GameModesProps) {
     return (
@@ -16,6 +17,7 @@ export default function CustomNavbar({ gameMode, setGameMode }: GameModesProps) 
                 Občinko
             </Navbar.Brand>            
             <Navbar.Brand className='flex ms-auto gap-2'>
+                <Help />
                 <GameModesBtn gameMode={gameMode} setGameMode={setGameMode} />
                 <Statistics />
             </Navbar.Brand>

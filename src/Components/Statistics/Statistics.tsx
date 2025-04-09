@@ -42,6 +42,7 @@ export default function Statistics() {
             {/* Icon */ }
             <div className='rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105 cursor-pointer' 
                 onClick={handleShow}
+                title='Statistika'
             >
                 <ChartNoAxesColumnIncreasing className='scale-150' />
             </div>

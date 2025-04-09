@@ -32,6 +32,7 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
         <>
             <button className="rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105" 
                 onClick={handleShow}
+                title="Načini igre"
             >
                 <Gamepad2 className="scale-150" />
             </button> 
