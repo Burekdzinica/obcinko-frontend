@@ -5,7 +5,7 @@ import { GameModesProps } from '../../types';
 
 export default function CustomNavbar({ gameMode, setGameMode }: GameModesProps) {
     return (
-        <Navbar data-bs-theme="dark" className='shadow-md mb-5 bg-navbar !pl-5 !p-0.5 h-16'>
+        <Navbar data-bs-theme="dark" className='shadow-md mb-4 bg-navbar !pl-5 !p-0.5 h-16'>
             <Navbar.Brand>
                 <img className='w-14' 
                     src='res/logo.svg' 

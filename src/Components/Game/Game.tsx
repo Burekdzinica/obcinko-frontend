@@ -16,7 +16,7 @@ import './game.css'
 import { useState, useEffect } from "react";
 import { normalizeText, loadFromLocalStorage } from "../../utils/other";
 import { getFeatureFromNaziv, getObcineFromFeatures } from "../../utils/feature";
-import Footer from "../Footer/Footer";
+import GuessList from "../GuessList/GuessList";
 
 // https://ipi.eprostor.gov.si/wfs-si-gurs-rpe/ogc/features/collections/SI.GURS.RPE:OBCINE/items?f=application%2Fgeo%2Bjson&limit=212
 
@@ -420,26 +420,40 @@ export default function Game({ gameMode }: GameProps) {
             setLastGuess(guess);
             setIsUnkownGuess(true);
             setTimeout(() => setIsUnkownGuess(false), 2000);
+
+            return;
         } 
+        
+        if (!gameState) {
+            console.log("Game state is empty");
+            return;
+        }
+        
+        // If correct word set win to true
+        const win = isWin(guess, gameState.solution);
+        let lose = gameState.numberOfGuesses >= 5;
+
+        const prevGuesses = localStorage.getItem("prevGuesses");
+
+        // If prevGuesses are in storage then concatanete them with ,
+        if (prevGuesses) {
+            const newPrevGuesses = prevGuesses + "," + guess;
+            localStorage.setItem("prevGuesses", newPrevGuesses);
+        }
         else {
-            if (!gameState) {
-                console.log("Game state is empty");
-                return;
-            }
-            
-            // If correct word set win to true
-            const win = isWin(guess, gameState.solution);
-            let lose = gameState.numberOfGuesses >= 5;
+            localStorage.setItem("prevGuesses", guess);
+        }
+      
 
-            switch (gameMode) {
-                case  GAME_MODES.DAILY: 
-                    handleDailyMode(win, lose);
-                    break;
 
-                case GAME_MODES.PRACTICE:
-                    handlePracticeMode(win, lose);
-                    break;
-            }
+        switch (gameMode) {
+            case  GAME_MODES.DAILY: 
+                handleDailyMode(win, lose);
+                break;
+
+            case GAME_MODES.PRACTICE:
+                handlePracticeMode(win, lose);
+                break;
         }
     }
 
@@ -493,7 +507,7 @@ export default function Game({ gameMode }: GameProps) {
             </div>
 
             {/* Map */}
-            <div className="relative rounded m-auto bg-map !w-[70vw] h-[67vh] border-1 border-1 border-white/25 max-sm:h-80  ">
+            <div className="relative rounded m-auto bg-map !w-[70vw] h-[67vh] border-1 border-white/25 max-sm:h-80 mb-3  ">
                 { isWrongGuess && 
                     <WrongGuessMsg /> 
                 }
@@ -528,7 +542,7 @@ export default function Game({ gameMode }: GameProps) {
                 }
             </div>
 
-            
+            <GuessList />
         </>
     );
 }
