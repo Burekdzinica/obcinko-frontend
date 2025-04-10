@@ -134,6 +134,9 @@ export default function Game({ gameMode }: GameProps) {
 
     }, [gameMode]);
 
+    const [winShown, setWinShown] = useState(false);
+    const [loseShown, setLoseShown] = useState(false);
+
     // Write to localStorage on gameState change
     useEffect(() => {
         if (!gameState)
@@ -144,12 +147,14 @@ export default function Game({ gameMode }: GameProps) {
             localStorage.setItem("gameState", JSON.stringify(gameState));
         }
 
-        if (gameState.win) {
+        // Dont show screens on satelite change
+        if (gameState.win && !winShown) {
             setShowWinScreen(true);
-        }
-
-        else if (gameState.lose) {
+            setWinShown(true);
+        } 
+        else if (gameState.lose && !loseShown) {
             setShowLoseScreen(true);
+            setLoseShown(true);
         }
 
     }, [gameState]);
