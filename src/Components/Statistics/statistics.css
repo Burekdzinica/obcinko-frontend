@@ -1,5 +1,6 @@
 .stats-modal .modal-content {
-    background: linear-gradient(135deg, rgb(30, 30, 30), rgb(15, 15, 15));
+    /* background: linear-gradient(135deg, rgb(30, 30, 30), rgb(15, 15, 15)); */
+    background-color: var(--color-bg-primary);
     border: 2px solid rgba(0, 255, 100, 0.5);
     box-shadow: 0 0 15px rgba(0, 255, 100, 0.3);
 }

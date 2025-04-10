@@ -15,7 +15,7 @@ export default function CustomNavbar({ gameMode, setGameMode }: GameModesProps) 
                     alt='Logo' 
                 />
             </Navbar.Brand>
-            <Navbar.Brand className='p-0 font-semibold text-txt !text-4xl max-sm:!text-2xl'>
+            <Navbar.Brand className='p-0 font-semibold !text-primary !text-4xl max-sm:!text-2xl'>
                 Občinko
             </Navbar.Brand>            
             <Navbar.Brand className='flex ms-auto gap-2 max-sm:scale-75'>

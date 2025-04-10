@@ -187,8 +187,8 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
                             disabled={gameState.win || gameState.lose}
                             /* onInvalid={validate} */ 
                         />
-                        <InputGroup.Text className="bg-[dimgray] p-0 border border-black">
-                            <Button className="!rounded-[0_5px_5px_0] text-black border-0 !bg-[dimgray] hover:bg-hover active:bg-active" 
+                        <InputGroup.Text className="!bg-input p-0 !border-1 !border-input">
+                            <Button className="!rounded-[0_5px_5px_0] !text-primary border-0 !bg-input" 
                                 type="submit"
                             >
                                 {numberOfGuesses} / 5
@@ -198,15 +198,16 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
                 </Form>
                 
                 { dropdownVisible && (
-                    <Dropdown
-                    className="!absolute left-1/2 -translate-x-1/2 z-[10000] w-full m-auto"
-                >
-                    <div className="max-h-[10.1rem] overflow-auto bg-[dimgray] border border-black rounded"
+                    <Dropdown className="!absolute left-1/2 -translate-x-1/2 z-[10000] w-full m-auto">
+
+                    {/* Dropdown content */}
+                    <div className="max-h-[10.1rem] overflow-auto bg-input border-1 border-input rounded"
                         ref={dropdownRef}
                     >
                         {filteredObcine?.map((obcina, index) => (
-                            <Dropdown.Item className={`dropdown-option bg-[dimgray] text-zinc-500 p-1 hover:!text-txt hover:!bg-neutral-600 
-                                ${selectedIndex === index ? "!text-txt !bg-neutral-600" : ""}`}
+                            <Dropdown.Item className={`dropdown-option  p-1 
+                                hover:!text-primary hover:!bg-neutral-700 
+                                ${selectedIndex === index ? "!text-primary !bg-neutral-700" : "!text-secondary"}`}
                                 key={index}
                                 onMouseDown={handleDropdownClick}
                             >

@@ -27,7 +27,7 @@ export default function WinScreen({ show, setShow, gameMode }: WinScreenProps) {
     }, []);
 
     return (
-        <Modal className='win-modal bg-backdropDim z-999 text-center text-txt animate-fadeIn' 
+        <Modal className='win-modal bg-backdropDim z-999 text-center !text-primary animate-fadeIn' 
             data-bs-theme="dark"  
             show={show} 
             centered 

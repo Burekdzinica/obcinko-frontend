@@ -1,12 +1,16 @@
 .form-control:focus {
-    border-color: #444;
-    box-shadow: 0 0 5px rgba(150, 150, 150, 0.5);
-    color: rgb(223, 219, 219);
+    border-color: var(--input-border);
+    box-shadow: 0 0 5px rgba(150, 150, 150, 0.4);
+    color: var(--color-text-primary);
 }
 
 .form-control {
-    border-color: black !important;
-    background-color: dimgray !important;
-    /* caret-color: #444; */
-    color: rgb(223, 219, 219);
+    border-color: var(--input-border) !important;
+    background-color: var(--input-color) !important;
+    color: var(--color-text-primary);
 }
+
+.form-control::placeholder {
+    color: var(--color-text-secondary);
+}
+

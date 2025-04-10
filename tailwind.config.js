@@ -8,12 +8,39 @@ module.exports = {
       colors: {
         winGreen: "#00be00",
         backdropDim: "var(--backdrop-dim)",
-        txt: "var(--text-color)",
         modal: "var(--modal-bg-color)",
         navbar: "var(--bg-navbar)",
         hover: "var(--hover-color)",
         active: "var(--active-color)",
-        map: " var(--map-container-bg-color)",
+        map: "var(--map-container-bg-color)",
+        input: "var(--input-color)",
+        primary: "var(--color-text-primary)",
+        secondary: "var(--color-text-secondary)",
+        inputHover: "var(--input-color-hover)",
+      },
+
+      backgroundColor: {
+        primary: "var(--color-bg-primary)",
+        secondary: "var(--color-bg-secondary)",
+        primaryHover: "var(--color-bg-hover-primary)",
+        secondaryHover: "var(--color-bg-hover-secondary)",
+        primaryActive: "var(--color-bg-active-primary)",
+        secondaryActive: "var(--color-bg-active-secondary)"
+      },
+
+      hover: {
+        primary: "var(--color-bg-hover-primary)",
+        secondary: "var(--color-bg-hover-secondary)",
+      },
+
+      active: {
+        primary: "var(--color-bg-active-primary)",
+        secondary: "var(--color-bg-active-secondary)"
+      },
+
+      borderColor: {
+        input: "var(--input-border)",
+        primary: "var(--color-border-primary)",
       },
 
       padding: {

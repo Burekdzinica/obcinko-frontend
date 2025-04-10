@@ -47,7 +47,8 @@ export default function Statistics() {
                 <ChartNoAxesColumnIncreasing className='scale-150' />
             </div>
       
-            <Modal className='stats-modal bg-[linear-gradient(135deg,rgb(30,30,30),rgb(15,15,15))] bg-backdropDim animate-fadeIn text-txt p-modal text-center ' 
+            <Modal className='stats-modal bg-backdropDim 
+                animate-fadeIn !text-primary p-modal text-center' 
                 data-bs-theme="dark"
                 show={show} 
                 onHide={handleClose} 

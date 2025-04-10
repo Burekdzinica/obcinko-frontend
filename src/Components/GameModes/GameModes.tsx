@@ -47,29 +47,29 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
                     closeButton 
                     data-bs-theme="dark"
                 >
-                    <Modal.Title className="w-full text-center !font-bold !text-txt">
+                    <Modal.Title className="w-full text-center !font-bold !text-primary">
                         Načini igre
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="text-white text-center space-y-4">
+                <Modal.Body className="!text-secondary text-center space-y-4">
                     <div className="mb-1">
                         <strong>Trenutni način igre: </strong>
-                        <span className="text-txt">{gameModeText}</span>
+                        <span className="!text-secondary">{gameModeText}</span>
                     </div>
                     <button
-                        className={`border border-transparent p-3 rounded-full text-white w-full
+                        className={`border border-transparent p-3 rounded-full !text-primary w-full
                             ${gameMode === GAME_MODES.DAILY ? 
                                 "bg-emerald-800 hover:bg-emerald-800" : 
-                                "bg-stone-800 hover:bg-stone-900 active:bg-stone-950"}`}
+                                "!bg-secondary hover:!bg-secondaryHover active:!bg-secondaryActive"}`}
                         onClick={() => handleGameModeSelect(GAME_MODES.DAILY)}
                         disabled={gameMode === GAME_MODES.DAILY}
                     >
                         Dnevno
                     </button>
-                    <button className={`border border-transparent p-3 rounded-full text-white w-full
+                    <button className={`border border-transparent p-3 rounded-full !text-primary w-full
                             ${gameMode === GAME_MODES.PRACTICE ? 
                                 "bg-emerald-800 hover:bg-emerald-900" : 
-                                "bg-stone-800 hover:bg-stone-900 active:bg-stone-950"}`}
+                                "!bg-secondary hover:!bg-secondaryHover active:!bg-secondaryActive"}`}
                         onClick={() => handleGameModeSelect(GAME_MODES.PRACTICE)}
                         disabled={gameMode === GAME_MODES.PRACTICE}
                     >

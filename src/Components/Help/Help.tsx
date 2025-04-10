@@ -2,6 +2,9 @@ import { Modal } from "react-bootstrap"
 import { useState } from "react";
 import { CircleHelp } from "lucide-react";
 
+import "./help.css";
+
+
 export default function Help() {
     const [show, setShow] = useState(false);
 
@@ -18,7 +21,7 @@ export default function Help() {
                 <CircleHelp className="scale-150" />
             </button> 
 
-            <Modal className="gameModes-modal" 
+            <Modal className="help-modal"
                 data-bs-theme="dark"
                 show={show}
                 onHide={handleClose}
@@ -28,7 +31,7 @@ export default function Help() {
                     closeButton 
                     data-bs-theme="dark"
                 >
-                    <Modal.Title className="w-full text-center !font-bold !text-txt">
+                    <Modal.Title className="w-full text-center !font-bold !text-primary">
                         Kako igrati
                     </Modal.Title>
                 </Modal.Header>

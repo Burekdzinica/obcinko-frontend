@@ -2,13 +2,13 @@
     height: 100%;
     width: 100%;
     background-color: var(--map-container-bg-color) !important;
+    /* background-color: var(--color-bg-primary) !important; */
     border-radius: var(--border-radius);
-
 }
 
 .leaflet-tooltip {
     background-color: transparent !important; 
-    color: white !important;
+    color: var(--color-text-primary) !important;
     border: none !important;
     box-shadow: none !important;
 }
@@ -24,11 +24,11 @@
 /* Zoom controls */
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-    background-color: var(--map-container-bg-color) !important;
-    color: var(--text-color) !important;
+    background-color: var(--color-bg-primary) !important;
+    color: var(--color-text-primary) !important;
     width: 2em !important;
     height: 2em !important;
-    border: 1px solid var(--text-color) !important;
+    border: 1px solid var(--color-border-primary) !important;
 
     display: flex !important;
     justify-content: center;
@@ -37,10 +37,10 @@
 
 .leaflet-control-zoom-in:hover,
 .leaflet-control-zoom-out:hover {
-    background-color: var(--hover-color)  !important;
+    background-color: var(--color-bg-hover-primary)  !important;
 }
 
 .leaflet-control-zoom-in:active,
 .leaflet-control-zoom-out:active {
-    background-color: var(--active-color)  !important;
+    background-color: var(--color-bg-active-primary)  !important;
 }
