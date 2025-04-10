@@ -11,8 +11,6 @@ import SatelliteBtn from "../SatelliteBtn/SatelliteBtn";
 import { config } from "../../config/config";
 import { GeoJsonProps, Features, Feature, GameState, Stats, GameProps, GAME_MODES } from "../../types/index";
 
-import './game.css'
-
 import { useState, useEffect } from "react";
 import { normalizeText, loadFromLocalStorage } from "../../utils/other";
 import { getFeatureFromNaziv, getObcineFromFeatures } from "../../utils/feature";
@@ -387,13 +385,18 @@ export default function Game({ gameMode }: GameProps) {
         const normalizedObcine = obcine?.map(obcina => normalizeText(obcina));
 
         let guessList = "";
-        if (GAME_MODES.DAILY)
-            guessList = "prevGuessesDaily";
-        else
-            guessList = "prevGuessesPractice";
+        // Get guessList based on game mode
+        switch (gameMode) {
+            case GAME_MODES.DAILY:
+                guessList = "prevGuessesDaily";
+                break;
+            
+            case GAME_MODES.PRACTICE:
+                guessList = "prevGuessesPractice";
+                break;                
+        }
 
         const prevGuesses = localStorage.getItem(guessList);
-
 
         // Unknown obcina typed
         if (!normalizedObcine?.includes(normalizedGuess)) {
