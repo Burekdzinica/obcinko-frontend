@@ -1,5 +1,26 @@
-export default function GuessList({ solution }: { solution: string}) {
-    const prevGuesses = localStorage.getItem("prevGuesses");
+import { GAME_MODES } from "../../types";
+
+interface Props {
+    solution: string;
+    gameMode: GAME_MODES;
+}
+
+export default function GuessList({ solution, gameMode }: Props) {
+    let guessList = "";
+    
+    switch (gameMode) {
+        case  GAME_MODES.DAILY: 
+            guessList = "prevGuessesDaily";
+            break;
+
+        case GAME_MODES.PRACTICE:
+            guessList = "prevGuessesPractice"
+            break;
+    }
+
+
+
+    const prevGuesses = localStorage.getItem(guessList);
     const guesses = prevGuesses?.split(",");
 
     return (

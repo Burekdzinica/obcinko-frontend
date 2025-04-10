@@ -204,17 +204,22 @@ export default function Game({ gameMode }: GameProps) {
             
         let savedGameState: GameState = JSON.parse(savedState);
 
-        // If daily solution doesnt match the saved state, start new game        
+        // If daily solution doesnt match the saved state, start new game   
+        // New daily game     
         if (daily.solution !== savedGameState.solution) {
+            deleteGuessList("prevGuessDaily");
             initGameState(feature);
         }
         // Read the saved state
+        // Existing game
         else {
             setGameState(savedGameState);
         }
     }
 
     async function startPracticeGame() {
+        deleteGuessList("prevGuessesPractice");
+        
         const feature = await fetchRandomFeature();
         const allFeatures = await fetchAllFeatures();
 
@@ -237,21 +242,9 @@ export default function Game({ gameMode }: GameProps) {
             return;
 
         if (win) {
-            // let newMaxStreak = stats.maxStreak;
-    
-            // if (stats.streak + 1 > stats.maxStreak) { // + 1, da steje to zmago
-            //     newMaxStreak = stats.streak + 1;                       
-            // }
-    
-            // setStats(prev => ({ 
-            //     ...prev, 
-            //     playedGames: prev!.playedGames++,
-            //     wins: prev!.wins++,
-            //     streak: prev!.streak++,
-            //     maxStreak: newMaxStreak
-            // }));
             setStats(prev => {
-                if (!prev) return prev; // Ensure `prev` exists before updating
+                if (!prev) 
+                    return prev;
             
                 return {
                     ...prev,
@@ -322,44 +315,27 @@ export default function Game({ gameMode }: GameProps) {
         }));
     }
 
+    function nextHint() {
+        setGameState(prev => ({
+            ...prev!,
+            numberOfGuesses: prev!.numberOfGuesses + 1
+        }));
+
+        if (!gameState) {
+            console.log("Game state is empty");
+            return;
+        }
+        // Update hints
+        const hintsLevel = gameState.numberOfGuesses;
+        updateHints(hintsLevel);
+
+        // WrongGuess msg
+        setIsWrongGuess(true);
+        setTimeout(() => setIsWrongGuess(false), 2000);
+    }
+
     function handleDailyMode(win: boolean, lose: boolean) {
-        if (win) {
-            setGameState(prev => ({
-                ...prev!,
-                win: true,
-            }));
-
-            setShowWinScreen(true);
-        } 
-
-        else if (lose) {
-            setGameState(prev => ({
-                ...prev!,
-                lose: true,
-            }));
-
-            setShowLoseScreen(true);
-        }
-
-        // Wrong guess
-        else {
-            setGameState(prev => ({
-                ...prev!,
-                numberOfGuesses: prev!.numberOfGuesses + 1
-            }));
-
-            if (!gameState) {
-                console.log("Game state is empty");
-                return;
-            }
-            // Update hints
-            const hintsLevel = gameState.numberOfGuesses;
-            updateHints(hintsLevel);
-
-            // WrongGuess msg
-            setIsWrongGuess(true);
-            setTimeout(() => setIsWrongGuess(false), 2000);
-        }
+        guessOutcome(win, lose);
 
         if (win || lose) {
             updateStats(win, lose);
@@ -368,6 +344,20 @@ export default function Game({ gameMode }: GameProps) {
     }
 
     function handlePracticeMode(win: boolean, lose: boolean) {
+        guessOutcome(win, lose);
+
+        if (win || lose) {
+            restartGame();
+            setLastSolution(gameState!.solution);
+            deleteGuessList("prevGuessesPractice");
+        }
+    }
+
+    function deleteGuessList(guessList: string) {
+        localStorage.removeItem(guessList);
+    }
+
+    function guessOutcome(win: boolean, lose: boolean) {
         if (win) {
             setGameState(prev => ({
                 ...prev!,
@@ -388,35 +378,23 @@ export default function Game({ gameMode }: GameProps) {
 
         // Wrong guess
         else {
-            setGameState(prev => ({
-                ...prev!,
-                numberOfGuesses: prev!.numberOfGuesses + 1
-            }));
-
-            if (!gameState) {
-                console.log("Game state is empty");
-                return;
-            }
-            // Update hints
-            const hintsLevel = gameState.numberOfGuesses;
-            updateHints(hintsLevel);
-
-            // WrongGuess msg
-            setIsWrongGuess(true);
-            setTimeout(() => setIsWrongGuess(false), 2000);
-        }
-
-        if (win || lose) {
-            restartGame();
-            setLastSolution(gameState!.solution);
-
+            nextHint();
         }
     }
 
     function handleGuess(guess: string) {
         const normalizedGuess = normalizeText(guess);
         const normalizedObcine = obcine?.map(obcina => normalizeText(obcina));
-    
+
+        let guessList = "";
+        if (GAME_MODES.DAILY)
+            guessList = "prevGuessesDaily";
+        else
+            guessList = "prevGuessesPractice";
+
+        const prevGuesses = localStorage.getItem(guessList);
+
+
         // Unknown obcina typed
         if (!normalizedObcine?.includes(normalizedGuess)) {
             setLastGuess(guess);
@@ -430,12 +408,6 @@ export default function Game({ gameMode }: GameProps) {
             console.log("Game state is empty");
             return;
         }
-        
-        // If correct word set win to true
-        const win = isWin(guess, gameState.solution);
-        let lose = gameState.numberOfGuesses >= 5;
-
-        const prevGuesses = localStorage.getItem("prevGuesses");
 
         // If already guessed obcina in playthrough
         if (prevGuesses?.includes(guess)) {
@@ -449,13 +421,16 @@ export default function Game({ gameMode }: GameProps) {
         // If prevGuesses are in storage then concatanete them with ,
         if (prevGuesses) {
             const newPrevGuesses = prevGuesses + "," + guess;
-            localStorage.setItem("prevGuesses", newPrevGuesses);
+            localStorage.setItem(guessList, newPrevGuesses);
         }
         else {
-            localStorage.setItem("prevGuesses", guess);
+            localStorage.setItem(guessList, guess);
         }
 
-
+        // If correct word set win to true
+        const win = isWin(guess, gameState.solution);
+        let lose = gameState.numberOfGuesses >= 5;
+        
         switch (gameMode) {
             case  GAME_MODES.DAILY: 
                 handleDailyMode(win, lose);
@@ -483,7 +458,9 @@ export default function Game({ gameMode }: GameProps) {
 
             {/* Already guessed message */}
             { isAlreadyGuessed && 
-                <AlreadyGuessedMsg obcina={lastGuess} />
+                <AlreadyGuessedMsg 
+                    obcina={lastGuess} 
+                />
             }
             
             { gameState && 
@@ -553,7 +530,10 @@ export default function Game({ gameMode }: GameProps) {
                 }
             </div>
 
-            <GuessList solution={gameState?.solution!} />
+            <GuessList 
+                solution={gameState?.solution!} 
+                gameMode={gameMode}
+            />
         </>
     );
 }
