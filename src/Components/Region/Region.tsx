@@ -39,7 +39,7 @@ export default function Region({ obcina }: { obcina: string }) {
     }, [obcina]);
 
     return (
-        <div className="rounded z-[999] p-1 !bg-primary absolute bottom-2.5 right-2.5 border-1 !border-primary">
+        <div className="rounded z-[999] p-1 px-2 !bg-primary absolute bottom-2.5 right-2.5 border-1 !border-primary">
             <h2 className="!text-primary text-3xl m-0 max-sm:text-sm">
                 Regija: {region}
             </h2>

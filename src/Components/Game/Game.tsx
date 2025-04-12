@@ -210,7 +210,7 @@ export default function Game({ gameMode }: GameProps) {
         // If daily solution doesnt match the saved state, start new game   
         // New daily game     
         if (daily.solution !== savedGameState.solution) {
-            deleteGuessList("prevGuessDaily");
+            deleteGuessList("prevGuessesDaily");
             initGameState(feature);
         }
         // Read the saved state
@@ -498,7 +498,7 @@ export default function Game({ gameMode }: GameProps) {
             </div>
 
             {/* Map */}
-            <div className="relative rounded m-auto bg-map !w-[70vw] h-[67vh] border-1 border-white/25 max-sm:h-80 mb-3  ">
+            <div className="relative rounded m-auto !w-[70vw] h-[67vh] border-1 !border-primary max-sm:h-80 mb-3  ">
                 { isWrongGuess && 
                     <WrongGuessMsg /> 
                 }

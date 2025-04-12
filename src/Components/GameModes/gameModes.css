@@ -1,4 +1,7 @@
 .gameModes-modal .modal-content {
-    /* background: linear-gradient(135deg, rgb(30, 30, 30), rgb(15, 15, 15)); */
     background-color: var(--color-bg-primary);
+}
+
+.gameModes-modal {
+    backdrop-filter: blur(var(--blur-size));
 }

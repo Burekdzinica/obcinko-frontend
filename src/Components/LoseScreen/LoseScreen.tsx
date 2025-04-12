@@ -20,7 +20,7 @@ export default function LoseScreen({ obcina, show, setShow, gameMode }: LoseScre
 
 
     return (
-        <Modal className='lose-modal bg-backdropDim text-center animate-fadeIn !text-primary' 
+        <Modal className='lose-modal text-center animate-fadeIn !text-primary' 
             data-bs-theme="dark" 
             centered 
             show={show}

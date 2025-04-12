@@ -1,17 +1,6 @@
 :root {
     /* Modal */
     --blur-size: 1px;
-    --backdrop-dim: rgba(0, 0, 0, 0.3);
-    --modal-padding: 5px;
-    --modal-bg-color: #212529;
-
-    --border-radius: 5px;
-    --map-container-bg-color: #0c0c0a;
-    --hover-color: rgb(85, 84, 84);
-    --active-color: rgb(51, 51, 51);
-    --font-family-heading: "Roboto Condensed", sans-serif;
-
-    --bg-navbar: rgb(44, 41, 41);
 
     --input-color: #242424;
     --input-color-hover: "#2A2A2A";
@@ -24,6 +13,8 @@
     --color-bg-primary: #121212;
     --color-bg-secondary: #1D1D1D;
 
+    --color-bg-navbar: #2C2C2C;
+
     --color-bg-hover-primary: #1A1A1A;
     --color-bg-hover-secondary: #252525;
     
@@ -31,4 +22,6 @@
     --color-bg-active-secondary: #2D2D2D;   
 
     --color-border-primary: #555555;
+
+    --color-bg-btn-selected: #0c0c0c;
 }

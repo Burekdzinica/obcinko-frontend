@@ -30,7 +30,7 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
 
     return (
         <>
-            <button className="rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105" 
+            <button className="rounded active:bg-primaryActive active:scale-90 hover:bg-primaryHover p-3 hover:scale-105" 
                 onClick={handleShow}
                 title="Načini igre"
             >
@@ -48,18 +48,18 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
                     data-bs-theme="dark"
                 >
                     <Modal.Title className="w-full text-center !font-bold !text-primary">
-                        Načini igre
+                        Načini igranja
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="!text-secondary text-center space-y-4">
                     <div className="mb-1">
-                        <strong>Trenutni način igre: </strong>
-                        <span className="!text-secondary">{gameModeText}</span>
+                        <span>Trenutni način igre: </span> 
+                        <strong className="!text-primary">{gameModeText}</strong>
                     </div>
                     <button
                         className={`border border-transparent p-3 rounded-full !text-primary w-full
                             ${gameMode === GAME_MODES.DAILY ? 
-                                "bg-emerald-800 hover:bg-emerald-800" : 
+                                "bg-btnSelected" : 
                                 "!bg-secondary hover:!bg-secondaryHover active:!bg-secondaryActive"}`}
                         onClick={() => handleGameModeSelect(GAME_MODES.DAILY)}
                         disabled={gameMode === GAME_MODES.DAILY}
@@ -68,7 +68,7 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
                     </button>
                     <button className={`border border-transparent p-3 rounded-full !text-primary w-full
                             ${gameMode === GAME_MODES.PRACTICE ? 
-                                "bg-emerald-800 hover:bg-emerald-900" : 
+                                "bg-btnSelected" : 
                                 "!bg-secondary hover:!bg-secondaryHover active:!bg-secondaryActive"}`}
                         onClick={() => handleGameModeSelect(GAME_MODES.PRACTICE)}
                         disabled={gameMode === GAME_MODES.PRACTICE}

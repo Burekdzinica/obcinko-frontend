@@ -1,9 +1,7 @@
 .leaflet-container {
     height: 100%;
     width: 100%;
-    background-color: var(--map-container-bg-color) !important;
-    /* background-color: var(--color-bg-primary) !important; */
-    border-radius: var(--border-radius);
+    border-radius: 0.25rem; /* rounded */
 }
 
 .leaflet-tooltip {
@@ -43,4 +41,12 @@
 .leaflet-control-zoom-in:active,
 .leaflet-control-zoom-out:active {
     background-color: var(--color-bg-active-primary)  !important;
+}
+
+@media (max-width: 600px) {
+    .leaflet-control-zoom-in,
+    .leaflet-control-zoom-out {
+        width: 1.5em !important;
+        height: 1.5em !important;
+    }
 }

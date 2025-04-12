@@ -40,15 +40,15 @@ export default function Statistics() {
     return (
         <>
             {/* Icon */ }
-            <div className='rounded active:bg-active active:scale-90 hover:bg-hover p-3 hover:scale-105 cursor-pointer' 
+            <div className='rounded active:bg-primaryActive active:scale-90 hover:bg-primaryHover p-3 hover:scale-105 cursor-pointer' 
                 onClick={handleShow}
                 title='Statistika'
             >
                 <ChartNoAxesColumnIncreasing className='scale-150' />
             </div>
       
-            <Modal className='stats-modal bg-backdropDim 
-                animate-fadeIn !text-primary p-modal text-center' 
+            <Modal className='stats-modal
+                !text-primary text-center' 
                 data-bs-theme="dark"
                 show={show} 
                 onHide={handleClose} 
@@ -58,25 +58,26 @@ export default function Statistics() {
                     closeButton 
                     data-bs-theme="dark"
                 >
-                    <Modal.Title className='!font-bold !text-[2em] !text-transparent !bg-clip-text tracking-wider grow bg-gradient-to-r from-yellow-400 via-lime-500 to-green-600'>
+                    <Modal.Title className='!font-bold !text-[2em] !text-transparent !bg-clip-text tracking-wider grow 
+                        bg-gradient-to-r from-yellow-400 via-lime-500 to-green-600'>
                         Statistika
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body className='flex flex-col gap-2.5 text-lg !p-[1.5em]'>
-                    <div className='bg-stone-100/5 p-2 rounded duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
-                        Igrane igre <br/> <span className="text-green-600">{stats?.playedGames}</span>
+                <Modal.Body className='flex flex-col gap-2.5 text-lg p-4'>
+                    <div className='!bg-secondary p-2 rounded duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Igrane igre <br/> <span className="text-green-500">{stats?.playedGames}</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
-                        Zmage <br/> <span className="text-green-600">{stats?.wins}</span>
+                    <div className='!bg-secondary p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Zmage <br/> <span className="text-green-500">{stats?.wins}</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
-                        Zmage % <br/> <span className="text-green-600">{stats?.winProcentile}%</span>
+                    <div className='!bg-secondary p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Zmage % <br/> <span className="text-green-500">{stats?.winProcentile}%</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
-                        Zaporednih zmag <br/> <span className="text-green-600">{stats?.streak}</span>
+                    <div className='!bg-secondary p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Zaporednih zmag <br/> <span className="text-green-500">{stats?.streak}</span>
                     </div>
-                    <div className='bg-stone-100/5 p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
-                        Največje zaporedje zmag <br/> <span className="text-green-600">{stats?.maxStreak}</span>
+                    <div className='!bg-secondary p-2 rounded transition-shadow duration-200 ease-in-out hover:shadow-[0_0_10px_rgba(0,255,100,0.3)]'>
+                        Največje zaporedje zmag <br/> <span className="text-green-500">{stats?.maxStreak}</span>
                     </div>
                 </Modal.Body>
             </Modal>

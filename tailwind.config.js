@@ -6,13 +6,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        winGreen: "#00be00",
-        backdropDim: "var(--backdrop-dim)",
-        modal: "var(--modal-bg-color)",
-        navbar: "var(--bg-navbar)",
-        hover: "var(--hover-color)",
-        active: "var(--active-color)",
-        map: "var(--map-container-bg-color)",
         input: "var(--input-color)",
         primary: "var(--color-text-primary)",
         secondary: "var(--color-text-secondary)",
@@ -25,7 +18,9 @@ module.exports = {
         primaryHover: "var(--color-bg-hover-primary)",
         secondaryHover: "var(--color-bg-hover-secondary)",
         primaryActive: "var(--color-bg-active-primary)",
-        secondaryActive: "var(--color-bg-active-secondary)"
+        secondaryActive: "var(--color-bg-active-secondary)",
+        navbar: "var(--color-bg-navbar)",
+        btnSelected: "var(--color-bg-btn-selected)"
       },
 
       hover: {
@@ -41,10 +36,6 @@ module.exports = {
       borderColor: {
         input: "var(--input-border)",
         primary: "var(--color-border-primary)",
-      },
-
-      padding: {
-        modal: "var(--modal-padding)",
       },
 
       animation: {

@@ -27,7 +27,7 @@ export default function WinScreen({ show, setShow, gameMode }: WinScreenProps) {
     }, []);
 
     return (
-        <Modal className='win-modal bg-backdropDim z-999 text-center !text-primary animate-fadeIn' 
+        <Modal className='win-modal z-999 text-center !text-primary animate-fadeIn' 
             data-bs-theme="dark"  
             show={show} 
             centered 
@@ -40,7 +40,7 @@ export default function WinScreen({ show, setShow, gameMode }: WinScreenProps) {
                 <Modal.Title>Čestitke!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5 className='font-bold text-winGreen'>Uspešno ste ugotovili občino</h5> 
+                <h5 className='font-bold text-lime-500'>Uspešno ste ugotovili občino</h5> 
                 {text}
             </Modal.Body>
         </Modal>
