@@ -38,11 +38,14 @@
 }
 
 body {
-  /* background-color: #1c1c1a;  */
   background-color: var(--color-bg-primary);
 }
 
 html, body {
   height: 100%;
 }
+
+/* h1, h2, h3, h4, h5 {
+    font-family: 'lexend';
+} */
 

@@ -110,7 +110,6 @@ export default function Game({ gameMode }: GameProps) {
     const [stats, setStats] = useState<Stats>();
 
     // Screens
-    const [lastSolution, setLastSolution] = useState("");
     const [showLoseScreen, setShowLoseScreen] = useState<boolean>(false);
     const [showWinScreen, setShowWinScreen] = useState<boolean>(false);
 
@@ -337,7 +336,6 @@ export default function Game({ gameMode }: GameProps) {
 
         if (win || lose) {
             updateStats(win, lose);
-            setLastSolution(gameState!.solution);
         }
     }
 
@@ -346,7 +344,6 @@ export default function Game({ gameMode }: GameProps) {
 
         if (win || lose) {
             restartGame();
-            setLastSolution(gameState!.solution);
             deleteGuessList("prevGuessesPractice");
         }
     }
@@ -468,7 +465,7 @@ export default function Game({ gameMode }: GameProps) {
             
             { gameState && 
                 <LoseScreen 
-                    obcina={lastSolution} 
+                    obcina={gameState.solution} 
                     show={showLoseScreen} 
                     setShow={setShowLoseScreen} 
                     gameMode={gameMode}
@@ -503,7 +500,7 @@ export default function Game({ gameMode }: GameProps) {
                     <WrongGuessMsg /> 
                 }
 
-                {/* FUj to */}
+                {/* */}
                 { gameState?.hints.satellite && 
                     <SatelliteBtn handleSatellite={handleSatellite} />
                 }

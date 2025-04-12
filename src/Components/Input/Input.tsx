@@ -44,7 +44,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
 
     useEffect(() => {
         if (gameState.win || gameState.lose) {
-            setPlaceholderText("Konec igre, jutri lahko ponovno igrate.");
+            setPlaceholderText("Konec igre, igro lahko nadaljujete naslednji dan.");
         }
         else {
             setPlaceholderText("Vpiši občino");

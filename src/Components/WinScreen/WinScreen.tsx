@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import { WinScreenProps, GAME_MODES } from '../../types';
+import { Trophy } from 'lucide-react';
 
 import launchConfetti from './confetti/confetti';
 
@@ -13,7 +14,7 @@ export default function WinScreen({ show, setShow, gameMode }: WinScreenProps) {
         useEffect(() => {
             switch (gameMode) {
                 case GAME_MODES.DAILY:
-                    setText("Igro lahko nadaljujete naslednji dan.");
+                    setText("Nova uganka vas čaka jutri ob polnoči. Se vidimo!");
                     break;
     
                 case GAME_MODES.PRACTICE:
@@ -37,11 +38,15 @@ export default function WinScreen({ show, setShow, gameMode }: WinScreenProps) {
                 onHide={() => setShow(false)}
                 closeButton
             >
-                <Modal.Title>Čestitke!</Modal.Title>
+                <Modal.Title className='flex items-center justify-center gap-2'>
+                    <Trophy className='text-amber-500' />
+                    <span className='text-amber-600 font-semibold'>Čestitke!</span>
+                    <Trophy className='text-amber-500' />
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5 className='font-bold text-lime-500'>Uspešno ste ugotovili občino</h5> 
-                {text}
+                <h5 className='font-bold text-lime-600'>Uspešno ste ugotovili občino</h5> 
+                <span className='italic !text-secondary'>{text}</span>
             </Modal.Body>
         </Modal>
     )

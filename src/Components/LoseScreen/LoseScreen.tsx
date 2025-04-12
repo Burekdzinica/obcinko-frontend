@@ -30,11 +30,13 @@ export default function LoseScreen({ obcina, show, setShow, gameMode }: LoseScre
                 onHide={() => setShow(false)}
                 closeButton
             >
-                <Modal.Title>Pravilna občina: { obcina } </Modal.Title>
+                <Modal.Title>
+                    <h5 className='font-semibold text-red-600 m-0' >Konec igre</h5> 
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5 className='font-bold text-red-700' >Konec igre</h5> 
-                {text}
+                <h5 className='text-amber-500'>Pravilna občina: <span className='font-semibold'>{ obcina }</span></h5>
+                <span className='italic !text-secondary'>{text}</span>
             </Modal.Body>
         </Modal>
     )
