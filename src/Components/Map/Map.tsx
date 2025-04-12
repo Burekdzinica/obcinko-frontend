@@ -5,6 +5,7 @@ import AdjacentObcine from "./AdjacentObcine/AdjacentObcine";
 import WholeMap from "./WholeMap/WholeMap";
 
 import { config } from "../../config/config";
+import { useEffect, useState } from 'react';
 
 import "leaflet/dist/leaflet.css";
 import './map.css'
@@ -17,45 +18,40 @@ const Options = {
 };
 
 export default function Map({ allFeatures, feature, hints, showSatellite }: MapProps) {
-    let mapContent;
-    let satelliteContent;
-    let wholeMapContent;
-    let adjacentObcineContent;
+    const [isAdjacent, setIsAdjacent] = useState(false);
 
-    if (showSatellite) {
-        satelliteContent = (
-            <TileLayer
-                // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
-                url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                attribution='&copy; <a href="https://server.arcgisonline.com/arcgis/rest/services">ArcGIS</a>'
-            />
-        );
-    }
-
-    if (hints.map) {
-        wholeMapContent = (
-            <WholeMap />
-        );
-    }
-
-    if (hints.adjacentObcine) {
-        adjacentObcineContent = (
-            <AdjacentObcine 
-                options={Options.ADJACENT} 
-                allFeatures={allFeatures} 
-                targetFeature={feature} 
-            />
-        )
-    }
-
-    mapContent = (
+    // Cycles through isAdjacent, false -> true, true -> false
+    useEffect(() => {
+        setIsAdjacent(!!isAdjacent);
+        console.count();
+    }, [hints.adjacentObcine])
+    
+    return (
         <MapContainer {...mapOptions}>
-            {satelliteContent}
-            <Outline feature={feature} />
-            {adjacentObcineContent}
-            {wholeMapContent}
+            { showSatellite && (
+                <TileLayer
+                    // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
+                    url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    attribution='&copy; <a href="https://server.arcgisonline.com/arcgis/rest/services">ArcGIS</a>'
+                />
+            )}    
+
+            <Outline 
+                feature={feature} 
+                isAdjacent={isAdjacent}
+            />
+
+            { hints.adjacentObcine && (
+               <AdjacentObcine 
+                    options={Options.ADJACENT} 
+                    allFeatures={allFeatures} 
+                    targetFeature={feature} 
+                /> 
+            )}
+
+            { hints.map && (
+                <WholeMap />
+            )}
         </MapContainer>
     )
-
-    return mapContent;
 }

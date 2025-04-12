@@ -94,22 +94,20 @@ function isWin(guess: string, solution: string) {
 }
 
 export default function Game({ gameMode }: GameProps) {
-    // Input & Guess managment
     const [inputValue, setInputValue] = useState('');
     const [isWrongGuess, setIsWrongGuess] = useState(false);
     const [isUnknownGuess, setIsUnkownGuess] = useState(false);
     const [isAlreadyGuessed, setIsAlreadyGuessed] = useState(false);
     const [lastGuess, setLastGuess] = useState(""); // save guess, so it doesn't change on input change
+
+    const [lastSolution, setLastSolution] = useState("");
     
-    // Game Data
     const [allFeatures, setAllFeatures] = useState<Features>();
     const [obcine, setObcine] = useState<string[]>();
    
-    // States
     const [gameState, setGameState] = useState<GameState>();
     const [stats, setStats] = useState<Stats>();
 
-    // Screens
     const [showLoseScreen, setShowLoseScreen] = useState<boolean>(false);
     const [showWinScreen, setShowWinScreen] = useState<boolean>(false);
 
@@ -146,7 +144,7 @@ export default function Game({ gameMode }: GameProps) {
             localStorage.setItem("gameState", JSON.stringify(gameState));
         }
 
-        // Dont show screens on satelite change
+        // Dont show win/lose screens on satelite change
         if (gameState.win && !winShown) {
             setShowWinScreen(true);
             setWinShown(true);
@@ -322,6 +320,7 @@ export default function Game({ gameMode }: GameProps) {
             console.log("Game state is empty");
             return;
         }
+
         // Update hints
         const hintsLevel = gameState.numberOfGuesses;
         updateHints(hintsLevel);
@@ -343,6 +342,7 @@ export default function Game({ gameMode }: GameProps) {
         guessOutcome(win, lose);
 
         if (win || lose) {
+            setLastSolution(gameState?.solution!);
             restartGame();
             deleteGuessList("prevGuessesPractice");
         }
@@ -465,7 +465,7 @@ export default function Game({ gameMode }: GameProps) {
             
             { gameState && 
                 <LoseScreen 
-                    obcina={gameState.solution} 
+                    obcina={lastSolution} 
                     show={showLoseScreen} 
                     setShow={setShowLoseScreen} 
                     gameMode={gameMode}
@@ -508,6 +508,7 @@ export default function Game({ gameMode }: GameProps) {
                 {/* Show map */}
                 { gameState && 
                     <Map 
+                        key={gameMode}
                         allFeatures={allFeatures!} 
                         feature={gameState.feature} 
                         hints={gameState.hints} 

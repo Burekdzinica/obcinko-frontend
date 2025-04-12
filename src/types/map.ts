@@ -15,6 +15,7 @@ export interface AdjacentObcineProps {
 
 export interface FitToBoundsProps {
     feature: Feature;
+    isAdjacent: boolean;
 }
 
 export interface MapProps {
