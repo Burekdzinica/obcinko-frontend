@@ -171,7 +171,7 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
 
     return (
         <>
-            <div className="relative m-auto w-full max-sm:w-3/4 max-md:w-1/2 max-lg:w-3/4">
+            <div className="relative m-auto w-full max-sm:w-3/4 max-md:w-1/2 max-lg:w-3/4 z-10">
                 <Form onSubmit={handleSubmit} >
                     <InputGroup>
                         <Form.Control
@@ -198,10 +198,10 @@ export default function Input({ inputValue, setInputValue, handleGuess, numberOf
                 </Form>
                 
                 { dropdownVisible && (
-                    <Dropdown className="!absolute left-1/2 -translate-x-1/2 z-[10000] w-full m-auto">
+                    <Dropdown className="!absolute left-1/2 -translate-x-1/2 w-full m-auto ">
 
                     {/* Dropdown content */}
-                    <div className="max-h-[10.1rem] overflow-auto bg-input border-1 border-input rounded"
+                    <div className="max-h-[10.1rem] overflow-auto bg-input border-1 border-input rounded "
                         ref={dropdownRef}
                     >
                         {filteredObcine?.map((obcina, index) => (

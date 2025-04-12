@@ -25,9 +25,9 @@ export default function GuessList({ solution, gameMode }: Props) {
 
     return (
         <div>
-            <div className="flex gap-5 justify-center flex-wrap px-14 ">
+            <div className="flex gap-5 justify-center flex-wrap px-14">
                 { guesses?.map((guess, index) => (
-                    <p className={`text-center m-0  ${guess === solution ? 'text-green-500' : 'text-red-500'} `}
+                    <p className={`text-center m-0 z-10 ${guess === solution ? 'text-green-500' : 'text-red-500'} `}
                         key={index}
                     >
                         {guess}

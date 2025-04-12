@@ -6,7 +6,7 @@ import Help from '../Help/Help';
 
 export default function CustomNavbar({ gameMode, setGameMode }: GameModesProps) {
     return (
-        <Navbar className='shadow-md mb-4 bg-navbar !pl-5 h-14'
+        <Navbar className='shadow-md mb-4 bg-navbar !pl-5 h-14 z-10'
             data-bs-theme="dark" 
         >
             <Navbar.Brand>

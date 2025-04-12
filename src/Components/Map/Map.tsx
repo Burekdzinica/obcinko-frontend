@@ -23,18 +23,23 @@ export default function Map({ allFeatures, feature, hints, showSatellite }: MapP
     // Cycles through isAdjacent, false -> true, true -> false
     useEffect(() => {
         setIsAdjacent(!!isAdjacent);
-        console.count();
     }, [hints.adjacentObcine])
+
     
     return (
         <MapContainer {...mapOptions}>
-            { showSatellite && (
+            {/* Satellite layer and normal map layer */}
+            {showSatellite ? (
                 <TileLayer
-                    // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
                     url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     attribution='&copy; <a href="https://server.arcgisonline.com/arcgis/rest/services">ArcGIS</a>'
                 />
-            )}    
+            ) : hints.map && (
+                <TileLayer
+                    url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+                    attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+                />
+            )}
 
             <Outline 
                 feature={feature} 
