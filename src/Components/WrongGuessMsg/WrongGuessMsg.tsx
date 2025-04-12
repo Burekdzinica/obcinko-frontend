@@ -4,7 +4,9 @@ export default function WrongGuessMsg() {
             -translate-x-1/2 -translate-y-1/2 text-red-600 text-center text-base font-bold absolute 
             top-1/2 left-1/2 animate-shake whitespace-nowrap"
         >
-            Napačen odgovor
+            <p className="m-0">
+                Napačen odgovor
+            </p>
         </div>
     )
 }

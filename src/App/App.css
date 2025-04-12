@@ -45,7 +45,10 @@ html, body {
   height: 100%;
 }
 
-/* h1, h2, h3, h4, h5 {
-    font-family: 'lexend';
-} */
+h1, h2, h3, h4, h5, strong {
+    font-family: var(--font-heading);
+}
 
+body, p, div, button, input {
+    font-family: var(--font-body);
+}

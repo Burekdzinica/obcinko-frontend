@@ -32,7 +32,7 @@ export default function Help() {
                     data-bs-theme="dark"
                 >
                     <Modal.Title className="w-full text-center !font-bold !text-primary">
-                        Kako igrati
+                        <h4 className="p-0 m-0">Kako igrati</h4>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="text-white text-center space-y-4">

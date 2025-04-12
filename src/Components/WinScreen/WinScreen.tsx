@@ -40,7 +40,7 @@ export default function WinScreen({ show, setShow, gameMode }: WinScreenProps) {
             >
                 <Modal.Title className='flex items-center justify-center gap-2'>
                     <Trophy className='text-amber-500' />
-                    <span className='text-amber-600 font-semibold'>Čestitke!</span>
+                    <h3 className='text-amber-600 m-0 font-semibold'>Čestitke!</h3>
                     <Trophy className='text-amber-500' />
                 </Modal.Title>
             </Modal.Header>

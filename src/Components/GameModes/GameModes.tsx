@@ -48,7 +48,9 @@ export default function GameModesBtn({ gameMode, setGameMode }: GameModesProps) 
                     data-bs-theme="dark"
                 >
                     <Modal.Title className="w-full text-center !font-bold !text-primary">
-                        Načini igranja
+                        <h3 className="p-0 m-0">
+                            Načini igranja
+                        </h3>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="!text-secondary text-center space-y-4">

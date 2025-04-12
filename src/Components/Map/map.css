@@ -9,6 +9,7 @@
     color: var(--color-text-primary) !important;
     border: none !important;
     box-shadow: none !important;
+    font-family: var(--font-heading);
 }
 
 /* Remove arrow/tail */

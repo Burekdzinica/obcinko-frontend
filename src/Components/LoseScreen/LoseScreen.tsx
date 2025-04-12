@@ -31,7 +31,7 @@ export default function LoseScreen({ obcina, show, setShow, gameMode }: LoseScre
                 closeButton
             >
                 <Modal.Title>
-                    <h5 className='font-semibold text-red-600 m-0' >Konec igre</h5> 
+                    <h3 className='font-semibold text-red-600 m-0' >Konec igre</h3> 
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>

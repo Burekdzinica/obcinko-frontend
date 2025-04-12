@@ -2,6 +2,9 @@
     /* Modal */
     --blur-size: 1px;
 
+    --font-heading: "Poppins";
+    --font-body: "Nunito";
+
     --input-color: #242424;
     --input-color-hover: "#2A2A2A";
     --input-border: #555555;

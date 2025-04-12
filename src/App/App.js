@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "@fontsource/roboto-condensed";
-import '@fontsource/lexend';
+import "@fontsource/poppins";
+import "@fontsource/nunito";
+
 
 import './App.css';
 import "../variables.css"
