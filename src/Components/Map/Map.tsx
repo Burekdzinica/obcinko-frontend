@@ -16,71 +16,46 @@ const Options = {
     CENTER: "CENTER" as const,
 };
 
-function mapView({ allFeatures, feature, hints, showSatellite }: MapProps) {
+export default function Map({ allFeatures, feature, hints, showSatellite }: MapProps) {
     let mapContent;
     let satelliteContent;
+    let wholeMapContent;
+    let adjacentObcineContent;
 
     if (showSatellite) {
         satelliteContent = (
             <TileLayer
+                // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
                 url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                 attribution='&copy; <a href="https://server.arcgisonline.com/arcgis/rest/services">ArcGIS</a>'
             />
         );
     }
-    
-    switch (true) {
-        case hints.map:
-            mapContent = (
-                <MapContainer {...mapOptions}>
-                    {/* Change tile layer based on satellite */}
-                    {showSatellite ? (satelliteContent) : 
-                        <TileLayer
-                            // https://github.com/CartoDB/basemap-styles?tab=readme-ov-file
-                            url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
-                            attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-                        />
-                    }
-                    <Outline feature={feature} />
-                    <AdjacentObcine 
-                        options={Options.CENTER} 
-                        allFeatures={allFeatures} 
-                        targetFeature={feature} 
-                    />
-                    <WholeMap />
-                </MapContainer>
-            );
-            break;
 
-        case hints.adjacentObcine:
-            mapContent = (
-                <MapContainer {...mapOptions}>
-                    {satelliteContent}
-                    <Outline feature={feature} />
-                    <AdjacentObcine 
-                        options={Options.ADJACENT} 
-                        allFeatures={allFeatures} 
-                        targetFeature={feature} 
-                    />
-                </MapContainer>
-            );
-            break;
-
-        case true:
-            mapContent = (
-                <MapContainer {...mapOptions}>
-                    {satelliteContent}
-                    <Outline feature={feature} />
-                </MapContainer> 
-            );
-            break;
+    if (hints.map) {
+        wholeMapContent = (
+            <WholeMap />
+        );
     }
 
-    return mapContent;
-}
+    if (hints.adjacentObcine) {
+        adjacentObcineContent = (
+            <AdjacentObcine 
+                options={Options.ADJACENT} 
+                allFeatures={allFeatures} 
+                targetFeature={feature} 
+            />
+        )
+    }
 
-export default function Map({ allFeatures, feature, hints, showSatellite }: MapProps) {
-    let mapContent = mapView({allFeatures, feature, hints, showSatellite});
+    mapContent = (
+        <MapContainer {...mapOptions}>
+            {satelliteContent}
+            <Outline feature={feature} />
+            {adjacentObcineContent}
+            {wholeMapContent}
+        </MapContainer>
+    )
 
     return mapContent;
 }

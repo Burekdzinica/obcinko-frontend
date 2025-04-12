@@ -472,7 +472,7 @@ export default function Game({ gameMode }: GameProps) {
                 /> 
             }
 
-            { gameState?.win && 
+            { gameState && 
                 <WinScreen 
                     show={showWinScreen}
                     setShow={setShowWinScreen}
@@ -508,22 +508,14 @@ export default function Game({ gameMode }: GameProps) {
                 {/* Show map */}
                 { gameState && 
                     <Map 
-                            allFeatures={allFeatures!} 
-                            feature={gameState.feature} 
-                            hints={gameState.hints} 
-                            showSatellite={gameState.showSatellite} 
-                    /> 
-
-                }
-                {/* { (gameState?.hints.map || gameState?.hints.outline || gameState?.hints.adjacentObcine) && 
-                    <Map 
                         allFeatures={allFeatures!} 
                         feature={gameState.feature} 
                         hints={gameState.hints} 
                         showSatellite={gameState.showSatellite} 
                     /> 
-                } */}
-                
+
+                }
+
                 {/* Show region */}
                 { gameState?.hints.region && 
                     <Region obcina={gameState.solution} /> 

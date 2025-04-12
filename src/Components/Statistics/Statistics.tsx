@@ -10,6 +10,7 @@ export default function Statistics() {
     const [show, setShow] = useState(false);
     const [stats, setStats] = useState<Stats>();
 
+    const item = localStorage.getItem("stats");
     
     const handleClose = () => setShow(false); 
     const handleShow = () => setShow(true);
@@ -35,7 +36,7 @@ export default function Statistics() {
 
     useEffect(() => {
         loadStats();
-    }, [localStorage.getItem("stats")]);
+    }, [item]);
 
     return (
         <>

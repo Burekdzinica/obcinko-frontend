@@ -24,8 +24,9 @@ export default function WinScreen({ show, setShow, gameMode }: WinScreenProps) {
         }, [gameMode])
 
     useEffect(() => {
-        launchConfetti();
-    }, []);
+        if (show)
+            launchConfetti();
+    }, [show]);
 
     return (
         <Modal className='win-modal z-999 text-center !text-primary animate-fadeIn' 

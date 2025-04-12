@@ -1,4 +1,4 @@
-import { Feature, Features } from "../types";
+import { Features } from "../types";
 
 export async function getFeatureFromNaziv(features: Features, naziv: string) {
     return features.find((feature) => feature.properties?.NAZIV === naziv);
