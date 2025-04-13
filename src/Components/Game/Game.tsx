@@ -244,10 +244,10 @@ export default function Game({ gameMode }: GameProps) {
         if (win) {
             setStats(prev => ({ 
                 ...prev!, 
-                playedGames: prev!.playedGames++,
+                playedGames: prev?.playedGames ? prev.playedGames + 1 : 1,
                 wins: win ? prev!.wins + 1 : prev!.wins,
                 streak: win ? prev!.streak + 1 : 0,
-                maxStreak: win && prev!.streak + 1>  prev!.maxStreak ? prev!.streak + 1 : prev!.maxStreak
+                maxStreak: win && prev!.streak + 1 >  prev!.maxStreak ? prev!.streak + 1 : prev!.maxStreak
             }));
             
         }
