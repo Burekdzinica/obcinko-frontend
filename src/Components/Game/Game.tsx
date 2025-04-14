@@ -255,7 +255,7 @@ export default function Game({ gameMode }: GameProps) {
         else if (lose) {
             setStats(prev => ({ 
                 ...prev!, 
-                playedGames: prev!.playedGames++,
+                playedGames: prev?.playedGames ? prev.playedGames + 1 : 1,
                 streak: 0
             }));
         }
