@@ -465,7 +465,7 @@ export default function Game({ gameMode }: GameProps) {
             
             { gameState && 
                 <LoseScreen 
-                    obcina={lastSolution} 
+                    obcina={lastSolution || gameState.solution} 
                     show={showLoseScreen} 
                     setShow={setShowLoseScreen} 
                     gameMode={gameMode}
